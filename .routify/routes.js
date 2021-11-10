@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Wed Oct 13 2021 22:35:46 GMT-0700 (Pacific Daylight Time)
+ * File generated Wed Nov 10 2021 00:07:04 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2021-10-14T05:35:46.564Z"
+export const __timestamp = "2021-11-10T08:07:04.513Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -32,7 +32,7 @@ export const _tree = {
       "name": "example",
       "ext": "",
       "badExt": false,
-      "absolutePath": "C:/Coding/Svelte/Svelte Template/src/pages/example",
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/component-tracker/src/pages/example",
       "children": [
         {
           "isFile": true,
@@ -42,7 +42,7 @@ export const _tree = {
           "name": "[example]",
           "ext": "svelte",
           "badExt": false,
-          "absolutePath": "C:/Coding/Svelte/Svelte Template/src/pages/example/[example].svelte",
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/component-tracker/src/pages/example/[example].svelte",
           "importPath": "../src/pages/example/[example].svelte",
           "isLayout": false,
           "isReset": false,
@@ -67,7 +67,7 @@ export const _tree = {
           "name": "index",
           "ext": "svelte",
           "badExt": false,
-          "absolutePath": "C:/Coding/Svelte/Svelte Template/src/pages/example/index.svelte",
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/component-tracker/src/pages/example/index.svelte",
           "importPath": "../src/pages/example/index.svelte",
           "isLayout": false,
           "isReset": false,
@@ -106,7 +106,7 @@ export const _tree = {
       "name": "index",
       "ext": "svelte",
       "badExt": false,
-      "absolutePath": "C:/Coding/Svelte/Svelte Template/src/pages/index.svelte",
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/component-tracker/src/pages/index.svelte",
       "importPath": "../src/pages/index.svelte",
       "isLayout": false,
       "isReset": false,
