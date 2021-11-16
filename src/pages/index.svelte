@@ -1,22 +1,21 @@
 <script>
-  import { fly } from "svelte/transition";
-  import Title from "../components/Title/Title.svelte";
-  let visibile = false;
-  setTimeout(() => {
-    visibile = true;
-  }, 500);
+  import Navbar from "../components/Navbar/Navbar.svelte";
+  import Header from "../components/Helpers/Header/Header.svelte";
 </script>
 
-{#if visibile}
-  <main class="main" transition:fly={{ y: 200, duration: 2000 }}>
-    <!--Put all your fancy code here-->
-    <h1 class="title">
-      <Title title="Let's get started" />
-    </h1>
-  </main>
-{/if}
+<Navbar />
+<div class="home">
+  <Header
+    title="Recent Projects"
+    type="subtitle"
+    buttons={[
+      { text: "All Projects", type: "secondary", action: "" },
+      { text: "New Project", type: "primary", action: "" },
+    ]}
+  />
+</div>
 
-<!-- use lang="sass" for SASS -->
 <style lang="scss">
-  @import "../styles/index.scss";
+  .home {
+  }
 </style>
