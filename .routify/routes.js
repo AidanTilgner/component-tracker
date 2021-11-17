@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Mon Nov 15 2021 16:50:09 GMT-0800 (Pacific Standard Time)
+ * File generated Tue Nov 16 2021 16:19:00 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2021-11-16T00:50:09.650Z"
+export const __timestamp = "2021-11-17T00:19:00.705Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -48,6 +48,80 @@ export const _tree = {
       "path": "/index",
       "id": "_index",
       "component": () => import('../src/pages/index.svelte').then(m => m.default)
+    },
+    {
+      "isFile": false,
+      "isDir": true,
+      "file": "projects",
+      "filepath": "/projects",
+      "name": "projects",
+      "ext": "",
+      "badExt": false,
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects",
+      "children": [
+        {
+          "isFile": true,
+          "isDir": false,
+          "file": "[project].svelte",
+          "filepath": "/projects/[project].svelte",
+          "name": "[project]",
+          "ext": "svelte",
+          "badExt": false,
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project].svelte",
+          "importPath": "../src/pages/projects/[project].svelte",
+          "isLayout": false,
+          "isReset": false,
+          "isIndex": false,
+          "isFallback": false,
+          "isPage": true,
+          "ownMeta": {},
+          "meta": {
+            "recursive": true,
+            "preload": false,
+            "prerender": true
+          },
+          "path": "/projects/:project",
+          "id": "_projects__project",
+          "component": () => import('../src/pages/projects/[project].svelte').then(m => m.default)
+        },
+        {
+          "isFile": true,
+          "isDir": false,
+          "file": "index.svelte",
+          "filepath": "/projects/index.svelte",
+          "name": "index",
+          "ext": "svelte",
+          "badExt": false,
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/index.svelte",
+          "importPath": "../src/pages/projects/index.svelte",
+          "isLayout": false,
+          "isReset": false,
+          "isIndex": true,
+          "isFallback": false,
+          "isPage": true,
+          "ownMeta": {},
+          "meta": {
+            "recursive": true,
+            "preload": false,
+            "prerender": true
+          },
+          "path": "/projects/index",
+          "id": "_projects_index",
+          "component": () => import('../src/pages/projects/index.svelte').then(m => m.default)
+        }
+      ],
+      "isLayout": false,
+      "isReset": false,
+      "isIndex": false,
+      "isFallback": false,
+      "isPage": false,
+      "ownMeta": {},
+      "meta": {
+        "recursive": true,
+        "preload": false,
+        "prerender": true
+      },
+      "path": "/projects"
     }
   ],
   "isLayout": false,

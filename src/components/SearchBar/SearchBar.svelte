@@ -3,7 +3,7 @@
 </script>
 
 <div class="search">
-  <input type="text" class="search__input" placeholder="search everything" />
+  <input type="text" class="search__input" placeholder="search everything..." />
   <div class="search__icon">
     <Icon name="search" height="20" width="20" />
   </div>
@@ -19,7 +19,7 @@
     height: 36px;
     position: relative;
     border-radius: 8px;
-    box-shadow: 0.2px 0.2px 10px 0 rgba($color: #000000, $alpha: 0.25);
+    box-shadow: 0.2px 0.2px 7px 0 rgba($color: #000000, $alpha: 0.25);
     overflow: hidden;
     box-sizing: border-box;
     margin: 0 24px;
@@ -31,11 +31,15 @@
       left: 0;
       border: none;
       padding-left: 24px;
-      padding-top: 8px;
       font-weight: 500;
+      height: 100%;
+      border-radius: inherit;
 
       &:focus {
         outline: none;
+        padding-left: calc(24px - 1.5px);
+        border: 1.5px solid $color-primary;
+        color: $color-primary;
       }
     }
 

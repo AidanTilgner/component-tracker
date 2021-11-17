@@ -17,6 +17,7 @@
   @import "../../styles/partials/mixins.scss";
 
   .navbar {
+    @include default-padding;
     font-family: $font-primary;
     position: sticky;
     top: 0;
@@ -28,8 +29,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-inline-start: 100px;
-    padding-inline-end: 100px;
 
     &__title {
       margin: 0;

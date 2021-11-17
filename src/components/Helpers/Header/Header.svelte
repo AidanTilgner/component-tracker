@@ -5,8 +5,15 @@
 </script>
 
 <div class="header">
-  <p class="header__title" style={type === "subtitle" && "font-size: 48px;"}>
-    {title}
+  <p
+    class="header__title"
+    style={type === "subtitle"
+      ? "font-size: 48px;"
+      : type === "breadcrumbs"
+      ? "font-size: 24px; color: #3356F2"
+      : ""}
+  >
+    {@html title}
   </p>
   <div class="header__buttons">
     {#each buttons as button}

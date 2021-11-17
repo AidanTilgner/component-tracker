@@ -1,6 +1,8 @@
 <script>
+  import { goto } from "@roxi/routify";
   import Navbar from "../components/Navbar/Navbar.svelte";
   import Header from "../components/Helpers/Header/Header.svelte";
+  import PreviewGrid from "../components/PreviewGrid/PreviewGrid.svelte";
 </script>
 
 <Navbar />
@@ -9,13 +11,16 @@
     title="Recent Projects"
     type="subtitle"
     buttons={[
-      { text: "All Projects", type: "secondary", action: "" },
+      {
+        text: "All Projects",
+        type: "secondary",
+        action: () => $goto("/projects"),
+      },
       { text: "New Project", type: "primary", action: "" },
     ]}
   />
+  <PreviewGrid />
 </div>
 
 <style lang="scss">
-  .home {
-  }
 </style>
