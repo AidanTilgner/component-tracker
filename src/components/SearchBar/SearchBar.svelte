@@ -1,5 +1,5 @@
 <script>
-  import Icon from "../Helpers/Icon/Icon.svelte";
+  import Icon from "../../helpers/Icon/Icon.svelte";
 </script>
 
 <div class="search">

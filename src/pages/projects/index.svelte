@@ -1,6 +1,6 @@
 <script>
   import Navbar from "../../components/Navbar/Navbar.svelte";
-  import Header from "../../components/Helpers/Header/Header.svelte";
+  import Header from "../../helpers/Header/Header.svelte";
   import PreviewGrid from "../../components/PreviewGrid/PreviewGrid.svelte";
 </script>
 

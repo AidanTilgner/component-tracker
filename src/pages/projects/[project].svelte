@@ -1,7 +1,8 @@
 <script>
   import { params } from "@roxi/routify";
   import Navbar from "../../components/Navbar/Navbar.svelte";
-  import Header from "../../components/Helpers/Header/Header.svelte";
+  import Header from "../../helpers/Header/Header.svelte";
+  import fileTree from "../../components/FileTree/FileTree.svelte";
   console.log($params);
   let project = { name: "project", codeName: $params.project };
 </script>

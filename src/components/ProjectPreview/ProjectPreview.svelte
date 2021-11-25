@@ -1,6 +1,6 @@
 <script>
   import { url, goto } from "@roxi/routify";
-  import Icon from "../Helpers/Icon/Icon.svelte";
+  import Icon from "../../Helpers/Icon/Icon.svelte";
   export let title;
   export let endpoint;
   export let edited;

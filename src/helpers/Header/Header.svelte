@@ -25,9 +25,9 @@
 </div>
 
 <style type="text/scss">
-  @import "../../../styles/partials/variables";
-  @import "../../../styles/partials/typography";
-  @import "../../../styles/partials/mixins";
+  @import "../../styles/partials/variables";
+  @import "../../styles/partials/typography";
+  @import "../../styles/partials/mixins";
 
   .header {
     @include default-padding;

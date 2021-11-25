@@ -1,5 +1,5 @@
 <script>
-  import Icon from "../Helpers/Icon/Icon.svelte";
+  import Icon from "../../helpers/Icon/Icon.svelte";
   export let initials = "AT";
 
   // TODO: Work out how to make this dynamic
