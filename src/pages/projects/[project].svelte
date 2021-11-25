@@ -2,7 +2,7 @@
   import { params } from "@roxi/routify";
   import Navbar from "../../components/Navbar/Navbar.svelte";
   import Header from "../../helpers/Header/Header.svelte";
-  import fileTree from "../../components/FileTree/FileTree.svelte";
+  import FileTree from "../../components/FileTree/FileTree.svelte";
   console.log($params);
   let project = { name: "project", codeName: $params.project };
 </script>
@@ -15,6 +15,7 @@
     buttons={[{ text: "Add", type: "primary", action: "" }]}
   />
   <Header title="Tree" type="subtitle" />
+  <FileTree />
 </div>
 
 <style type="text/scss"></style>
