@@ -1,8 +1,63 @@
 <script>
-  export let text, type, children, parent;
-  let width = text.length * 20;
-  let height = type === "folder" ? 60 : 40;
-  let open = false;
+  import { root } from "../TreeContext";
+  export let node, parent;
+  let tree;
+
+  root.subscribe((value) => {
+    tree = value;
+    // console.log("Root is: ", value);
+  });
+  let text = node.text,
+    type = node.type,
+    children = node.children,
+    width = text.length * 20,
+    height = type === "folder" ? 60 : 40,
+    open = node.open;
+
+  let resetting = false;
+
+  //   console.log(`Root on ${text} is: `, tree);
+
+  function toggle(to) {
+    if (to != null) {
+      node.open = to;
+      open = node.open;
+    } else {
+      node.open = !open;
+      open = node.open;
+    }
+  }
+
+  function removeSiblingsOpen(parent) {
+    if (!parent) return;
+    let siblings = parent.children;
+    for (let i = 0; i < siblings.length; i++) {
+      if (siblings[i] === node) continue;
+      siblings[i].open = false;
+    }
+    // console.log("tree: ", tree);
+  }
+
+  function updateTree(tree) {
+    root.set(tree);
+    console.log("Updated Tree to: ", tree);
+    console.log("Clicking ");
+    reset();
+  }
+
+  function reset() {
+    resetting = true;
+    const rootNode = document.getElementById("tree-root");
+    console.log("Root Node: ", rootNode);
+    rootNode.click();
+    setTimeout(() => {
+      rootNode.click();
+      resetting = false;
+    }, 0.01);
+  }
+
+  //   text === "src" && console.log("SRC Rendering");
+  //   console.log(`${text === "src" ? ("TreeData on src: ", tree) : null}`);
 
   /* 
     The plan here is that when the folder is clicked, the children are shown.
@@ -13,29 +68,27 @@
 </script>
 
 <div
+  id={`${node === tree && "tree-root"}`}
   class="tree-node {type === 'folder' ? 'folder' : 'file'} {open &&
     type === 'folder' &&
     'open'}"
   style="width: {width}px; height: {height}px"
   on:click={(e) => {
     e.stopPropagation();
-    if (type === "folder" && children) {
-      open = !open;
+    if (type === "folder" && children && !resetting) {
+      removeSiblingsOpen(parent);
+      toggle();
       open ? (width += -4) : (width += 4);
       open ? (height += -4) : (height += 4);
+      updateTree(tree);
     }
   }}
 >
   <p class="tree-node__text">{text}</p>
-  {#if open && children}
+  {#if open}
     <div class="tree-node__children">
       {#each children as child}
-        <svelte:self
-          text={child.name}
-          type={child.type}
-          children={child.children}
-          parent={this}
-        />
+        <svelte:self node={child} parent={node} />
       {/each}
     </div>
   {/if}

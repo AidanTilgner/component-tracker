@@ -1,5 +1,7 @@
 <script>
   import TreeNode from "./comps/TreeNode.svelte";
+  import Node from "./Node.js";
+  import { root } from "./TreeContext.js";
 
   /* 
     So basically the plan here is to get the root tree node, and then recursively render each 
@@ -10,45 +12,32 @@
     the tree, and render each node.
   */
 
-  let treeData = {
-    id: "root",
-    name: "src",
-    type: "folder",
-    parent: null,
-    children: [
-      {
-        id: "child1",
-        type: "folder",
-        name: "child-folder",
-        parent: "root",
-        children: [
-          {
-            id: "child1-2",
-            type: "folder",
-            name: "child-folder-2",
-            parent: "child1",
-            children: null,
-          },
-          {
-            id: "child1-1",
-            type: "file",
-            name: "child-file.js",
-            parent: "child1",
-            children: null,
-          },
-        ],
-      },
-    ],
-  };
+  // First we'll have a node class that will represent different functions of a tree node
+
+  let tree = new Node("src", "folder", [
+    new Node("child1", "folder", [
+      new Node("child1.1", "folder", []),
+      new Node("child1.2", "folder", []),
+      new Node("child1.3", "folder", []),
+    ]),
+    new Node("child2", "folder", [
+      new Node("child2.1", "folder", []),
+      new Node("child2.2", "folder", []),
+      new Node("child2.3", "folder", []),
+    ]),
+    new Node("child3", "folder", [
+      new Node("grandchild1", "folder", []),
+      new Node("grandchild2", "folder", []),
+      new Node("grandchild3", "folder", []),
+    ]),
+  ]);
+  root.set(tree);
 </script>
 
 <div class="file-tree">
-  <TreeNode
-    text={treeData.name}
-    type={treeData.type}
-    children={treeData.children}
-    parent={treeData.parent}
-  />
+  {#if tree}
+    <TreeNode node={tree} parent={null} />
+  {/if}
 </div>
 
 <style type="text/scss">
