@@ -40,3 +40,40 @@
     background-color: white;
   }
 }
+
+@mixin button-tertiary {
+  background-color: $color-red;
+  color: white;
+
+  &:hover {
+    background-color: $color-red;
+  }
+}
+
+@mixin button-slide {
+  background-color: rgba($color: #ffffff, $alpha: 0);
+  color: $color-primary;
+  box-shadow: none;
+
+  &:hover {
+    background-color: rgba($color: #ffffff, $alpha: 0);
+    box-shadow: none;
+    text-decoration: underline;
+  }
+}
+
+@mixin button-text {
+  font-size: 18px;
+  background-color: rgba($color: #ffffff, $alpha: 0);
+  color: $color-primary;
+  box-shadow: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+
+  &:hover {
+    background-color: rgba($color: #ffffff, $alpha: 0);
+    box-shadow: none;
+    text-decoration: underline;
+  }
+}

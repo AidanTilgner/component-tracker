@@ -14,21 +14,21 @@
 
   // First we'll have a node class that will represent different functions of a tree node
 
-  let tree = new Node("src", "folder", [
-    new Node("child1", "folder", [
-      new Node("child1.1", "folder", []),
-      new Node("child1.2", "folder", []),
-      new Node("child1.3", "folder", []),
+  let tree = new Node("src", "folder", {}, [
+    new Node("child1", "folder", {}, [
+      new Node("child1.1", "folder", {}, []),
+      new Node("child1.2", "file", { endpoint: "h489-child1-2" }, []),
+      new Node("child1.3", "file", { endpoint: "h489-child1-3" }, []),
     ]),
-    new Node("child2", "folder", [
-      new Node("child2.1", "folder", []),
-      new Node("child2.2", "folder", []),
-      new Node("child2.3", "folder", []),
+    new Node("child2", "folder", {}, [
+      new Node("child2.1", "folder", {}, []),
+      new Node("child2.2", "file", { endpoint: "h489-child2-2" }, []),
+      new Node("child2.3", "file", { endpoint: "h489-child2-3" }, []),
     ]),
-    new Node("child3", "folder", [
-      new Node("grandchild1", "folder", []),
-      new Node("grandchild2", "folder", []),
-      new Node("grandchild3", "folder", []),
+    new Node("child3", "folder", {}, [
+      new Node("grandchild1", "folder", {}, []),
+      new Node("grandchild2", "file", { endpoint: "h489-child3-2" }, []),
+      new Node("grandchild3", "file", { endpoint: "h489-child3-3" }, []),
     ]),
   ]);
   root.set(tree);
@@ -46,7 +46,6 @@
   @import "../../styles/partials/mixins.scss";
 
   .file-tree {
-    @include default-padding;
     font-family: $font-primary;
   }
 </style>

@@ -21,7 +21,7 @@
     font-family: $font-primary;
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 5;
     left: 0;
     right: 0;
     box-shadow: 0.2px 0.2px 10px 0 rgba($color: #000000, $alpha: 0.25);

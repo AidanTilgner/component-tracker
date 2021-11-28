@@ -1,7 +1,9 @@
 <script>
+  import { goto, params, url } from "@roxi/routify";
   import { root } from "../TreeContext";
   export let node, parent;
   let tree;
+  node.type === "file" && console.log(node.references);
 
   root.subscribe((value) => {
     tree = value;
@@ -55,16 +57,6 @@
       resetting = false;
     }, 0.01);
   }
-
-  //   text === "src" && console.log("SRC Rendering");
-  //   console.log(`${text === "src" ? ("TreeData on src: ", tree) : null}`);
-
-  /* 
-    The plan here is that when the folder is clicked, the children are shown.
-    If the children are already showing and the folder is clicked again, the children are hidden.
-    If sibling nodes also have children showing, those must be hidden first. 
-    This can be achieved by a function on the parent level that remove children showing from the parent's children array.
-  */
 </script>
 
 <div
@@ -73,6 +65,7 @@
     type === 'folder' &&
     'open'}"
   style="width: {width}px; height: {height}px"
+  title={`${type === "folder" ? "Open Folder" : "View Component"}`}
   on:click={(e) => {
     e.stopPropagation();
     if (type === "folder" && children && !resetting) {
@@ -81,6 +74,16 @@
       open ? (width += -4) : (width += 4);
       open ? (height += -4) : (height += 4);
       updateTree(tree);
+      return;
+    }
+    if (type === "file" && node.references.endpoint) {
+      console.log($url("./components"));
+      $goto(
+        $url(`/components/:component`, {
+          project: $params.project,
+          component: node.references.endpoint,
+        })
+      );
     }
   }}
 >
