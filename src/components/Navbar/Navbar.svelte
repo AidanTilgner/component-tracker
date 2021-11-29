@@ -1,10 +1,18 @@
 <script>
   import SearchBar from "../SearchBar/SearchBar.svelte";
   import Profile from "../Profile/Profile.svelte";
+  import { goto, url } from "@roxi/routify";
 </script>
 
 <div class="navbar">
-  <p class="navbar__title">Component Tracker</p>
+  <p
+    class="navbar__title"
+    on:click={(e) => {
+      $goto($url("/"));
+    }}
+  >
+    Component Tracker
+  </p>
   <div class="navbar__items">
     <SearchBar />
     <Profile initials="AT" />
@@ -18,6 +26,7 @@
 
   .navbar {
     @include default-padding;
+    background-color: white;
     font-family: $font-primary;
     position: sticky;
     top: 0;
@@ -34,6 +43,11 @@
       margin: 0;
       font-size: 24px;
       font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        color: $color-primary;
+      }
     }
 
     &__items {

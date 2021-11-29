@@ -35,7 +35,6 @@
   @import "../../styles/partials/mixins";
   @import "../../styles/partials/typography";
   .grid {
-    @include default-padding;
     display: grid;
     // we need 4 columns in each row
     grid-template-columns: repeat(4, 1fr);

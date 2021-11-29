@@ -23,4 +23,11 @@
 </div>
 
 <style lang="scss">
+  @import "../styles/partials/variables.scss";
+  @import "../styles/partials/typography.scss";
+  @import "../styles/partials/mixins.scss";
+
+  .home {
+    @include default-padding;
+  }
 </style>

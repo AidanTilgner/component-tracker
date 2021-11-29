@@ -79,8 +79,7 @@
     if (type === "file" && node.references.endpoint) {
       console.log($url("./components"));
       $goto(
-        $url(`/components/:component`, {
-          project: $params.project,
+        $url(`./:component`, {
           component: node.references.endpoint,
         })
       );

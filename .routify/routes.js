@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Sat Nov 27 2021 19:33:30 GMT-0800 (Pacific Standard Time)
+ * File generated Sun Nov 28 2021 22:10:40 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2021-11-28T03:33:30.633Z"
+export const __timestamp = "2021-11-29T06:10:40.177Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -24,80 +24,6 @@ export const _tree = {
   "ownMeta": {},
   "absolutePath": "src/pages",
   "children": [
-    {
-      "isFile": false,
-      "isDir": true,
-      "file": "components",
-      "filepath": "/components",
-      "name": "components",
-      "ext": "",
-      "badExt": false,
-      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/components",
-      "children": [
-        {
-          "isFile": true,
-          "isDir": false,
-          "file": "[component].svelte",
-          "filepath": "/components/[component].svelte",
-          "name": "[component]",
-          "ext": "svelte",
-          "badExt": false,
-          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/components/[component].svelte",
-          "importPath": "../src/pages/components/[component].svelte",
-          "isLayout": false,
-          "isReset": false,
-          "isIndex": false,
-          "isFallback": false,
-          "isPage": true,
-          "ownMeta": {},
-          "meta": {
-            "recursive": true,
-            "preload": false,
-            "prerender": true
-          },
-          "path": "/components/:component",
-          "id": "_components__component",
-          "component": () => import('../src/pages/components/[component].svelte').then(m => m.default)
-        },
-        {
-          "isFile": true,
-          "isDir": false,
-          "file": "index.svelte",
-          "filepath": "/components/index.svelte",
-          "name": "index",
-          "ext": "svelte",
-          "badExt": false,
-          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/components/index.svelte",
-          "importPath": "../src/pages/components/index.svelte",
-          "isLayout": false,
-          "isReset": false,
-          "isIndex": true,
-          "isFallback": false,
-          "isPage": true,
-          "ownMeta": {},
-          "meta": {
-            "recursive": true,
-            "preload": false,
-            "prerender": true
-          },
-          "path": "/components/index",
-          "id": "_components_index",
-          "component": () => import('../src/pages/components/index.svelte').then(m => m.default)
-        }
-      ],
-      "isLayout": false,
-      "isReset": false,
-      "isIndex": false,
-      "isFallback": false,
-      "isPage": false,
-      "ownMeta": {},
-      "meta": {
-        "recursive": true,
-        "preload": false,
-        "prerender": true
-      },
-      "path": "/components"
-    },
     {
       "isFile": true,
       "isDir": false,
@@ -134,29 +60,78 @@ export const _tree = {
       "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects",
       "children": [
         {
-          "isFile": true,
-          "isDir": false,
-          "file": "[project].svelte",
-          "filepath": "/projects/[project].svelte",
+          "isFile": false,
+          "isDir": true,
+          "file": "[project]",
+          "filepath": "/projects/[project]",
           "name": "[project]",
-          "ext": "svelte",
+          "ext": "",
           "badExt": false,
-          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project].svelte",
-          "importPath": "../src/pages/projects/[project].svelte",
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project]",
+          "children": [
+            {
+              "isFile": true,
+              "isDir": false,
+              "file": "[component].svelte",
+              "filepath": "/projects/[project]/[component].svelte",
+              "name": "[component]",
+              "ext": "svelte",
+              "badExt": false,
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project]/[component].svelte",
+              "importPath": "../src/pages/projects/[project]/[component].svelte",
+              "isLayout": false,
+              "isReset": false,
+              "isIndex": false,
+              "isFallback": false,
+              "isPage": true,
+              "ownMeta": {},
+              "meta": {
+                "recursive": true,
+                "preload": false,
+                "prerender": true
+              },
+              "path": "/projects/:project/:component",
+              "id": "_projects__project__component",
+              "component": () => import('../src/pages/projects/[project]/[component].svelte').then(m => m.default)
+            },
+            {
+              "isFile": true,
+              "isDir": false,
+              "file": "index.svelte",
+              "filepath": "/projects/[project]/index.svelte",
+              "name": "index",
+              "ext": "svelte",
+              "badExt": false,
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project]/index.svelte",
+              "importPath": "../src/pages/projects/[project]/index.svelte",
+              "isLayout": false,
+              "isReset": false,
+              "isIndex": true,
+              "isFallback": false,
+              "isPage": true,
+              "ownMeta": {},
+              "meta": {
+                "recursive": true,
+                "preload": false,
+                "prerender": true
+              },
+              "path": "/projects/:project/index",
+              "id": "_projects__project_index",
+              "component": () => import('../src/pages/projects/[project]/index.svelte').then(m => m.default)
+            }
+          ],
           "isLayout": false,
           "isReset": false,
           "isIndex": false,
           "isFallback": false,
-          "isPage": true,
+          "isPage": false,
           "ownMeta": {},
           "meta": {
             "recursive": true,
             "preload": false,
             "prerender": true
           },
-          "path": "/projects/:project",
-          "id": "_projects__project",
-          "component": () => import('../src/pages/projects/[project].svelte').then(m => m.default)
+          "path": "/projects/:project"
         },
         {
           "isFile": true,

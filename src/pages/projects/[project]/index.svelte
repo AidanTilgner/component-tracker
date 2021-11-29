@@ -1,9 +1,9 @@
 <script>
   import { params } from "@roxi/routify";
-  import Navbar from "../../components/Navbar/Navbar.svelte";
-  import Header from "../../helpers/Header/Header.svelte";
-  import FileTree from "../../components/FileTree/FileTree.svelte";
-  import SideBar from "../../components/SideBar/SideBar.svelte";
+  import Navbar from "../../../components/Navbar/Navbar.svelte";
+  import Header from "../../../helpers/Header/Header.svelte";
+  import FileTree from "../../../components/FileTree/FileTree.svelte";
+  import SideBar from "../../../components/SideBar/SideBar.svelte";
   console.log($params);
   let project = {
     name: "project",
@@ -66,9 +66,9 @@
 </div>
 
 <style type="text/scss">
-  @import "../../styles/partials/variables";
-  @import "../../styles/partials/typography";
-  @import "../../styles/partials/mixins";
+  @import "../../../styles/partials/variables";
+  @import "../../../styles/partials/typography";
+  @import "../../../styles/partials/mixins";
   .project {
     @include default-padding;
   }
