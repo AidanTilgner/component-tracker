@@ -3,6 +3,7 @@
   export let initials = "AT";
 
   // TODO: Work out how to make this dynamic
+  // TODO: Make onclick functionality to open user profile
 </script>
 
 <div class="profile">

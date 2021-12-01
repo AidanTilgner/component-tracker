@@ -5,6 +5,8 @@
   export let endpoint;
   export let edited;
   export let framework;
+
+  // TODO: Add dropdown for settings
 </script>
 
 <div

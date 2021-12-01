@@ -4,6 +4,7 @@
   import Header from "../../../helpers/Header/Header.svelte";
   import FileTree from "../../../components/FileTree/FileTree.svelte";
   import SideBar from "../../../components/SideBar/SideBar.svelte";
+  import Modal from "../../../Helpers/Modal/Modal.svelte";
   console.log($params);
   let project = {
     name: "project",
@@ -20,6 +21,16 @@
       SideBarOpen = to;
     }
   };
+
+  let ModalOpen = false;
+  let toggleModal = (to) => {
+    console.log("toggling");
+    if (to === undefined) {
+      ModalOpen = !ModalOpen;
+    } else {
+      ModalOpen = to;
+    }
+  };
 </script>
 
 <Navbar />
@@ -28,7 +39,7 @@
     title="Aidan Tilgner/<span style='font-weight: bold;'>{project.name}</span>"
     type="breadcrumbs"
     buttons={[
-      { text: "Add", type: "primary", action: "" },
+      { text: "Add", type: "primary", action: () => toggleModal(true) },
       {
         text: "Project Info",
         type: "slide-left",
@@ -63,6 +74,18 @@
       </div>
     </div>
   </SideBar>
+  <Modal
+    open={ModalOpen}
+    title="New Component"
+    buttons={[
+      {
+        text: "Close",
+        type: "secondary",
+        action: () => toggleModal(false),
+      },
+      { text: "Add", type: "primary", action: "" },
+    ]}
+  />
 </div>
 
 <style type="text/scss">

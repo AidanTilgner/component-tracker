@@ -3,6 +3,8 @@
   import Navbar from "../components/Navbar/Navbar.svelte";
   import Header from "../helpers/Header/Header.svelte";
   import PreviewGrid from "../components/PreviewGrid/PreviewGrid.svelte";
+
+  // TODO: Add functionality for buttons
 </script>
 
 <Navbar />

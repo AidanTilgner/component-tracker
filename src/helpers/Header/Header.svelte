@@ -3,6 +3,8 @@
   export let type;
   export let title;
   export let buttons = [];
+
+  // TODO: Add functionality for all buttons
 </script>
 
 <div class="header">

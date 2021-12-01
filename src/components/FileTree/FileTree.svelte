@@ -3,16 +3,7 @@
   import Node from "./Node.js";
   import { root } from "./TreeContext.js";
 
-  /* 
-    So basically the plan here is to get the root tree node, and then recursively render each 
-    child node under it. 
-
-    We need to replicate the data that we get from the server, so we can use it to render the tree.
-    It will come in the form of a tree, where we get a root node, and then we can recursively move through
-    the tree, and render each node.
-  */
-
-  // First we'll have a node class that will represent different functions of a tree node
+  // TODO: Make this dynamic based on data from the server
 
   let tree = new Node("src", "folder", {}, [
     new Node("child1", "folder", {}, [

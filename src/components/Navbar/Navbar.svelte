@@ -2,6 +2,8 @@
   import SearchBar from "../SearchBar/SearchBar.svelte";
   import Profile from "../Profile/Profile.svelte";
   import { goto, url } from "@roxi/routify";
+
+  // TODO: Make this component dynamic based on user data
 </script>
 
 <div class="navbar">

@@ -5,9 +5,21 @@
 </script>
 
 <Navbar />
-<Header
-  title="Projects"
-  type="subtitle"
-  buttons={[{ text: "New Project", type: "primary", action: "" }]}
-/>
-<PreviewGrid />
+<div class="projects">
+  <Header
+    title="Projects"
+    type="subtitle"
+    buttons={[{ text: "New Project", type: "primary", action: "" }]}
+  />
+  <PreviewGrid />
+</div>
+
+<style type="text/scss">
+  @import "../../styles/partials/variables";
+  @import "../../styles/partials/typography";
+  @import "../../styles/partials/mixins";
+
+  .projects {
+    @include default-padding;
+  }
+</style>

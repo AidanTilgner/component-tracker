@@ -1,5 +1,7 @@
 <script>
   import Icon from "../../helpers/Icon/Icon.svelte";
+
+  // TODO: Make this show relavent components and projects based on user input
 </script>
 
 <div class="search">
