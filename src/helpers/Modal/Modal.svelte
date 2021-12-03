@@ -63,6 +63,15 @@
       padding: 36px 36px 24px 36px;
     }
 
+    &__body {
+      padding-inline-start: 36px;
+      padding-inline-end: 36px;
+      padding-block-start: 24px;
+      padding-block-end: 24px;
+      overflow-y: scroll;
+      scrollbar-width: 2px;
+    }
+
     &__buttons {
       border-top: 2px solid lightgray;
       display: flex;

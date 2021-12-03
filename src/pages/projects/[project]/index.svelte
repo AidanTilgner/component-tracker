@@ -5,6 +5,7 @@
   import FileTree from "../../../components/FileTree/FileTree.svelte";
   import SideBar from "../../../components/SideBar/SideBar.svelte";
   import Modal from "../../../Helpers/Modal/Modal.svelte";
+  import Form from "../../../Helpers/Form/Form.svelte";
   console.log($params);
   let project = {
     name: "project",
@@ -22,7 +23,7 @@
     }
   };
 
-  let ModalOpen = false;
+  let ModalOpen = true;
   let toggleModal = (to) => {
     console.log("toggling");
     if (to === undefined) {
@@ -85,7 +86,21 @@
       },
       { text: "Add", type: "primary", action: "" },
     ]}
-  />
+  >
+    <Form
+      data={{
+        name: "",
+        fileType: "",
+        category: "",
+        path: "",
+        example: "",
+        description: "",
+        props: [],
+        state: [],
+        tags: null,
+      }}
+    />
+  </Modal>
 </div>
 
 <style type="text/scss">
