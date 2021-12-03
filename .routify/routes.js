@@ -57,11 +57,7 @@ export const _tree = {
       "name": "projects",
       "ext": "",
       "badExt": false,
-<<<<<<< HEAD
-      "absolutePath": "/Users/atilgner/Desktop/Development/Component Tracker/src/pages/example",
-=======
       "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects",
->>>>>>> abacbad995514a2e023074a107747300b5f5ad1b
       "children": [
         {
           "isFile": false,
@@ -71,10 +67,6 @@ export const _tree = {
           "name": "[project]",
           "ext": "",
           "badExt": false,
-<<<<<<< HEAD
-          "absolutePath": "/Users/atilgner/Desktop/Development/Component Tracker/src/pages/example/[example].svelte",
-          "importPath": "../src/pages/example/[example].svelte",
-=======
           "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project]",
           "children": [
             {
@@ -128,7 +120,6 @@ export const _tree = {
               "component": () => import('../src/pages/projects/[project]/index.svelte').then(m => m.default)
             }
           ],
->>>>>>> abacbad995514a2e023074a107747300b5f5ad1b
           "isLayout": false,
           "isReset": false,
           "isIndex": false,
@@ -150,13 +141,8 @@ export const _tree = {
           "name": "index",
           "ext": "svelte",
           "badExt": false,
-<<<<<<< HEAD
-          "absolutePath": "/Users/atilgner/Desktop/Development/Component Tracker/src/pages/example/index.svelte",
-          "importPath": "../src/pages/example/index.svelte",
-=======
           "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/index.svelte",
           "importPath": "../src/pages/projects/index.svelte",
->>>>>>> abacbad995514a2e023074a107747300b5f5ad1b
           "isLayout": false,
           "isReset": false,
           "isIndex": true,
@@ -184,36 +170,7 @@ export const _tree = {
         "preload": false,
         "prerender": true
       },
-<<<<<<< HEAD
-      "path": "/example"
-    },
-    {
-      "isFile": true,
-      "isDir": false,
-      "file": "index.svelte",
-      "filepath": "/index.svelte",
-      "name": "index",
-      "ext": "svelte",
-      "badExt": false,
-      "absolutePath": "/Users/atilgner/Desktop/Development/Component Tracker/src/pages/index.svelte",
-      "importPath": "../src/pages/index.svelte",
-      "isLayout": false,
-      "isReset": false,
-      "isIndex": true,
-      "isFallback": false,
-      "isPage": true,
-      "ownMeta": {},
-      "meta": {
-        "recursive": true,
-        "preload": false,
-        "prerender": true
-      },
-      "path": "/index",
-      "id": "_index",
-      "component": () => import('../src/pages/index.svelte').then(m => m.default)
-=======
       "path": "/projects"
->>>>>>> abacbad995514a2e023074a107747300b5f5ad1b
     }
   ],
   "isLayout": false,
