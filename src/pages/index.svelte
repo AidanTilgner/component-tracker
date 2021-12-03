@@ -1,22 +1,35 @@
 <script>
-  import { fly } from "svelte/transition";
-  import Title from "../components/Title/Title.svelte";
-  let visibile = false;
-  setTimeout(() => {
-    visibile = true;
-  }, 500);
+  import { goto } from "@roxi/routify";
+  import Navbar from "../components/Navbar/Navbar.svelte";
+  import Header from "../helpers/Header/Header.svelte";
+  import PreviewGrid from "../components/PreviewGrid/PreviewGrid.svelte";
+
+  // TODO: Add functionality for buttons
 </script>
 
-{#if visibile}
-  <main class="main" transition:fly={{ y: 200, duration: 2000 }}>
-    <!--Put all your fancy code here-->
-    <h1 class="title">
-      <Title title="Let's get started" />
-    </h1>
-  </main>
-{/if}
+<Navbar />
+<div class="home">
+  <Header
+    title="Recent Projects"
+    type="subtitle"
+    buttons={[
+      {
+        text: "All Projects",
+        type: "secondary",
+        action: () => $goto("/projects"),
+      },
+      { text: "New Project", type: "primary", action: "" },
+    ]}
+  />
+  <PreviewGrid />
+</div>
 
-<!-- use lang="sass" for SASS -->
 <style lang="scss">
-  @import "../styles/index.scss";
+  @import "../styles/partials/variables.scss";
+  @import "../styles/partials/typography.scss";
+  @import "../styles/partials/mixins.scss";
+
+  .home {
+    @include default-padding;
+  }
 </style>

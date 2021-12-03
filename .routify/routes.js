@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Mon Nov 15 2021 15:19:48 GMT-0800 (Pacific Standard Time)
+ * File generated Thu Dec 02 2021 23:39:14 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2021-11-15T23:19:48.206Z"
+export const __timestamp = "2021-12-03T07:39:14.362Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -25,50 +25,138 @@ export const _tree = {
   "absolutePath": "src/pages",
   "children": [
     {
+      "isFile": true,
+      "isDir": false,
+      "file": "index.svelte",
+      "filepath": "/index.svelte",
+      "name": "index",
+      "ext": "svelte",
+      "badExt": false,
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/index.svelte",
+      "importPath": "../src/pages/index.svelte",
+      "isLayout": false,
+      "isReset": false,
+      "isIndex": true,
+      "isFallback": false,
+      "isPage": true,
+      "ownMeta": {},
+      "meta": {
+        "recursive": true,
+        "preload": false,
+        "prerender": true
+      },
+      "path": "/index",
+      "id": "_index",
+      "component": () => import('../src/pages/index.svelte').then(m => m.default)
+    },
+    {
       "isFile": false,
       "isDir": true,
-      "file": "example",
-      "filepath": "/example",
-      "name": "example",
+      "file": "projects",
+      "filepath": "/projects",
+      "name": "projects",
       "ext": "",
       "badExt": false,
+<<<<<<< HEAD
       "absolutePath": "/Users/atilgner/Desktop/Development/Component Tracker/src/pages/example",
+=======
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects",
+>>>>>>> abacbad995514a2e023074a107747300b5f5ad1b
       "children": [
         {
-          "isFile": true,
-          "isDir": false,
-          "file": "[example].svelte",
-          "filepath": "/example/[example].svelte",
-          "name": "[example]",
-          "ext": "svelte",
+          "isFile": false,
+          "isDir": true,
+          "file": "[project]",
+          "filepath": "/projects/[project]",
+          "name": "[project]",
+          "ext": "",
           "badExt": false,
+<<<<<<< HEAD
           "absolutePath": "/Users/atilgner/Desktop/Development/Component Tracker/src/pages/example/[example].svelte",
           "importPath": "../src/pages/example/[example].svelte",
+=======
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project]",
+          "children": [
+            {
+              "isFile": true,
+              "isDir": false,
+              "file": "[component].svelte",
+              "filepath": "/projects/[project]/[component].svelte",
+              "name": "[component]",
+              "ext": "svelte",
+              "badExt": false,
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project]/[component].svelte",
+              "importPath": "../src/pages/projects/[project]/[component].svelte",
+              "isLayout": false,
+              "isReset": false,
+              "isIndex": false,
+              "isFallback": false,
+              "isPage": true,
+              "ownMeta": {},
+              "meta": {
+                "recursive": true,
+                "preload": false,
+                "prerender": true
+              },
+              "path": "/projects/:project/:component",
+              "id": "_projects__project__component",
+              "component": () => import('../src/pages/projects/[project]/[component].svelte').then(m => m.default)
+            },
+            {
+              "isFile": true,
+              "isDir": false,
+              "file": "index.svelte",
+              "filepath": "/projects/[project]/index.svelte",
+              "name": "index",
+              "ext": "svelte",
+              "badExt": false,
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project]/index.svelte",
+              "importPath": "../src/pages/projects/[project]/index.svelte",
+              "isLayout": false,
+              "isReset": false,
+              "isIndex": true,
+              "isFallback": false,
+              "isPage": true,
+              "ownMeta": {},
+              "meta": {
+                "recursive": true,
+                "preload": false,
+                "prerender": true
+              },
+              "path": "/projects/:project/index",
+              "id": "_projects__project_index",
+              "component": () => import('../src/pages/projects/[project]/index.svelte').then(m => m.default)
+            }
+          ],
+>>>>>>> abacbad995514a2e023074a107747300b5f5ad1b
           "isLayout": false,
           "isReset": false,
           "isIndex": false,
           "isFallback": false,
-          "isPage": true,
+          "isPage": false,
           "ownMeta": {},
           "meta": {
             "recursive": true,
             "preload": false,
             "prerender": true
           },
-          "path": "/example/:example",
-          "id": "_example__example",
-          "component": () => import('../src/pages/example/[example].svelte').then(m => m.default)
+          "path": "/projects/:project"
         },
         {
           "isFile": true,
           "isDir": false,
           "file": "index.svelte",
-          "filepath": "/example/index.svelte",
+          "filepath": "/projects/index.svelte",
           "name": "index",
           "ext": "svelte",
           "badExt": false,
+<<<<<<< HEAD
           "absolutePath": "/Users/atilgner/Desktop/Development/Component Tracker/src/pages/example/index.svelte",
           "importPath": "../src/pages/example/index.svelte",
+=======
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/index.svelte",
+          "importPath": "../src/pages/projects/index.svelte",
+>>>>>>> abacbad995514a2e023074a107747300b5f5ad1b
           "isLayout": false,
           "isReset": false,
           "isIndex": true,
@@ -80,9 +168,9 @@ export const _tree = {
             "preload": false,
             "prerender": true
           },
-          "path": "/example/index",
-          "id": "_example_index",
-          "component": () => import('../src/pages/example/index.svelte').then(m => m.default)
+          "path": "/projects/index",
+          "id": "_projects_index",
+          "component": () => import('../src/pages/projects/index.svelte').then(m => m.default)
         }
       ],
       "isLayout": false,
@@ -96,6 +184,7 @@ export const _tree = {
         "preload": false,
         "prerender": true
       },
+<<<<<<< HEAD
       "path": "/example"
     },
     {
@@ -122,6 +211,9 @@ export const _tree = {
       "path": "/index",
       "id": "_index",
       "component": () => import('../src/pages/index.svelte').then(m => m.default)
+=======
+      "path": "/projects"
+>>>>>>> abacbad995514a2e023074a107747300b5f5ad1b
     }
   ],
   "isLayout": false,
