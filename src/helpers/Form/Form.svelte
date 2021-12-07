@@ -1,8 +1,7 @@
 <script>
   export let data, onSubmit;
-  // Fields will be an object, and we will be mapping through each key/value pair
-  // to create a form element.
-  console.log(data);
+
+  import Input from "../Input/Input.svelte";
 
   let formatKey = (key) => {
     return key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => {
@@ -17,9 +16,9 @@
       case "string":
         return "text";
       case "number":
-        return "number";
+        return "text";
       case "boolean":
-        return "checkbox";
+        return "radio";
       case "object":
         // If it's an array, we need a list
         if (Array.isArray(value)) {
@@ -40,17 +39,13 @@
 
 <form class="form">
   {#each Object.keys(data) as key}
-    <div class="form__field">
-      <label for={key} class="form__label">{formatKey(key)}</label>
-      <input
-        type="text"
-        id={key}
-        name={key}
-        value={data[key]}
-        class={`form__input ${"input__" + inferTypeFromValue(data[key])}`}
-        placeholder={key}
-      />
-    </div>
+    <Input
+      type={inferTypeFromValue(data[key])}
+      field={{
+        id: key + "-" + Math.random().toString(36).substr(2, 5),
+        name: formatKey(key),
+      }}
+    />
   {/each}
 </form>
 
@@ -58,40 +53,4 @@
   @import "../../styles/partials/variables";
   @import "../../styles/partials/typography";
   @import "../../styles/partials/mixins";
-
-  .form {
-    &__field {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 24px;
-    }
-
-    &__label {
-      font-size: 24px;
-      font-weight: 500;
-      margin-bottom: 14px;
-    }
-
-    &__input {
-      background-color: white;
-      height: 45px;
-      border: 1.5px solid #c4c4c4;
-      border-radius: 5px;
-      box-shadow: inset 0.2px 0.2px 5px 0 rgba($color: #000000, $alpha: 0.25);
-
-      &:hover {
-      }
-
-      &:focus {
-        outline: none;
-        border: 2px solid $color-primary;
-      }
-    }
-  }
-
-  .input {
-    &__text {
-      width: 50%;
-    }
-  }
 </style>

@@ -97,7 +97,7 @@
         description: "",
         props: [],
         state: [],
-        tags: null,
+        tags: [],
       }}
     />
   </Modal>
