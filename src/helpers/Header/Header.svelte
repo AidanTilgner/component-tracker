@@ -1,13 +1,29 @@
 <script>
+  export let type,
+    title = "",
+    buttons = [],
+    margin = [82, 0, 56, 0];
   import Icon from "../Icon/Icon.svelte";
-  export let type;
-  export let title;
-  export let buttons = [];
+  import { formatBreadcrumbs } from "../Functions/formatting.js";
+
+  console.log(
+    "Margin: ",
+    title,
+    `margin: ${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`
+  );
+
+  if (type === "breadcrumbs") {
+    console.log("Title", title);
+    title = formatBreadcrumbs(title);
+  }
 
   // TODO: Add functionality for all buttons
 </script>
 
-<div class="header">
+<div
+  class="header"
+  style={`margin: ${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`}
+>
   <p
     class="header__title"
     style={type === "subtitle"
@@ -48,7 +64,6 @@
 
   .header {
     font-family: $font-primary;
-    margin: 82px 0 56px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;

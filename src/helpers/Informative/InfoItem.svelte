@@ -1,32 +1,22 @@
 <script>
   export let title, value, type;
 
+  import {
+    formatBreadcrumbs,
+    formatLink,
+    formatList,
+  } from "../Functions/formatting.js";
+
   if (type === "breadcrumbs") {
-    value = value
-      .split("/")
-      .map((item, index) => {
-        if (index === value.split("/").length - 1) {
-          return `<span style="font-weight: 600;">${item}</span>`;
-        }
-        return `${item}/`;
-      })
-      .join("");
+    value = formatBreadcrumbs(value);
   }
 
   if (type === "link") {
-    value = `<a href="${value}" target="_blank" style="color: #2256f2;">${value}</a>`;
+    value = formatLink(value);
   }
 
   if (type === "list") {
-    value = value.map((item, index) => {
-      return `<span title="${
-        "(" + item.type + ") " + item.description
-      }" style="font-weight: 600; cursor: pointer;">${item.name}${
-        index !== value.length - 1 ? ", " : ""
-      }</span>`;
-    });
-
-    value = "(" + value.join("") + ")";
+    value = formatList(value);
   }
 </script>
 

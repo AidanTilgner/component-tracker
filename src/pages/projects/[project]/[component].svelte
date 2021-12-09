@@ -2,7 +2,12 @@
   import Navbar from "../../../components/Navbar/Navbar.svelte";
   import Header from "../../../helpers/Header/Header.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem.svelte";
+  import Description from "../../../helpers/Informative/Description.svelte";
   import { url, params } from "@roxi/routify";
+  import {
+    formatKey,
+    inferInfoItemTypeFromValueType,
+  } from "../../../helpers/Functions/formatting.js";
   console.log($url("../"));
 
   let component = {
@@ -37,9 +42,27 @@
       ],
       tags: ["Refactor", "Deprecated", "Bugs"],
     },
-    imports: [],
+    imports: [
+      {
+        name: "React, { useState, UseEffect }",
+        from: "react",
+        type: "dependency",
+        description:
+          "React is a JavaScript library for building user interfaces.",
+        notes: "Uses deprecated code",
+      },
+    ],
     exports: [],
-    functions: [],
+    functions: [
+      {
+        name: "component/getSomething",
+        description: "This is a function",
+        ExternalLocation: "src/components/helpers/helpers.js",
+        parameters: "(int componentID)",
+        returns: "(Object something)",
+        notes: "Needs to be refactored",
+      },
+    ],
     connectedFiles: { parents: [], children: [], helpers: [] },
   };
 </script>
@@ -47,7 +70,7 @@
 <Navbar />
 <div class="component">
   <Header
-    title="Aidan Tilgner/{$params.project}/<span style='font-weight: bold;'>{$params.component}</span>"
+    title="Aidan Tilgner/{$params.project}/{$params.component}"
     type="breadcrumbs"
   />
   <Header
@@ -59,30 +82,67 @@
     ]}
   />
   <div class="component__meta-info">
-    <InfoItem
-      title="File Type"
-      value={component.metaData.fileType}
-      type="normal"
-    />
-    <InfoItem
-      title="Category"
-      value={component.metaData.category}
-      type="normal"
-    />
-    <InfoItem title="Path" value={component.metaData.path} type="breadcrumbs" />
-    <InfoItem title="Example" value={component.metaData.example} type="link" />
-    <InfoItem
-      title="Description"
-      value={component.metaData.description}
-      type="paragraph"
-    />
-    <InfoItem title="Props" value={component.metaData.props} type="list" />
-    <InfoItem title="State" value={component.metaData.state} type="list" />
-    <InfoItem title="Tags" value={component.metaData.tags} type="normal" />
+    {#each Object.keys(component.metaData) as key}
+      <InfoItem
+        title={formatKey(key)}
+        value={component.metaData[key]}
+        type={inferInfoItemTypeFromValueType(component.metaData[key])}
+      />
+    {/each}
   </div>
-  <div class="component__section">
-    <Header title="Imports" type="subtitle" />
-  </div>
+  {#if component.imports[0]}
+    <div class="component__section">
+      <Header title="Imports" type="subtitle" />
+      {#each component.imports as imp}
+        <Description
+          title={imp.name}
+          values={Object.keys(imp).map((key) => {
+            console.log(imp[key]);
+            return {
+              title: formatKey(key),
+              text: imp[key],
+              type: inferInfoItemTypeFromValueType(imp[key]),
+            };
+          })}
+        />
+      {/each}
+    </div>
+  {/if}
+  {#if component.exports[0]}
+    <div class="component__section">
+      <Header title="Exports" type="subtitle" />
+      {#each component.exports as exp}
+        <Description
+          title={exp.name}
+          values={Object.keys(exp).map((key) => {
+            console.log(exp[key]);
+            return {
+              title: formatKey(key),
+              text: exp[key],
+              type: inferInfoItemTypeFromValueType(exp[key]),
+            };
+          })}
+        />
+      {/each}
+    </div>{/if}
+  {#if component.functions[0]}
+    <div class="component__section">
+      <Header title="Functions" type="subtitle" />
+      {#each component.functions as func}
+        <Description
+          title={func.name}
+          values={Object.keys(func).map((key) => {
+            console.log(func[key]);
+            return {
+              title: formatKey(key),
+              text: func[key],
+              type: inferInfoItemTypeFromValueType(func[key]),
+            };
+          })}
+        />
+      {/each}
+    </div>
+  {/if}
 </div>
 
 <style type="text/scss">
@@ -93,5 +153,8 @@
   .component {
     @include default-padding;
     background-color: #f8f8f8;
+
+    &__section {
+    }
   }
 </style>
