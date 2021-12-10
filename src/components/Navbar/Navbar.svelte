@@ -6,7 +6,7 @@
   // TODO: Make this component dynamic based on user data
 </script>
 
-<div class="navbar">
+<div class="navbar" data-testid="navbar">
   <p
     class="navbar__title"
     on:click={(e) => {

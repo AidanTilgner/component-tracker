@@ -25,7 +25,7 @@
   root.set(tree);
 </script>
 
-<div class="file-tree">
+<div class="file-tree" data-testid="file-tree">
   {#if tree}
     <TreeNode node={tree} parent={null} />
   {/if}

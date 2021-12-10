@@ -1,33 +1,18 @@
 <script>
+  export let projects;
   import ProjectPreview from "../ProjectPreview/ProjectPreview.svelte";
   // TODO: Make this get the data dynamically from the server
 </script>
 
-<div class="grid">
-  <ProjectPreview
-    title="Onyx"
-    edited="yesterday"
-    framework="react"
-    endpoint="h489-onyx"
-  />
-  <ProjectPreview
-    title="Soapbox"
-    edited="11/2/21"
-    framework="svelte"
-    endpoint="h489-soapbox"
-  />
-  <ProjectPreview
-    title="VVibrant Blog"
-    edited="10/25/21"
-    framework="svelte"
-    endpoint="h489-vvibrant_blog"
-  />
-  <ProjectPreview
-    title="Portfolio"
-    edited="10/5/21"
-    framework="react"
-    endpoint="hg7f-portfolio"
-  />
+<div class="grid" data-testid="preview-grid">
+  {#each projects as project}
+    <ProjectPreview
+      title={project.title}
+      edited={project.edited}
+      framework={project.framework}
+      endpoint={project.endpoint}
+    />
+  {/each}
 </div>
 
 <style type="text/scss">

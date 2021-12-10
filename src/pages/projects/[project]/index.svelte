@@ -17,44 +17,27 @@
     framework: "React",
   };
 
-  // ! Get rid of toggle functions
-
   let SideBarOpen = false;
-  let toggleSideBar = (to) => {
-    if (to === undefined) {
-      SideBarOpen = !SideBarOpen;
-    } else {
-      SideBarOpen = to;
-    }
-  };
-
   let ModalOpen = false;
-  let toggleModal = (to) => {
-    if (to === undefined) {
-      ModalOpen = !ModalOpen;
-    } else {
-      ModalOpen = to;
-    }
-  };
 </script>
 
 <Navbar />
-<div class="project">
+<div class="project" data-testid="project">
   <Header
     title="Aidan Tilgner/{project.name}"
     type="breadcrumbs"
     buttons={[
-      { text: "Add", type: "primary", action: () => toggleModal(true) },
+      { text: "Add", type: "primary", action: () => (ModalOpen = true) },
       {
         text: "Project Info",
         type: "slide-left",
-        action: () => toggleSideBar(true),
+        action: () => (SideBarOpen = true),
       },
     ]}
   />
   <Header title="Tree" type="subtitle" />
   <FileTree />
-  <SideBar open={SideBarOpen} close={() => toggleSideBar(false)}>
+  <SideBar open={SideBarOpen} close={() => (SideBarOpen = false)}>
     <Header title="Project Information" type="subtitle" />
     {#each Object.keys(project) as key}
       <InfoItem
@@ -75,7 +58,7 @@
       {
         text: "Close",
         type: "secondary",
-        action: () => toggleModal(false),
+        action: () => (ModalOpen = false),
       },
       { text: "Add", type: "primary", action: "" },
     ]}

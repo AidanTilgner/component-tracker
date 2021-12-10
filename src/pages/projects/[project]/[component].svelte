@@ -71,7 +71,7 @@
 </script>
 
 <Navbar />
-<div class="component">
+<div class="component" data-testid="component">
   <Header
     title="Aidan Tilgner/{$params.project}/{$params.component}"
     type="breadcrumbs"

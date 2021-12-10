@@ -3,7 +3,7 @@
 </script>
 
 {#if open}
-  <div class="overlay">
+  <div class="overlay" data-testid="modal">
     <div class="modal">
       <h1 class="modal__title">{title}</h1>
       <div class="modal__body">

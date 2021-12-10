@@ -36,8 +36,8 @@ export const inferInfoItemTypeFromValueType = (value) => {
   switch (typeof value) {
     // types are normal, breadcrumbs, link, list, paragraph
     case "string":
+      if (value.includes("http")) return "link";
       if (value.includes("/")) return "breadcrumbs";
-      if (value.includes("</a>")) return "link";
       if (value.length > 30) return "paragraph";
       return "normal";
     case "number":

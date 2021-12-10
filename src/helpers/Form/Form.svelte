@@ -16,10 +16,12 @@
   });
 </script>
 
-<form class="form">
+<form class="form" data-testid="form">
   {#each Object.keys(data) as key}
     <Input
-      type={inferInputTypeFromValueType(data[key])}
+      type={data[key].type
+        ? data[key].type
+        : inferInputTypeFromValueType(data[key])}
       field={{
         id: key + "-" + Math.random().toString(36).substr(2, 5),
         name: formatKey(key),

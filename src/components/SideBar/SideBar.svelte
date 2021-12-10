@@ -4,7 +4,7 @@
 </script>
 
 {#if open}
-  <div class="overlay" on:click={close}>
+  <div class="overlay" on:click={close} data-testid="sidebar">
     <div class="sidebar" on:click={(e) => e.stopPropagation()}>
       <div class="sidebar__back" on:click={close}>
         <Icon name="left_arrow" width="8" height="13" />

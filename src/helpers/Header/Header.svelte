@@ -13,9 +13,10 @@
   // TODO: Add functionality for all buttons
 </script>
 
-<div
+<header
   class="header"
   style={`margin: ${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`}
+  data-testid="header"
 >
   <p
     class="header__title"
@@ -48,7 +49,7 @@
       </button>
     {/each}
   </div>
-</div>
+</header>
 
 <style type="text/scss">
   @import "../../styles/partials/variables";
