@@ -4,8 +4,13 @@
   import Header from "../../../helpers/Header/Header.svelte";
   import FileTree from "../../../components/FileTree/FileTree.svelte";
   import SideBar from "../../../components/SideBar/SideBar.svelte";
-  import Modal from "../../../Helpers/Modal/Modal.svelte";
-  import Form from "../../../Helpers/Form/Form.svelte";
+  import Modal from "../../../helpers/Modal/Modal.svelte";
+  import Form from "../../../helpers/Form/Form.svelte";
+  import InfoItem from "../../../helpers/Informative/InfoItem.svelte";
+  import {
+    formatKey,
+    inferInfoItemTypeFromValueType,
+  } from "../../../helpers/functions/formatting.js";
   let project = {
     name: "project",
     codeName: $params.project,
@@ -51,27 +56,16 @@
   <FileTree />
   <SideBar open={SideBarOpen} close={() => toggleSideBar(false)}>
     <Header title="Project Information" type="subtitle" />
-    <div class="project-info">
-      <div class="project-info__section">
-        <div class="project-info__section__title">Description:</div>
-      </div>
-      <div class="project-info__section">
-        <div class="project-info__section__title">
-          Framework: <span style="color: #2256F2; font-weight: 400;"
-            >{project.framework}</span
-          >
-        </div>
-      </div>
-      <div class="project-info__section">
-        <div class="project-info__section__title">Languages:</div>
-      </div>
-      <div class="project-info__section">
-        <div class="project-info__section__title">External Links:</div>
-      </div>
-      <div class="project-info__buttons">
-        <button class="project-info__buttons__settings">Settings</button>
-        <button class="project-info__buttons__edit">Edit</button>
-      </div>
+    {#each Object.keys(project) as key}
+      <InfoItem
+        title={formatKey(key)}
+        value={project[key]}
+        type={inferInfoItemTypeFromValueType(project[key])}
+      />
+    {/each}
+    <div class="project-info__buttons">
+      <button class="project-info__buttons__settings"> Settings </button>
+      <button class="project-info__buttons__edit">Edit</button>
     </div>
   </SideBar>
   <Modal
