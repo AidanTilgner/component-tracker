@@ -1,6 +1,8 @@
 <script>
   import Navbar from "../../../components/Navbar/Navbar.svelte";
   import Header from "../../../helpers/Header/Header.svelte";
+  import Modal from "../../../helpers/Modal/Modal.svelte";
+  import Form from "../../../helpers/Form/Form.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem.svelte";
   import Description from "../../../helpers/Informative/Description.svelte";
   import { url, params } from "@roxi/routify";
@@ -8,7 +10,6 @@
     formatKey,
     inferInfoItemTypeFromValueType,
   } from "../../../helpers/Functions/formatting.js";
-  console.log($url("../"));
 
   let component = {
     metaData: {
@@ -65,6 +66,8 @@
     ],
     connectedFiles: { parents: [], children: [], helpers: [] },
   };
+
+  let EditingMetaData = false;
 </script>
 
 <Navbar />
@@ -77,7 +80,11 @@
     title={component.metaData.name}
     type="title"
     buttons={[
-      { text: "Edit", type: "secondary", action: "" },
+      {
+        text: "Edit",
+        type: "secondary",
+        action: () => (EditingMetaData = true),
+      },
       { text: "Delete", type: "tertiary", action: "" },
     ]}
   />
@@ -89,6 +96,20 @@
         type={inferInfoItemTypeFromValueType(component.metaData[key])}
       />
     {/each}
+    <Modal
+      open={EditingMetaData}
+      title="New Component"
+      buttons={[
+        {
+          text: "Close",
+          type: "secondary",
+          action: () => (EditingMetaData = false),
+        },
+        { text: "Add", type: "primary", action: "" },
+      ]}
+    >
+      <Form data={component.metaData} />
+    </Modal>
   </div>
   {#if component.imports[0]}
     <div class="component__section">
@@ -97,7 +118,6 @@
         <Description
           title={imp.name}
           values={Object.keys(imp).map((key) => {
-            console.log(imp[key]);
             return {
               title: formatKey(key),
               text: imp[key],
@@ -115,7 +135,6 @@
         <Description
           title={exp.name}
           values={Object.keys(exp).map((key) => {
-            console.log(exp[key]);
             return {
               title: formatKey(key),
               text: exp[key],
@@ -132,7 +151,6 @@
         <Description
           title={func.name}
           values={Object.keys(func).map((key) => {
-            console.log(func[key]);
             return {
               title: formatKey(key),
               text: func[key],

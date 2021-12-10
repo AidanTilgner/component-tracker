@@ -7,7 +7,6 @@
 
   root.subscribe((value) => {
     tree = value;
-    // console.log("Root is: ", value);
   });
   let text = node.text,
     type = node.type,
@@ -17,8 +16,6 @@
     open = node.open;
 
   let resetting = false;
-
-  //   console.log(`Root on ${text} is: `, tree);
 
   function toggle(to) {
     if (to != null) {
@@ -37,20 +34,16 @@
       if (siblings[i] === node) continue;
       siblings[i].open = false;
     }
-    // console.log("tree: ", tree);
   }
 
   function updateTree(tree) {
     root.set(tree);
-    console.log("Updated Tree to: ", tree);
-    console.log("Clicking ");
     reset();
   }
 
   function reset() {
     resetting = true;
     const rootNode = document.getElementById("tree-root");
-    console.log("Root Node: ", rootNode);
     rootNode.click();
     setTimeout(() => {
       rootNode.click();
@@ -77,7 +70,6 @@
       return;
     }
     if (type === "file" && node.references.endpoint) {
-      console.log($url("./components"));
       $goto(
         $url(`./:component`, {
           component: node.references.endpoint,

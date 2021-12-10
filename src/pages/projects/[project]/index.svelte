@@ -6,16 +6,16 @@
   import SideBar from "../../../components/SideBar/SideBar.svelte";
   import Modal from "../../../Helpers/Modal/Modal.svelte";
   import Form from "../../../Helpers/Form/Form.svelte";
-  console.log($params);
   let project = {
     name: "project",
     codeName: $params.project,
     framework: "React",
   };
 
+  // ! Get rid of toggle functions
+
   let SideBarOpen = false;
   let toggleSideBar = (to) => {
-    console.log("toggling");
     if (to === undefined) {
       SideBarOpen = !SideBarOpen;
     } else {
@@ -23,9 +23,8 @@
     }
   };
 
-  let ModalOpen = true;
+  let ModalOpen = false;
   let toggleModal = (to) => {
-    console.log("toggling");
     if (to === undefined) {
       ModalOpen = !ModalOpen;
     } else {
@@ -37,7 +36,7 @@
 <Navbar />
 <div class="project">
   <Header
-    title="Aidan Tilgner/<span style='font-weight: bold;'>{project.name}</span>"
+    title="Aidan Tilgner/{project.name}"
     type="breadcrumbs"
     buttons={[
       { text: "Add", type: "primary", action: () => toggleModal(true) },

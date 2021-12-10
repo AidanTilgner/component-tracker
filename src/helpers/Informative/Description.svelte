@@ -2,6 +2,20 @@
   export let title, values;
   import InfoItem from "./InfoItem.svelte";
   import Header from "../../helpers/Header/Header.svelte";
+  import Modal from "../../helpers/Modal/Modal.svelte";
+  import Form from "../../helpers/Form/Form.svelte";
+
+  console.log(
+    "Values: ",
+    values.map((value) => value.title)
+  );
+
+  let editableValues = {};
+  values.forEach((value) => {
+    editableValues[value.title] = value.text;
+  });
+  console.log("Editable Values: ", editableValues);
+  let editing = false;
 </script>
 
 <div class="description">
@@ -13,7 +27,7 @@
       {
         text: "Edit",
         type: "secondary",
-        action: "",
+        action: () => (editing = true),
       },
     ]}
   />
@@ -21,6 +35,20 @@
   {#each values as value}
     <InfoItem title={value.title} value={value.text} type={value.type} />
   {/each}
+  <Modal
+    open={editing}
+    title="New Component"
+    buttons={[
+      {
+        text: "Close",
+        type: "secondary",
+        action: () => (editing = false),
+      },
+      { text: "Submit", type: "primary", action: "" },
+    ]}
+  >
+    <Form data={editableValues} />
+  </Modal>
 </div>
 
 <style type="text/scss">

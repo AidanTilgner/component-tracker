@@ -1,6 +1,5 @@
 class Node {
   constructor(text, type, references, children) {
-    console.log(text, references);
     this.text = text;
     this.type = type;
     this.references = references

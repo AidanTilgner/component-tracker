@@ -54,9 +54,7 @@ export const formatBreadcrumbs = (breadcrumbs) => {
   breadcrumbs = breadcrumbs
     .split("/")
     .map((item, index) => {
-      console.log("Item:", item, "index:", index);
       if (index === breadcrumbs.split("/").length - 1) {
-        console.log("Item is last item");
         return `<span style="font-weight: 600;">${item}</span>`;
       }
       return `${item}/`;

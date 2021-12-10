@@ -18,7 +18,6 @@
     : ''};"
   on:click={(e) => {
     e.stopPropagation();
-    console.log("going to new link");
     $goto(`/projects/:project`, { project: endpoint });
   }}
 >
@@ -46,7 +45,6 @@
       class="preview__options"
       on:click={(e) => {
         e.stopPropagation();
-        console.log("clicked options");
       }}
     >
       <Icon name="three-dots" height="9" width="21" />

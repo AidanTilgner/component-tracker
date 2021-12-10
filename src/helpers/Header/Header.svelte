@@ -6,14 +6,7 @@
   import Icon from "../Icon/Icon.svelte";
   import { formatBreadcrumbs } from "../Functions/formatting.js";
 
-  console.log(
-    "Margin: ",
-    title,
-    `margin: ${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`
-  );
-
   if (type === "breadcrumbs") {
-    console.log("Title", title);
     title = formatBreadcrumbs(title);
   }
 

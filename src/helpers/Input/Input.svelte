@@ -1,5 +1,5 @@
 <script>
-  export let type, field;
+  export let type, field, onChange;
 
   // Types will be Text, Textarea, Select, MultiSelect, Radio, Object List, String List
   import TextInput from "./components/TextInput.svelte";
@@ -10,7 +10,7 @@
   import ObjectListInput from "./components/ObjectListInput.svelte";
   import StringListInput from "./components/StringListInput.svelte";
 
-  console.log("ID: ", field.id);
+  // ! Finish implementing onChange event for the rest of the types
 </script>
 
 <div class="field">
@@ -18,37 +18,37 @@
 
   <!-- Text -->
   {#if type == "text"}
-    <TextInput {field} />
+    <TextInput {field} {onChange} />
   {/if}
 
   <!-- Textarea -->
   {#if type == "textarea"}
-    <TextareaInput {field} />
+    <TextareaInput {field} {onChange} />
   {/if}
 
   <!-- Select -->
   {#if type == "select"}
-    <SelectInput {field} />
+    <SelectInput {field} {onChange} />
   {/if}
 
   <!-- MultiSelect -->
   {#if type == "multi-select"}
-    <MultiselectInput {field} />
+    <MultiselectInput {field} {onChange} />
   {/if}
 
   <!-- Radio -->
   {#if type == "radio"}
-    <RadioInput {field} />
+    <RadioInput {field} {onChange} />
   {/if}
 
   <!-- Object List -->
   {#if type == "object-list"}
-    <ObjectListInput {field} />
+    <ObjectListInput {field} {onChange} />
   {/if}
 
   <!-- String List -->
   {#if type == "string-list"}
-    <StringListInput {field} />
+    <StringListInput {field} {onChange} />
   {/if}
 </div>
 

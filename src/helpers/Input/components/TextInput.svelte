@@ -1,9 +1,15 @@
 <script>
-  export let field;
+  export let field, onChange;
+  console.log("OnChange", onChange);
 </script>
 
 <div class="text-input">
-  <input type="text" class="text-input__input" />
+  <input
+    on:change={(e) => onChange(e)}
+    type="text"
+    class="text-input__input"
+    value={field.value}
+  />
 </div>
 
 <style type="text/scss">

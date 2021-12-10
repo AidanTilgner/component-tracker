@@ -6,6 +6,14 @@
     formatKey,
     inferInputTypeFromValueType,
   } from "../Functions/formatting.js";
+
+  console.log("data", data);
+
+  // Make an object that stores the values of the inputs
+  let inputs = {};
+  Object.keys(data).forEach((key) => {
+    inputs[key] = data[key];
+  });
 </script>
 
 <form class="form">
@@ -15,6 +23,11 @@
       field={{
         id: key + "-" + Math.random().toString(36).substr(2, 5),
         name: formatKey(key),
+        value: data[key],
+      }}
+      onChange={(e) => {
+        inputs[key] = e.target.value;
+        console.log("inputs", inputs);
       }}
     />
   {/each}
