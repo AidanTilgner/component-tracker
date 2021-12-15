@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Fri Dec 10 2021 16:11:46 GMT-0800 (Pacific Standard Time)
+ * File generated Tue Dec 14 2021 16:42:42 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2021-12-11T00:11:46.802Z"
+export const __timestamp = "2021-12-15T00:42:42.678Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -32,7 +32,7 @@ export const _tree = {
       "name": "index",
       "ext": "svelte",
       "badExt": false,
-      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/index.svelte",
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/index.svelte",
       "importPath": "../src/pages/index.svelte",
       "isLayout": false,
       "isReset": false,
@@ -57,7 +57,7 @@ export const _tree = {
       "name": "projects",
       "ext": "",
       "badExt": false,
-      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects",
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects",
       "children": [
         {
           "isFile": false,
@@ -67,7 +67,7 @@ export const _tree = {
           "name": "[project]",
           "ext": "",
           "badExt": false,
-          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project]",
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/[project]",
           "children": [
             {
               "isFile": true,
@@ -77,7 +77,7 @@ export const _tree = {
               "name": "[component]",
               "ext": "svelte",
               "badExt": false,
-              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project]/[component].svelte",
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/[project]/[component].svelte",
               "importPath": "../src/pages/projects/[project]/[component].svelte",
               "isLayout": false,
               "isReset": false,
@@ -102,7 +102,7 @@ export const _tree = {
               "name": "index",
               "ext": "svelte",
               "badExt": false,
-              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/[project]/index.svelte",
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/[project]/index.svelte",
               "importPath": "../src/pages/projects/[project]/index.svelte",
               "isLayout": false,
               "isReset": false,
@@ -141,7 +141,7 @@ export const _tree = {
           "name": "index",
           "ext": "svelte",
           "badExt": false,
-          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/src/pages/projects/index.svelte",
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/index.svelte",
           "importPath": "../src/pages/projects/index.svelte",
           "isLayout": false,
           "isReset": false,
