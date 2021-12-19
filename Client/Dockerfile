@@ -1,9 +1,11 @@
 FROM node:14
 
-COPY package*.json ./
+WORKDIR /src
 
-COPY . .
+COPY package*.json ./src/
 
-EXPOSE 5000
+RUN npm install
+
+COPY . ./src/
 
 CMD ["npm", "dev"]

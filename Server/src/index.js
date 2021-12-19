@@ -1,5 +1,5 @@
-const express = require("express");
-const app = express();
+import Express from "express";
+const app = Express();
 const PORT = process.env.PORT || 8080;
 
 // Initialize the Users route
