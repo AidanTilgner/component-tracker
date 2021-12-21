@@ -12,6 +12,7 @@
     on:click={(e) => {
       $goto($url("/"));
     }}
+    data-testid="navbar-title"
   >
     Component Tracker
   </p>
