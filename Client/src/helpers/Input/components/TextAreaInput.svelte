@@ -26,8 +26,9 @@
       box-shadow: inset 0.2px 0.2px 5px 0 rgba($color: #000000, $alpha: 0.25);
       padding-inline-start: 14px;
       width: 100%;
-      height: fit-content;
+      height: 45px;
       scrollbar-width: none;
+      font-size: 18px;
     }
   }
 </style>

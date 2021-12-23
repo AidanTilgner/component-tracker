@@ -5,7 +5,7 @@
   import TextInput from "./components/TextInput.svelte";
   import TextareaInput from "./components/TextareaInput.svelte";
   import SelectInput from "./components/SelectInput.svelte";
-  import MultiselectInput from "./components/MultiselectInput.svelte";
+  import CheckboxInput from "./components/CheckboxInput.svelte";
   import RadioInput from "./components/RadioInput.svelte";
   import ObjectListInput from "./components/ObjectListInput.svelte";
   import StringListInput from "./components/StringListInput.svelte";
@@ -32,8 +32,8 @@
   {/if}
 
   <!-- MultiSelect -->
-  {#if type == "multi-select"}
-    <MultiselectInput {field} {onChange} />
+  {#if type == "checkbox"}
+    <CheckboxInput {field} {onChange} />
   {/if}
 
   <!-- Radio -->
@@ -61,6 +61,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 24px;
+    font-family: $font-primary;
 
     &__label {
       font-size: 24px;

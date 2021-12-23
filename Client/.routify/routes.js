@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Mon Dec 20 2021 12:51:53 GMT-0800 (Pacific Standard Time)
+ * File generated Thu Dec 23 2021 12:18:00 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2021-12-20T20:51:53.166Z"
+export const __timestamp = "2021-12-23T20:18:00.301Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -171,6 +171,55 @@ export const _tree = {
         "prerender": true
       },
       "path": "/projects"
+    },
+    {
+      "isFile": false,
+      "isDir": true,
+      "file": "testing",
+      "filepath": "/testing",
+      "name": "testing",
+      "ext": "",
+      "badExt": false,
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/testing",
+      "children": [
+        {
+          "isFile": true,
+          "isDir": false,
+          "file": "index.svelte",
+          "filepath": "/testing/index.svelte",
+          "name": "index",
+          "ext": "svelte",
+          "badExt": false,
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/testing/index.svelte",
+          "importPath": "../src/pages/testing/index.svelte",
+          "isLayout": false,
+          "isReset": false,
+          "isIndex": true,
+          "isFallback": false,
+          "isPage": true,
+          "ownMeta": {},
+          "meta": {
+            "recursive": true,
+            "preload": false,
+            "prerender": true
+          },
+          "path": "/testing/index",
+          "id": "_testing_index",
+          "component": () => import('../src/pages/testing/index.svelte').then(m => m.default)
+        }
+      ],
+      "isLayout": false,
+      "isReset": false,
+      "isIndex": false,
+      "isFallback": false,
+      "isPage": false,
+      "ownMeta": {},
+      "meta": {
+        "recursive": true,
+        "preload": false,
+        "prerender": true
+      },
+      "path": "/testing"
     }
   ],
   "isLayout": false,
