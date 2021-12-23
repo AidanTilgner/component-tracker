@@ -33,9 +33,6 @@
       align-items: center;
       height: 36px;
 
-      &__input {
-      }
-
       &__label {
         margin: 0;
         padding-bottom: 10px;
