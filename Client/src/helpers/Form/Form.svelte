@@ -1,6 +1,5 @@
 <script>
-  export let data, onSubmit;
-
+  export let data, onSubmit, id;
   import Input from "../Input/Input.svelte";
   import {
     formatKey,
@@ -16,7 +15,15 @@
   });
 </script>
 
-<form class="form" data-testid="form">
+<form
+  class="form"
+  {id}
+  data-testid="form"
+  on:submit={(e) => {
+    e.preventDefault();
+    onSubmit(inputs);
+  }}
+>
   {#each Object.keys(data) as key}
     <Input
       type={data[key].type
@@ -35,7 +42,7 @@
   {/each}
 </form>
 
-<style type="text/scss">
+<style lang="scss">
   @import "../../styles/partials/variables";
   @import "../../styles/partials/typography";
   @import "../../styles/partials/mixins";
