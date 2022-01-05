@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Thu Dec 23 2021 12:18:00 GMT-0800 (Pacific Standard Time)
+ * File generated Tue Jan 04 2022 16:27:07 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2021-12-23T20:18:00.301Z"
+export const __timestamp = "2022-01-05T00:27:07.147Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -32,7 +32,7 @@ export const _tree = {
       "name": "index",
       "ext": "svelte",
       "badExt": false,
-      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/index.svelte",
+      "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/index.svelte",
       "importPath": "../src/pages/index.svelte",
       "isLayout": false,
       "isReset": false,
@@ -57,7 +57,7 @@ export const _tree = {
       "name": "projects",
       "ext": "",
       "badExt": false,
-      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects",
+      "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/projects",
       "children": [
         {
           "isFile": false,
@@ -67,7 +67,7 @@ export const _tree = {
           "name": "[project]",
           "ext": "",
           "badExt": false,
-          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/[project]",
+          "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/projects/[project]",
           "children": [
             {
               "isFile": true,
@@ -77,7 +77,7 @@ export const _tree = {
               "name": "[component]",
               "ext": "svelte",
               "badExt": false,
-              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/[project]/[component].svelte",
+              "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/projects/[project]/[component].svelte",
               "importPath": "../src/pages/projects/[project]/[component].svelte",
               "isLayout": false,
               "isReset": false,
@@ -102,7 +102,7 @@ export const _tree = {
               "name": "index",
               "ext": "svelte",
               "badExt": false,
-              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/[project]/index.svelte",
+              "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/projects/[project]/index.svelte",
               "importPath": "../src/pages/projects/[project]/index.svelte",
               "isLayout": false,
               "isReset": false,
@@ -141,7 +141,7 @@ export const _tree = {
           "name": "index",
           "ext": "svelte",
           "badExt": false,
-          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/index.svelte",
+          "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/projects/index.svelte",
           "importPath": "../src/pages/projects/index.svelte",
           "isLayout": false,
           "isReset": false,
@@ -180,7 +180,7 @@ export const _tree = {
       "name": "testing",
       "ext": "",
       "badExt": false,
-      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/testing",
+      "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/testing",
       "children": [
         {
           "isFile": true,
@@ -190,7 +190,7 @@ export const _tree = {
           "name": "index",
           "ext": "svelte",
           "badExt": false,
-          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/testing/index.svelte",
+          "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/testing/index.svelte",
           "importPath": "../src/pages/testing/index.svelte",
           "isLayout": false,
           "isReset": false,
