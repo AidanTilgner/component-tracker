@@ -4,7 +4,7 @@
 
 <div class="testing">
   <Input
-    type="checkbox"
+    type="select"
     field={{
       value: "Option2",
       name: "Checkbox",
