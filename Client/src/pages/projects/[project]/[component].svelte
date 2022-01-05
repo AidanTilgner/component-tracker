@@ -98,17 +98,30 @@
     {/each}
     <Modal
       open={EditingMetaData}
-      title="New Component"
+      title="Editing Info"
       buttons={[
         {
           text: "Close",
           type: "secondary",
           action: () => (EditingMetaData = false),
         },
-        { text: "Add", type: "primary", action: "" },
+        // TODO: Create a new way of submitting the form
+        {
+          text: "Submit",
+          type: "primary",
+          action: () => {
+            EditingMetaData = false;
+          },
+        },
       ]}
     >
-      <Form data={component.metaData} />
+      <Form
+        data={component.metaData}
+        onChange={(e, inputs) => {
+          e.preventDefault();
+          component.metaData = inputs;
+        }}
+      />
     </Modal>
   </div>
   {#if component.imports[0]}
@@ -124,6 +137,11 @@
               type: inferInfoItemTypeFromValueType(imp[key]),
             };
           })}
+          onChange={(e, values) => {
+            // TODO: Fix bug where the description title is not updated
+            e.preventDefault();
+            imp = values;
+          }}
         />
       {/each}
     </div>
@@ -141,6 +159,11 @@
               type: inferInfoItemTypeFromValueType(exp[key]),
             };
           })}
+          onChange={(e, values) => {
+            // TODO: Fix bug where the description title is not updated
+            e.preventDefault();
+            exp = values;
+          }}
         />
       {/each}
     </div>{/if}
@@ -157,6 +180,11 @@
               type: inferInfoItemTypeFromValueType(func[key]),
             };
           })}
+          onChange={(e, values) => {
+            // TODO: Fix bug where the description title is not updated
+            e.preventDefault();
+            func = values;
+          }}
         />
       {/each}
     </div>

@@ -5,7 +5,10 @@
 
 <div class="text-input">
   <input
-    on:change={(e) => onChange(e)}
+    on:change={(e) => {
+      console.log("Changing");
+      onChange(e);
+    }}
     type="text"
     class="text-input__input"
     value={field.value}

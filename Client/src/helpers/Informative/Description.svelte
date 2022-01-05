@@ -1,20 +1,14 @@
 <script>
-  export let title, values;
+  export let title, values, onChange;
   import InfoItem from "./InfoItem.svelte";
   import Header from "../../helpers/Header/Header.svelte";
   import Modal from "../../helpers/Modal/Modal.svelte";
   import Form from "../../helpers/Form/Form.svelte";
 
-  console.log(
-    "Values: ",
-    values.map((value) => value.title)
-  );
-
   let editableValues = {};
   values.forEach((value) => {
     editableValues[value.title] = value.text;
   });
-  console.log("Editable Values: ", editableValues);
   let editing = false;
 </script>
 
@@ -37,17 +31,23 @@
   {/each}
   <Modal
     open={editing}
-    title="New Component"
+    title="Edit '{title}'"
     buttons={[
       {
         text: "Close",
         type: "secondary",
         action: () => (editing = false),
       },
-      { text: "Submit", type: "primary", action: "" },
+      { text: "Submit", type: "primary", action: () => (editing = false) },
     ]}
   >
-    <Form data={editableValues} />
+    <Form
+      data={editableValues}
+      onChange={(e, inputs) => {
+        e.preventDefault();
+        onChange(e, inputs);
+      }}
+    />
   </Modal>
 </div>
 
