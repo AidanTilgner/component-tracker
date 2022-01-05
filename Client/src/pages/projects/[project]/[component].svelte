@@ -10,6 +10,7 @@
     formatKey,
     inferInfoItemTypeFromValueType,
   } from "../../../helpers/Functions/formatting.js";
+  import log from "@roxi/routify/lib/utils/log";
 
   let component = {
     metaData: {
@@ -68,6 +69,7 @@
   };
 
   let EditingMetaData = false;
+  let EditingModalID = "blahblahblah";
 </script>
 
 <Navbar />
@@ -98,17 +100,28 @@
     {/each}
     <Modal
       open={EditingMetaData}
-      title="New Component"
+      title="Edit Info"
       buttons={[
         {
           text: "Close",
           type: "secondary",
           action: () => (EditingMetaData = false),
         },
-        { text: "Add", type: "primary", action: "" },
+        {
+          text: "Submit",
+          type: "primary",
+          action: () => document.getElementById(EditingModalID).submit(),
+        },
       ]}
     >
-      <Form data={component.metaData} />
+      <Form
+        data={component.metaData}
+        onSubmit={(inputs) => {
+          console.log("Submitting");
+          component.metaData = inputs;
+        }}
+        id={EditingModalID}
+      />
     </Modal>
   </div>
   {#if component.imports[0]}

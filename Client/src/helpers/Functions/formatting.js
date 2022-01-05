@@ -6,26 +6,26 @@ export const formatKey = (key) => {
 
 export const inferInputTypeFromValueType = (value) => {
   // This function will take a value and return a type based on the value given
+  // Value types: text, number, boolean, null, undefined
+  // Input Types: text, textarea, select, checkbox, radio, switch, object list, string-list
+
   switch (typeof value) {
     case "string":
-      if (value.length > 30) return "textarea";
       return "text";
     case "number":
       return "text";
     case "boolean":
-      return "radio";
+      return "switch";
     case "object":
-      // If it's an array, we need a list
       if (Array.isArray(value)) {
-        // If the array is of object, we need an object list
-        // If it's of strings, we need a string list
-        if (value[0] && typeof value[0] === "object") {
+        if (typeof value[0] === "object") {
           return "object-list";
-        } else {
-          return "string-list";
         }
+        return "string-list";
       }
-
+    case "null":
+    case "undefined":
+      return "text";
     default:
       return "text";
   }

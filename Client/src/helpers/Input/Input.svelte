@@ -9,6 +9,7 @@
   import RadioInput from "./components/RadioInput.svelte";
   import ObjectListInput from "./components/ObjectListInput.svelte";
   import StringListInput from "./components/StringListInput.svelte";
+  import SwitchInput from "./components/SwitchInput.svelte";
 
   // ! Finish implementing onChange event for the rest of the types
 </script>
@@ -39,6 +40,11 @@
   <!-- Radio -->
   {#if type == "radio"}
     <RadioInput {field} {onChange} />
+  {/if}
+
+  <!-- Switch -->
+  {#if type == "switch"}
+    <SwitchInput {field} {onChange} />
   {/if}
 
   <!-- Object List -->
