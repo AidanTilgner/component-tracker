@@ -1,8 +1,26 @@
 import Express from "express";
+import BP from "body-parser";
 const Router = Express.Router();
+import { addUser, getUser } from "../controllers/UsersController.js";
 
-Router.get("/", (req, res) => {
-  res.send("Hello from the users route!");
+const wrapAsync = (fn) => {
+  return (req, res, next) => {
+    const fnReturn = fn(req, res, next);
+    return Promise.resolve(fnReturn).catch(next);
+  };
+};
+
+Router.post("/add", BP.json(), (req, res) => {
+  console.log(req.body);
+  res.send(addUser(req.body));
 });
 
-module.exports = Router;
+Router.get(
+  "/:id",
+  wrapAsync(async (req, res) => {
+    let data = await getUser(req.params.id);
+    res.send(data);
+  })
+);
+
+export default Router;

@@ -141,6 +141,7 @@
             // TODO: Fix bug where the description title is not updated
             e.preventDefault();
             imp = values;
+            console.log("Imports ", component.imports);
           }}
         />
       {/each}

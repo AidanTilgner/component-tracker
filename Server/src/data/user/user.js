@@ -1,5 +1,5 @@
-var User = /** @class */ (function () {
-    function User(id, name, email, password, role, projects) {
+class User {
+    constructor(id, name, email, password, role, projects) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -13,5 +13,11 @@ var User = /** @class */ (function () {
         this.role = role;
         this.projects = projects;
     }
-    return User;
-}());
+    get _password() {
+        return this.password;
+    }
+    get _id() {
+        return this.id;
+    }
+}
+export default User;

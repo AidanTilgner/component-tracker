@@ -20,4 +20,10 @@ class User {
   get _password() {
     return this.password;
   }
+
+  get _id() {
+    return this.id;
+  }
 }
+
+export default User;

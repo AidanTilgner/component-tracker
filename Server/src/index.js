@@ -2,13 +2,17 @@ import Express from "express";
 const app = Express();
 const PORT = process.env.PORT || 8080;
 
+import UsersRouter from "./routes/users.js";
+import ProjectsRouter from "./routes/projects.js";
+import ComponentsRouter from "./routes/components.js";
+
 // Initialize the Users route
-app.use("/users", require("./routes/users.js"));
+app.use("/users", UsersRouter);
 
 // Initialize the Projects route
-app.use("/projects", require("./routes/projects.js"));
+app.use("/projects", ProjectsRouter);
 
 // Initialize the Components route
-app.use("/components", require("./routes/components.js"));
+app.use("/components", ComponentsRouter);
 
 app.listen(PORT, () => console.log("Listening on port " + PORT));

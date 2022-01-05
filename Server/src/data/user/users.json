@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1252,
+    "name": "Aidan",
+    "email": "aidantilgner02@gmail.com",
+    "password": "password",
+    "role": "superuser",
+    "projects": []
+  },
+  {
+    "id": 123,
+    "name": "Aidan",
+    "email": "aidantilgner02@gmail.com",
+    "password": "password",
+    "role": "superuser",
+    "projects": []
+  }
+]
