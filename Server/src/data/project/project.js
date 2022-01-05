@@ -21,3 +21,5 @@ class Project {
     this.components = components;
   }
 }
+
+export default Project;
