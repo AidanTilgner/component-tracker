@@ -1,3 +1,4 @@
+// Classes
 import User from "../data/user/user.js";
 
 // Path Stuff
@@ -9,21 +10,18 @@ const __dirname = dirname(__filename);
 import path from "path";
 
 export const addUser = (user) => {
-  addToDatabase(user);
+  addUserToDatabase(user);
   return user;
 };
 
 export const getUser = async (id) => {
-  let data = await getFromDatabaseByID(parseInt(id));
-  console.log("data: ", data);
+  let data = await getUserFromDatabaseByID(parseInt(id));
   return data;
 };
 
-const addToDatabase = async (user) => {
-  console.log("user: ", user);
+const addUserToDatabase = async (user) => {
   let { id, name, email, password, role, projects } = user;
   user = new User(id, name, email, password, role, projects);
-  console.log("user: ", user);
   let data = FS.readFileSync(
     path.resolve(__dirname, "../data/user/users.json"),
     "utf8"
@@ -33,12 +31,12 @@ const addToDatabase = async (user) => {
     path.resolve(__dirname, "../data/user/users.json"),
     JSON.stringify(data),
     (err) => {
-      console.log("Error: " + err);
+      console.error("Error: " + err);
     }
   );
 };
 
-const getFromDatabaseByID = async (id) => {
+const getUserFromDatabaseByID = async (id) => {
   let data = FS.readFileSync(
     path.resolve(__dirname, "../data/user/users.json"),
     "utf8"

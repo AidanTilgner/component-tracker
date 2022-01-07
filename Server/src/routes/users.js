@@ -2,13 +2,7 @@ import Express from "express";
 import BP from "body-parser";
 const Router = Express.Router();
 import { addUser, getUser } from "../controllers/UsersController.js";
-
-const wrapAsync = (fn) => {
-  return (req, res, next) => {
-    const fnReturn = fn(req, res, next);
-    return Promise.resolve(fnReturn).catch(next);
-  };
-};
+import { wrapAsync } from "../helpers/routing.js";
 
 Router.post("/add", BP.json(), (req, res) => {
   console.log(req.body);

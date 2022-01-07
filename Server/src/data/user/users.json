@@ -14,5 +14,13 @@
     "password": "password",
     "role": "superuser",
     "projects": []
+  },
+  {
+    "id": 1252,
+    "name": "Laney",
+    "email": "laneybrokaw@gmail.com",
+    "password": "password",
+    "role": "superuser",
+    "projects": []
   }
 ]

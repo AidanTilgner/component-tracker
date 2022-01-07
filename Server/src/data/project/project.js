@@ -1,24 +1,14 @@
 class Project {
-  constructor(
-    id,
-    owner,
-    contributors,
-    name,
-    description,
-    framework,
-    languages,
-    externalLinks,
-    components
-  ) {
-    this.id = id;
-    this.owner = owner;
-    this.contributors = contributors;
-    this.name = name;
-    this.description = description;
-    this.framework = framework;
-    this.languages = languages;
-    this.externalLinks = externalLinks;
-    this.components = components;
+  constructor(data) {
+    this.id = data.id;
+    this.owner = data.owner;
+    this.contributors = data.contributors;
+    this.name = data.name;
+    this.description = data.description;
+    this.framework = data.framework;
+    this.languages = data.languages;
+    this.externalLinks = data.externalLinks;
+    this.components = data.components;
   }
 }
 
