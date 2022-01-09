@@ -5,12 +5,6 @@
     "email": "aidantilgner02@gmail.com",
     "password": "password",
     "role": "superuser",
-    "projects": [
-      {
-        "id": "1284-g24f-235g21-ds13",
-        "name": "My Third Project",
-        "owner": { "name": "aidan.tilgner", "id": "1284-341f-214341-d134" }
-      }
-    ]
+    "projects": []
   }
 ]

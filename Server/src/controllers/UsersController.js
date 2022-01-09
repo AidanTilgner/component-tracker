@@ -9,62 +9,92 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 import path from "path";
 
+// Helpers
+import { getDataByFilepath, writeFileByFilepath } from "../helpers/files.js";
+
 export const addUser = (user) => {
   addUserToDatabase(user);
   return user;
 };
 
 export const getUser = async (id) => {
-  let data = await getUserFromDatabaseByID(id);
-  return data;
+  return await getUserFromDatabaseByID(id);
 };
 
-export const addProjectToUserByID = async (id, project) => {
-  let data = FS.readFileSync(
-    path.resolve(__dirname, "../data/user/users.json"),
-    "utf8"
-  );
-  data = !Buffer.isBuffer(data) ? [...JSON.parse(data)] : [];
+export const updateUser = async (id, update) => {
+  return await updateUserInDatabase(id, update);
+};
 
-  let userIndex = data.findIndex((u) => u.id === id);
-  if (userIndex === -1) return undefined;
-  data[userIndex].projects.push({
+export const deleteUser = async (id) => {
+  return await deleteUserFromDatabaseByID(id);
+};
+
+export const getProjects = async (id) => {
+  return await getUserProjects(id);
+};
+
+export const addProjectToUser = async (id, project) => {
+  let data = await getDataByFilepath("../data/user/users.json");
+  let user = data.find((user) => user.id === id);
+  user.projects.push({
     id: project.id,
     name: project.name,
-    owner: project.owner,
+    edited: project.edited,
   });
+  writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
+  return user;
+};
 
-  writeFile(
-    path.resolve(__dirname, "../data/user/users.json"),
-    JSON.stringify(data),
-    (err) => {
-      console.error("Error: " + err);
-    }
-  );
+export const updateUserProject = async (id, projectID, update) => {
+  let data = await getDataByFilepath("../data/user/users.json");
+  let user = data.find((user) => user.id === id);
+  let project = user.projects.find((project) => project.id === projectID);
+  project = Object.assign(project, update);
+  writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
+  return project;
+};
+
+export const deleteUserProject = async (id, projectID) => {
+  let data = await getDataByFilepath("../data/user/users.json");
+  let user = data.find((user) => user.id === id);
+  let project = user.projects.find((project) => project.id === projectID);
+  user.projects = user.projects.filter((project) => project.id !== projectID);
+  writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
+  return project;
+};
+
+const deleteUserFromDatabaseByID = async (id) => {
+  let data = await getDataByFilepath("../data/user/users.json");
+  data = data.filter((user) => user.id !== id);
+  writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
+  return data;
 };
 
 const addUserToDatabase = async (user) => {
   let { id, name, email, password, role, projects } = user;
   user = new User(id, name, email, password, role, projects);
-  let data = FS.readFileSync(
-    path.resolve(__dirname, "../data/user/users.json"),
-    "utf8"
-  );
-  data = !Buffer.isBuffer(data) ? [...JSON.parse(data), user] : [];
-  writeFile(
-    path.resolve(__dirname, "../data/user/users.json"),
-    JSON.stringify(data),
-    (err) => {
-      console.error("Error: " + err);
-    }
-  );
+  let data = await getDataByFilepath("../data/user/users.json");
+  console.log(data);
+  data.push(user);
+  writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
+  return user;
 };
 
 const getUserFromDatabaseByID = async (id) => {
-  let data = FS.readFileSync(
-    path.resolve(__dirname, "../data/user/users.json"),
-    "utf8"
-  );
-  data = !Buffer.isBuffer(data) ? [...JSON.parse(data)] : [];
+  let data = await getDataByFilepath("../data/user/users.json");
   return data.find((user) => user.id === id);
+};
+
+const updateUserInDatabase = async (id, update) => {
+  let data = await getDataByFilepath("../data/user/users.json");
+  let index = data.findIndex((u) => u.id === id);
+  data[index] = Object.assign(data[index], update);
+  writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
+  return data;
+};
+
+const getUserProjects = async (id) => {
+  let data = await getDataByFilepath("../data/user/users.json");
+  let user = data.find((user) => user.id === id);
+  return user.projects;
 };

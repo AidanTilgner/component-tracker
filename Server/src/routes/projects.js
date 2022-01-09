@@ -1,23 +1,46 @@
+// Boilerplate
+import Express from "express";
+import BP from "body-parser";
+const Router = Express.Router();
+
+// Helpers
+import { wrapAsync } from "../helpers/routing.js";
+
+// Controller
 import {
   addProject,
   getProject,
   updateProject,
+  deleteProject,
+  addComponent,
+  getComponent,
+  updateComponent,
+  deleteComponent,
 } from "../controllers/ProjectsController.js";
-import Express from "express";
-import BP from "body-parser";
-import { wrapAsync } from "../helpers/routing.js";
-const Router = Express.Router();
-
-Router.post("/add", BP.json(), (req, res) => {
-  console.log(req.body);
-  res.send(addProject(req.body));
-});
 
 Router.get(
   "/",
   wrapAsync(async (req, res) => {
-    let data = await getProject(req.query.projectID);
-    res.send(data);
+    res.send(await getProject(req.query.projectID)).status(200);
+  })
+);
+
+Router.post("/add", BP.json(), (req, res) => {
+  res.send(addProject(req.body)).status(200);
+});
+
+Router.put(
+  "/",
+  BP.json(),
+  wrapAsync(async (req, res) => {
+    res.send(await updateProject(req.query.projectID, req.body)).status(200);
+  })
+);
+
+Router.delete(
+  "/",
+  wrapAsync(async (req, res) => {
+    res.send(await deleteProject(req.query.projectID)).status(200);
   })
 );
 
@@ -25,25 +48,37 @@ Router.put(
   "/component",
   BP.json(),
   wrapAsync(async (req, res) => {
-    console.log(
-      "Adding component to project: " + req.query.projectID + " with data: ",
-      req.body
-    );
-    let data = await getProject(req.query.projectID);
-    data.components.push(req.body);
-    updateProject(req.query.projectID, data);
-    res.send(data);
+    res.send(await addComponent(req.query.projectID, req.body)).status(200);
   })
 );
 
 Router.get(
   "/component",
   wrapAsync(async (req, res) => {
-    let data = await getProject(req.query.projectID);
-    data = data.components.find(
-      (component) => component.id === req.query.componentID
-    );
-    res.send(data);
+    res
+      .send(await getComponent(req.query.projectID, req.query.name))
+      .status(200);
+  })
+);
+
+Router.patch(
+  "/component",
+  BP.json(),
+  wrapAsync(async (req, res) => {
+    res
+      .send(
+        await updateComponent(req.query.projectID, req.query.name, req.body)
+      )
+      .status(200);
+  })
+);
+
+Router.delete(
+  "/component",
+  wrapAsync(async (req, res) => {
+    res
+      .send(await deleteComponent(req.query.projectID, req.query.name))
+      .status(200);
   })
 );
 
