@@ -50,21 +50,13 @@
 // }
 
 class Component {
-  constructor(
-    creator,
-    project,
-    metaData,
-    imports,
-    exports,
-    functions,
-    connectedFiles
-  ) {
-    this.creator = creator;
-    this.project = project;
-    this.metaData = metaData;
-    this.imports = imports;
-    this.exports = exports;
-    this.functions = functions;
-    this.connectedFiles = connectedFiles;
+  constructor(...args) {
+    this.creator = args.creator;
+    this.project = args.project;
+    this.metaData = args.metaData;
+    this.imports = args.imports;
+    this.exports = args.exports;
+    this.functions = args.functions;
+    this.connectedFiles = args.connectedFiles;
   }
 }

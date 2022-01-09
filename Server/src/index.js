@@ -4,15 +4,11 @@ const PORT = process.env.PORT || 8080;
 
 import UsersRouter from "./routes/users.js";
 import ProjectsRouter from "./routes/projects.js";
-import ComponentsRouter from "./routes/components.js";
 
 // Initialize the Users route
 app.use("/users", UsersRouter);
 
 // Initialize the Projects route
 app.use("/projects", ProjectsRouter);
-
-// Initialize the Components route
-app.use("/components", ComponentsRouter);
 
 app.listen(PORT, () => console.log("Listening on port " + PORT));
