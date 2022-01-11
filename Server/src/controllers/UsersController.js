@@ -12,9 +12,8 @@ import path from "path";
 // Helpers
 import { getDataByFilepath, writeFileByFilepath } from "../helpers/files.js";
 
-export const addUser = (user) => {
-  addUserToDatabase(user);
-  return user;
+export const addUser = async (user) => {
+  return await addUserToDatabase(user);
 };
 
 export const getUser = async (id) => {
@@ -33,14 +32,14 @@ export const getProjects = async (id) => {
   return await getUserProjects(id);
 };
 
+export const getUserFromLogin = async (username, password) => {
+  return await getUserFromDatabaseByLogin(username, password);
+};
+
 export const addProjectToUser = async (id, project) => {
   let data = await getDataByFilepath("../data/user/users.json");
   let user = data.find((user) => user.id === id);
-  user.projects.push({
-    id: project.id,
-    name: project.name,
-    edited: project.edited,
-  });
+  user.projects.push(project);
   writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
   return user;
 };
@@ -48,19 +47,26 @@ export const addProjectToUser = async (id, project) => {
 export const updateUserProject = async (id, projectID, update) => {
   let data = await getDataByFilepath("../data/user/users.json");
   let user = data.find((user) => user.id === id);
-  let project = user.projects.find((project) => project.id === projectID);
-  project = Object.assign(project, update);
+  let projectIndex = user.projects.findIndex(
+    (project) => project.id === projectID
+  );
+  user.projects[projectIndex] = Object.assign(
+    user.projects[projectIndex],
+    update
+  );
   writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
-  return project;
+  return user;
 };
 
 export const deleteUserProject = async (id, projectID) => {
   let data = await getDataByFilepath("../data/user/users.json");
   let user = data.find((user) => user.id === id);
-  let project = user.projects.find((project) => project.id === projectID);
-  user.projects = user.projects.filter((project) => project.id !== projectID);
+  let projectIndex = user.projects.findIndex(
+    (project) => project.id === projectID
+  );
+  user.projects.splice(projectIndex, 1);
   writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
-  return project;
+  return user;
 };
 
 const deleteUserFromDatabaseByID = async (id) => {
@@ -71,13 +77,16 @@ const deleteUserFromDatabaseByID = async (id) => {
 };
 
 const addUserToDatabase = async (user) => {
-  let { id, name, email, password, role, projects } = user;
-  user = new User(id, name, email, password, role, projects);
+  user = new User(user);
   let data = await getDataByFilepath("../data/user/users.json");
   console.log(data);
   data.push(user);
   writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
-  return user;
+  return {
+    id: user.id,
+    username: user.username,
+    email: user.email,
+  };
 };
 
 const getUserFromDatabaseByID = async (id) => {
@@ -97,4 +106,12 @@ const getUserProjects = async (id) => {
   let data = await getDataByFilepath("../data/user/users.json");
   let user = data.find((user) => user.id === id);
   return user.projects;
+};
+
+const getUserFromDatabaseByLogin = async (username, password) => {
+  let data = await getDataByFilepath("../data/user/users.json");
+  console.log("Data: ", data);
+  return data.find(
+    (user) => user.username === username && user.password === password
+  );
 };

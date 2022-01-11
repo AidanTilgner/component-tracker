@@ -1,10 +1,25 @@
 <script>
+  // Helpers
   import { goto } from "@roxi/routify";
+  import { onMount } from "svelte";
+  import axios from "axios";
+
+  // Components
   import Navbar from "../components/Navbar/Navbar.svelte";
   import Header from "../helpers/Header/Header.svelte";
   import PreviewGrid from "../components/PreviewGrid/PreviewGrid.svelte";
   import Modal from "../helpers/Modal/Modal.svelte";
   import Form from "../helpers/Form/Form.svelte";
+
+  // Getting user from API
+  onMount(async () => {
+    let userID = "1284-wg32-214341-d134";
+    axios
+      .get(`http://localhost:8080/users/?id=1284-wg32-214341-d134`)
+      .then((res) => {
+        console.log(res);
+      });
+  });
 
   // TODO: Add functionality for buttons
 
@@ -36,6 +51,11 @@
       endpoint: "h489-component-tracker",
     },
   ];
+
+  // We need to make a call to the server to get the user, and assign that
+  // to the writable store. Then, using the id, we can make a call to get the
+  // projects associated with the user.
+  fetch("/api/user");
 </script>
 
 <Navbar />
@@ -75,7 +95,7 @@
   </Modal>
 </div>
 
-<style lang="scss">
+<style type="text/scss">
   @import "../styles/partials/variables.scss";
   @import "../styles/partials/typography.scss";
   @import "../styles/partials/mixins.scss";

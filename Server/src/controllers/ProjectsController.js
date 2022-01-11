@@ -11,9 +11,8 @@ import {
   deleteUserProject,
 } from "./UsersController.js";
 
-export const addProject = (project) => {
-  addProjectToDatabase(project);
-  return project;
+export const addProject = async (project) => {
+  return await addProjectToDatabase(project);
 };
 
 export const getProject = async (id) => {
@@ -56,7 +55,12 @@ const addProjectToDatabase = async (project) => {
 
   //* Add project id to user with matching username
   project.contributors.forEach((contributer) => {
-    addProjectToUser(contributer.id, project);
+    addProjectToUser(contributer.id, {
+      id: project.id,
+      name: project.name,
+      edited: project.edited,
+      framework: project.framework,
+    });
   });
   return project;
 };
@@ -76,7 +80,12 @@ const updateProjectInDatabase = async (id, update) => {
 
   //* Update project id to user with matching username
   data[index].contributors.forEach((contributer) => {
-    updateUserProject(contributer.id, id, update);
+    updateUserProject(contributer.id, id, {
+      id: date[index].id,
+      name: data[index].name,
+      edited: data[index].edited,
+      framework: data[index].framework,
+    });
   });
   return data[index];
 };
@@ -112,14 +121,11 @@ const getComponentFromProject = async (projectID, name) => {
 
 const updateComponentInProject = async (projectID, name, update) => {
   let data = await getDataByFilepath("../data/project/projects.json");
-  let index = data.findIndex((project) => project.id === projectID);
-  let componentIndex = data[index].components.findIndex(
+  let project = data.find((project) => project.id === projectID);
+  let index = project.components.findIndex(
     (component) => component.name === name
   );
-  data[index].components[componentIndex] = Object.assign(
-    data[index].components[componentIndex],
-    update
-  );
+  project.components[index] = Object.assign(project.components[index], update);
   writeFileByFilepath("../data/project/projects.json", JSON.stringify(data));
   return data[index];
 };
@@ -127,11 +133,11 @@ const updateComponentInProject = async (projectID, name, update) => {
 export const deleteComponentFromProject = async (projectID, name) => {
   let data = await getDataByFilepath("../data/project/projects.json");
   let index = data.findIndex((project) => project.id === projectID);
-  let componentIndex = data[index].components.findIndex(
+  let project = data[index];
+  let componentIndex = project.components.findIndex(
     (component) => component.name === name
   );
-  let component = data[index].components[componentIndex];
-  data[index].components.splice(componentIndex, 1);
+  project.components.splice(componentIndex, 1);
   writeFileByFilepath("../data/project/projects.json", JSON.stringify(data));
   return component;
 };

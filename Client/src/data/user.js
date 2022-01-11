@@ -1,8 +1,10 @@
-class User {
-  constructor(id, name, email, password) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.password = password;
-  }
-}
+import { writeable } from "svelte/store";
+
+export const user = writeable({
+  id: "",
+  name: "",
+  email: "",
+  password: "",
+  role: "",
+  projects: [],
+});

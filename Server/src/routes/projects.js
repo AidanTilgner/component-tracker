@@ -25,9 +25,13 @@ Router.get(
   })
 );
 
-Router.post("/add", BP.json(), (req, res) => {
-  res.send(addProject(req.body)).status(200);
-});
+Router.post(
+  "/add",
+  BP.json(),
+  wrapAsync(async (req, res) => {
+    res.send(await addProject(req.body)).status(200);
+  })
+);
 
 Router.put(
   "/",

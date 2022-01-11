@@ -1,6 +1,13 @@
 import Express from "express";
+import cors from "cors";
 const app = Express();
 const PORT = process.env.PORT || 8080;
+
+app.use(
+  cors({
+    origin: "http://localhost:5000",
+  })
+);
 
 import UsersRouter from "./routes/users.js";
 import ProjectsRouter from "./routes/projects.js";
