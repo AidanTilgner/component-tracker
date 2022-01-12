@@ -17,15 +17,11 @@
   // Getting user from API
   let projects = [];
   user.subscribe((user) => {
-    console.log("User:", user);
     projects = user.projects;
   });
 
   onMount(async () => {
-    const data = await getUserFromLogin("Aidan.Tilgner", "password");
-    console.log("Data:", data);
-    user.set(data);
-    console.log(user);
+    user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
   });
 
   // TODO: Add functionality for buttons
