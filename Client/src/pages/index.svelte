@@ -2,7 +2,7 @@
   // Helpers
   import { goto } from "@roxi/routify";
   import { onMount } from "svelte";
-  import axios from "axios";
+  import { getUserFromLogin } from "../helpers/Functions/backend.js";
 
   // Components
   import Navbar from "../components/Navbar/Navbar.svelte";
@@ -11,46 +11,26 @@
   import Modal from "../helpers/Modal/Modal.svelte";
   import Form from "../helpers/Form/Form.svelte";
 
+  // Stores
+  import { user } from "../data/user.js";
+
   // Getting user from API
+  let projects = [];
+  user.subscribe((user) => {
+    console.log("User:", user);
+    projects = user.projects;
+  });
+
   onMount(async () => {
-    let userID = "1284-wg32-214341-d134";
-    axios
-      .get(`http://localhost:8080/users/?id=1284-wg32-214341-d134`)
-      .then((res) => {
-        console.log(res);
-      });
+    const data = await getUserFromLogin("Aidan.Tilgner", "password");
+    console.log("Data:", data);
+    user.set(data);
+    console.log(user);
   });
 
   // TODO: Add functionality for buttons
 
   let newProject = false;
-
-  let projects = [
-    {
-      title: "Onyx",
-      edited: "Yesterday",
-      framework: "react",
-      endpoint: "h489-onyx",
-    },
-    {
-      title: "Portfolio",
-      edited: "Yesterday",
-      framework: "svelte",
-      endpoint: "1f4f-portfolio",
-    },
-    {
-      title: "Soapbox",
-      edited: "Yesterday",
-      framework: "react",
-      endpoint: "r5f3-soapbox",
-    },
-    {
-      title: "Tracker",
-      edited: "Yesterday",
-      framework: "svelte",
-      endpoint: "h489-component-tracker",
-    },
-  ];
 
   // We need to make a call to the server to get the user, and assign that
   // to the writable store. Then, using the id, we can make a call to get the
@@ -76,7 +56,9 @@
       },
     ]}
   />
-  <PreviewGrid {projects} />
+  {#if projects[0] !== undefined}
+    <PreviewGrid {projects} />
+  {/if}
   <Modal
     title="New Project"
     open={newProject}

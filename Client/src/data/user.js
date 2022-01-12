@@ -1,8 +1,8 @@
-import { writeable } from "svelte/store";
+import { writable } from "svelte/store";
 
-export const user = writeable({
+export const user = writable({
   id: "",
-  name: "",
+  username: "",
   email: "",
   password: "",
   role: "",

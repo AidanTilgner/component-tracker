@@ -1,10 +1,8 @@
 <script>
   import { url, goto } from "@roxi/routify";
   import Icon from "../../Helpers/Icon/Icon.svelte";
-  export let title;
-  export let endpoint;
-  export let edited;
-  export let framework;
+  export let title, endpoint, edited, framework;
+  framework = framework.toLowerCase();
 
   // TODO: Add dropdown for settings
 </script>

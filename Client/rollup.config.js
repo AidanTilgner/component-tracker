@@ -47,8 +47,11 @@ export default {
   },
   plugins: [
     replace({
-      TEST_ENV: JSON.stringify(process.env.TEST_ENV),
-      SERVER_URL: JSON.stringify(process.env.SERVER_URL),
+      values: {
+        TEST_ENV: JSON.stringify(process.env.TEST_ENV),
+        SERVER_URL: JSON.stringify(process.env.SERVER_URL),
+      },
+      preventAssignment: true,
     }),
     svelte({
       compilerOptions: {
