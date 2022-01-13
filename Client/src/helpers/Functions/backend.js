@@ -14,107 +14,174 @@ export const getUserFromLogin = async (username, password) => {
       `${baseURL}${EP.users}/login?username=${username}&password=${password}`
     ).then((res) => res.json());
   } catch (error) {
-    console.error("Error: ", error);
+    console.error("Error in getUserFromLogin: ", error);
   }
 };
 
 export const addUserFromSignup = async (username, email, password) => {
   // http://localhost:8080/users/add
   // Needs to match this url
-  const url = `${baseURL}${EP.users}/add`;
-  const response = await axios.post(url, {
-    username,
-    email,
-    password,
-  });
-  return res.data;
+  try {
+    return await fetch(`${baseURL}${EP.users}/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+      }),
+    }).then((res) => res.json());
+  } catch (err) {
+    console.error("Error in addUserFromSignup: ", err);
+  }
 };
 
 export const getUser = async (id) => {
-  const response = await axios.get(`${baseURL}${EP.users}/?id=${id}`);
-  return response.data;
+  try {
+    return await fetch(`${baseURL}${EP.users}/?id=${id}`).then((res) =>
+      res.json()
+    );
+  } catch (error) {
+    console.error("Error in getUser: ", error);
+  }
 };
 
 export const getUserProjects = async (id) => {
-  const response = await axios.get(`${SERVER_URL}${EP.users}projects?id=${id}`);
-  return response.data;
+  try {
+    return await fetch(`${baseURL}${EP.users}/?id=${id}/projects`).then((res) =>
+      res.json()
+    );
+  } catch (error) {
+    console.error("Error in getUserProjects: ", error);
+  }
 };
 
 export const updateUser = async (id, update) => {
-  const response = await axios.put(`${baseURL}${EP.users}/?id=${id}`, {
-    update,
-  });
-  return response.data;
+  try {
+    return await fetch(`${baseURL}${EP.users}/?id=${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(update),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in updateUser: ", error);
+  }
 };
 
 export const deleteUser = async (id) => {
-  const response = await axios.delete(`${baseURL}${EP.users}/?$id={id}`);
-  return response.data;
+  try {
+    return await fetch(`${baseURL}${EP.users}/?id=${id}`, {
+      method: "DELETE",
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in deleteUser: ", error);
+  }
 };
 
 // * Project Functions
 export const addProject = async (project) => {
-  const response = await axios.post(`${baseURL}${EP.projects}`, {
-    project,
-  });
-  return response.data;
+  try {
+    return await fetch(`${baseURL}${EP.projects}/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(project),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in addProject: ", error);
+  }
 };
 
 export const getProject = async (projectID) => {
-  const response = await axios.get(
-    `${baseURL}${EP.projects}/?projectID=${projectID}`
-  );
-  return response.data;
+  try {
+    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`).then(
+      (res) => res.json()
+    );
+  } catch (error) {
+    console.error("Error in getProject: ", error);
+  }
 };
 
 export const updateProject = async (projectID, update) => {
-  const response = await axios.put(
-    `${baseURL}${EP.projects}/?projectID=${projectID}`,
-    {
-      update,
-    }
-  );
-  return response.data;
+  try {
+    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(update),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in updateProject: ", error);
+  }
 };
 
 export const deleteProject = async (projectID) => {
-  const response = await axios.delete(
-    `${baseURL}${EP.projects}/?projectID=${projectID}`
-  );
-  return response.data;
+  try {
+    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
+      method: "DELETE",
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in deleteProject: ", error);
+  }
 };
 
 // * Component Functions
 export const addComponent = async (projectID, component) => {
-  const response = await axios.post(
-    `${baseURL}${EP.projects}/component?projectID=${projectID}`,
-    {
-      component,
-    }
-  );
-  return response.data;
+  try {
+    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(component),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in addComponent: ", error);
+  }
 };
 
 export const getComponent = async (projectID, name) => {
-  const response = await axios.get(
-    `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`
-  );
-  return response.data;
+  try {
+    return await fetch(
+      `${baseURL}${EP.projects}/?projectID=${projectID}&name=${name}`
+    ).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in getComponent: ", error);
+  }
 };
 
 export const updateComponent = async (projectID, name, update) => {
-  const response = await axios.put(
-    `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
-    {
-      update,
-    }
-  );
-  return response.data;
+  try {
+    return await fetch(
+      `${baseURL}${EP.projects}/?projectID=${projectID}&name=${name}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(update),
+      }
+    ).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in updateComponent: ", error);
+  }
 };
 
 export const deleteComponent = async (projectID, name) => {
-  const response = await axios.delete(
-    `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`
-  );
-  return response.data;
+  try {
+    return await fetch(
+      `${baseURL}${EP.projects}/?projectID=${projectID}&name=${name}`,
+      {
+        method: "DELETE",
+      }
+    ).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in deleteComponent: ", error);
+  }
 };

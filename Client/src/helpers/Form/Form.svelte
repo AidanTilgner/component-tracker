@@ -30,7 +30,6 @@
       }}
     />
   {/each}
-  <input type="submit" />
 </form>
 
 <style lang="scss">

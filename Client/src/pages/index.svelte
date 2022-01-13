@@ -2,7 +2,10 @@
   // Helpers
   import { goto } from "@roxi/routify";
   import { onMount } from "svelte";
-  import { getUserFromLogin } from "../helpers/Functions/backend.js";
+  import {
+    getUserFromLogin,
+    addProject,
+  } from "../helpers/Functions/backend.js";
 
   // Components
   import Navbar from "../components/Navbar/Navbar.svelte";
@@ -13,10 +16,13 @@
 
   // Stores
   import { user } from "../data/user.js";
+  import { assign } from "svelte/internal";
 
   // Getting user from API
+  let userData = {};
   let projects = [];
   user.subscribe((user) => {
+    userData = user;
     projects = user.projects;
   });
 
@@ -26,7 +32,9 @@
 
   // TODO: Add functionality for buttons
 
-  let newProject = false;
+  let newProjectModal = false;
+
+  let projectData = {};
 </script>
 
 <Navbar />
@@ -43,7 +51,7 @@
       {
         text: "New Project",
         type: "primary",
-        action: () => (newProject = true),
+        action: () => (newProjectModal = true),
       },
     ]}
   />
@@ -52,10 +60,28 @@
   {/if}
   <Modal
     title="New Project"
-    open={newProject}
+    open={newProjectModal}
     buttons={[
-      { text: "Close", type: "secondary", action: () => (newProject = false) },
-      { text: "Add", type: "primary", action: () => (newProject = false) },
+      {
+        text: "Close",
+        type: "secondary",
+        action: () => (newProjectModal = false),
+      },
+      {
+        text: "Add",
+        type: "primary",
+        action: () => {
+          newProjectModal = false;
+          addProject({
+            owner: {
+              id: userData.id,
+              username: userData.username,
+            },
+            contributors: [{ id: userData.id, username: userData.username }],
+            ...projectData,
+          });
+        },
+      },
     ]}
   >
     <Form
@@ -63,6 +89,10 @@
         name: "",
         framework: "",
         description: "",
+        externalLinks: "",
+      }}
+      onChange={(e, inputs) => {
+        projectData = inputs;
       }}
     />
   </Modal>
