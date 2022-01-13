@@ -64,8 +64,8 @@
       },
     ]}
   />
-  <Header title="Tree" type="subtitle" />
   {#if project.components}
+    <Header title="Tree" type="subtitle" />
     <FileTree {project} />
   {/if}
   <FileTree {project} />

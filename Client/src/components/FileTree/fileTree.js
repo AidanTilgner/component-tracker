@@ -2,6 +2,7 @@ import Node from "./Node.js";
 
 export const extractTree = (project) => {
   if (!project.components) return null;
+  if (!project.components[0]) return null;
 
   // First we need an array of all of the names of the components in the project
   let componentNames = project.components.map((component) => {
