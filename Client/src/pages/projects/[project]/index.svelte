@@ -1,5 +1,5 @@
 <script>
-  import { params } from "@roxi/routify";
+  // * Components
   import Navbar from "../../../components/Navbar/Navbar.svelte";
   import Header from "../../../helpers/Header/Header.svelte";
   import FileTree from "../../../components/FileTree/FileTree.svelte";
@@ -7,15 +7,21 @@
   import Modal from "../../../helpers/Modal/Modal.svelte";
   import Form from "../../../helpers/Form/Form.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem.svelte";
+
+  // * Helpers
+  import { params } from "@roxi/routify";
   import {
     formatKey,
     inferInfoItemTypeFromValueType,
   } from "../../../helpers/functions/formatting.js";
-  let project = {
-    name: "project",
-    codeName: $params.project,
-    framework: "React",
-  };
+  import { getProject } from "../../../helpers/Functions/backend.js";
+  import { onMount } from "svelte";
+
+  let project = {};
+
+  onMount(async () => {
+    project = await getProject($params.project);
+  });
 
   let SideBarOpen = false;
   let ModalOpen = false;
@@ -39,13 +45,15 @@
   <FileTree />
   <SideBar open={SideBarOpen} close={() => (SideBarOpen = false)}>
     <Header title="Project Information" type="subtitle" />
-    {#each Object.keys(project) as key}
-      <InfoItem
-        title={formatKey(key)}
-        value={project[key]}
-        type={inferInfoItemTypeFromValueType(project[key])}
-      />
-    {/each}
+    <div class="project-info">
+      {#each Object.keys(project) as key}
+        <InfoItem
+          title={formatKey(key)}
+          value={project[key]}
+          type={inferInfoItemTypeFromValueType(project[key])}
+        />
+      {/each}
+    </div>
     <div class="project-info__buttons">
       <button class="project-info__buttons__settings"> Settings </button>
       <button class="project-info__buttons__edit">Edit</button>
@@ -89,6 +97,7 @@
 
   .project-info {
     font-family: $font-primary;
+    margin-bottom: 120px;
 
     &__section {
       font-size: 24px;
@@ -110,6 +119,7 @@
       justify-content: flex-end;
       align-items: center;
       padding-bottom: 36px;
+      background-color: white;
 
       &__settings {
         @include button-text;
