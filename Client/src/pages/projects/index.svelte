@@ -3,32 +3,12 @@
   import Header from "../../helpers/Header/Header.svelte";
   import PreviewGrid from "../../components/PreviewGrid/PreviewGrid.svelte";
 
-  let projects = [
-    {
-      title: "Onyx",
-      edited: "Yesterday",
-      framework: "react",
-      endpoint: "h489-onyx",
-    },
-    {
-      title: "Portfolio",
-      edited: "Yesterday",
-      framework: "svelte",
-      endpoint: "1f4f-portfolio",
-    },
-    {
-      title: "Soapbox",
-      edited: "Yesterday",
-      framework: "react",
-      endpoint: "r5f3-soapbox",
-    },
-    {
-      title: "Tracker",
-      edited: "Yesterday",
-      framework: "svelte",
-      endpoint: "h489-component-tracker",
-    },
-  ];
+  import { user } from "../../data/user.js";
+
+  let projects = [];
+  user.subscribe((user) => {
+    projects = user.projects;
+  });
 </script>
 
 <Navbar />

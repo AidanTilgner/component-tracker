@@ -27,11 +27,6 @@
   // TODO: Add functionality for buttons
 
   let newProject = false;
-
-  // We need to make a call to the server to get the user, and assign that
-  // to the writable store. Then, using the id, we can make a call to get the
-  // projects associated with the user.
-  fetch("/api/user");
 </script>
 
 <Navbar />
