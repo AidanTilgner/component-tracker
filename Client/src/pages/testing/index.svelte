@@ -4,14 +4,14 @@
 
 <div class="testing">
   <Input
-    type="select"
+    type="string-list"
     field={{
-      value: "Option2",
+      value: {
+        test1: "test1",
+        test2: "test2",
+        test3: "test3",
+      },
       name: "Checkbox",
-      options: [
-        { value: "Option1", label: "Option 1" },
-        { value: "Option2", label: "Option 2" },
-      ],
     }}
     onchange={{}}
   />

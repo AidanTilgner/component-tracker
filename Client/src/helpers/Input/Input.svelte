@@ -8,7 +8,6 @@
   import CheckboxInput from "./components/CheckboxInput.svelte";
   import RadioInput from "./components/RadioInput.svelte";
   import ObjectListInput from "./components/ObjectListInput.svelte";
-  import StringListInput from "./components/StringListInput.svelte";
   import SwitchInput from "./components/SwitchInput.svelte";
 
   // ! Finish implementing onChange event for the rest of the types
@@ -50,11 +49,6 @@
   <!-- Object List -->
   {#if type == "object-list"}
     <ObjectListInput {field} {onChange} />
-  {/if}
-
-  <!-- String List -->
-  {#if type == "string-list"}
-    <StringListInput {field} {onChange} />
   {/if}
 </div>
 
