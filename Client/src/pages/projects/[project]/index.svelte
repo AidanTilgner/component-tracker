@@ -14,14 +14,30 @@
     formatKey,
     inferInfoItemTypeFromValueType,
   } from "../../../helpers/functions/formatting.js";
-  import { getProject } from "../../../helpers/Functions/backend.js";
+  import {
+    getProject,
+    getUserFromLogin,
+  } from "../../../helpers/Functions/backend.js";
   import { onMount } from "svelte";
+
+  // * State
+  import { user } from "../../../data/user.js";
+
+  let userData = {};
+  user.subscribe((data) => {
+    userData = data;
+  });
 
   let project = {};
 
   onMount(async () => {
     project = await getProject($params.project);
+    if (!userData.username) {
+      user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+    }
   });
+
+  console.log("Project", project);
 
   let SideBarOpen = false;
   let ModalOpen = false;
@@ -30,7 +46,14 @@
 <Navbar />
 <div class="project" data-testid="project">
   <Header
-    title="Aidan Tilgner/{project.name}"
+    title={`
+      <a href="/projects" style="color:#2256f2;text-decoration:none;">
+        ${userData.username}
+      </a>/
+      <span style='font-weight:bold;'>
+        ${project.name}
+      </span>
+    `}
     type="breadcrumbs"
     buttons={[
       { text: "Add", type: "primary", action: () => (ModalOpen = true) },
@@ -42,7 +65,10 @@
     ]}
   />
   <Header title="Tree" type="subtitle" />
-  <FileTree />
+  {#if project.components}
+    <FileTree {project} />
+  {/if}
+  <FileTree {project} />
   <SideBar open={SideBarOpen} close={() => (SideBarOpen = false)}>
     <Header title="Project Information" type="subtitle" />
     <div class="project-info">
