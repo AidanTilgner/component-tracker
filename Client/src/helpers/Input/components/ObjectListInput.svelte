@@ -5,6 +5,9 @@
     formatKey,
     inferInputTypeFromValueType,
   } from "../../Functions/formatting.js";
+
+  let inputs = field.value;
+  console.log("Inputs in ObjList: ", inputs);
 </script>
 
 {#each Object.keys(field.value) as key}
@@ -14,15 +17,10 @@
       field={{
         value: field.value[key],
         name: formatKey(key),
-        onChange: (value) => {
-          onChange({
-            ...field,
-            value: {
-              ...field.value,
-              [key]: value,
-            },
-          });
-        },
+      }}
+      onChange={(e, data) => {
+        inputs[key] = data;
+        onChange(e, inputs);
       }}
     />
   </div>

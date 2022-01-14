@@ -1,12 +1,10 @@
 <script>
   export let field, onChange;
-  console.log("OnChange", onChange);
 </script>
 
 <div class="text-input">
   <input
     on:change={(e) => {
-      console.log("Changing");
       onChange(e, e.target.value);
     }}
     type="text"

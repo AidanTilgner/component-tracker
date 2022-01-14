@@ -79,6 +79,9 @@
         ],
         name: "Testing",
       }}
+      onChange={(e, data) => {
+        console.log("Data: ", data);
+      }}
     />
   {/if}
 </div>

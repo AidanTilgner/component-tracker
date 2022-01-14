@@ -1,5 +1,5 @@
 <script>
-  export let data, onChange, prefilled;
+  export let data, onChange;
   import Input from "../Input/Input.svelte";
   import {
     formatKey,
@@ -10,7 +10,6 @@
   let inputs = {};
   Object.keys(data).forEach((key) => {
     inputs[key] = data[key];
-    console.log(data[key], inferInputTypeFromValueType(data[key]));
   });
 </script>
 

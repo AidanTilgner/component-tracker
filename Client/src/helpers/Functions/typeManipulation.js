@@ -3,7 +3,6 @@ export const copyObj = (obj) => {
   Object.keys(obj).forEach((key) => {
     newObj[key] = defaultType(typeof obj[key], obj[key]);
   });
-  console.log("new: ", newObj);
   return newObj;
 };
 
