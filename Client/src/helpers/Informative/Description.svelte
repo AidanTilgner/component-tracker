@@ -47,6 +47,7 @@
         e.preventDefault();
         onChange(e, inputs);
       }}
+      prefilled={true}
     />
   </Modal>
 </div>

@@ -121,6 +121,7 @@
           e.preventDefault();
           component.metaData = inputs;
         }}
+        prefilled={true}
       />
     </Modal>
   </div>

@@ -9,6 +9,8 @@ export const inferInputTypeFromValueType = (value) => {
   // Value types: text, number, boolean, null, undefined
   // Input Types: text, textarea, select, checkbox, radio, switch, object list, string-list
 
+  console.log("TYPE: ", typeof value);
+
   switch (typeof value) {
     case "string":
       return "text";
@@ -18,11 +20,9 @@ export const inferInputTypeFromValueType = (value) => {
       return "switch";
     case "object":
       if (Array.isArray(value)) {
-        if (typeof value[0] === "object") {
-          return "object-list";
-        }
-        return "string-list";
+        return "array-list";
       }
+      return "object-list";
     case "null":
     case "undefined":
       return "text";

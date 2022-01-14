@@ -12,7 +12,6 @@
     <Input
       type={inferInputTypeFromValueType(field.value[key])}
       field={{
-        ...field,
         value: field.value[key],
         name: formatKey(key),
         onChange: (value) => {
@@ -25,7 +24,6 @@
           });
         },
       }}
-      value={field.value[key]}
     />
   </div>
 {/each}

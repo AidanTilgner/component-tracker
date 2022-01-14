@@ -94,6 +94,7 @@
       onChange={(e, inputs) => {
         projectData = inputs;
       }}
+      prefilled={projectData}
     />
   </Modal>
 </div>

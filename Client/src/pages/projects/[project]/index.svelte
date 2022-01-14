@@ -98,17 +98,29 @@
     ]}
   >
     <Form
-      data={{
-        name: "",
-        fileType: "",
-        category: "",
-        path: "",
-        example: "",
-        description: "",
-        props: [],
-        state: [],
-        tags: [],
-      }}
+      data={[
+        {
+          type: "text",
+          field: {
+            value: "",
+            name: "name",
+            onChange: (e) => {
+              console.log(e.target.value);
+            },
+          },
+        },
+        {
+          type: "text",
+          field: {
+            value: "",
+            name: "name",
+            onChange: (e) => {
+              console.log(e.target.value);
+            },
+          },
+        },
+      ]}
+      prefilled={true}
     />
   </Modal>
 </div>
