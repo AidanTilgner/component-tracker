@@ -97,31 +97,7 @@
       { text: "Add", type: "primary", action: "" },
     ]}
   >
-    <Form
-      data={[
-        {
-          type: "text",
-          field: {
-            value: "",
-            name: "name",
-            onChange: (e) => {
-              console.log(e.target.value);
-            },
-          },
-        },
-        {
-          type: "text",
-          field: {
-            value: "",
-            name: "name",
-            onChange: (e) => {
-              console.log(e.target.value);
-            },
-          },
-        },
-      ]}
-      prefilled={true}
-    />
+    <Form data={{ test1: [{ foo: "bar" }], test2: "" }} prefilled={true} />
   </Modal>
 </div>
 

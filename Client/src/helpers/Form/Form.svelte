@@ -6,6 +6,8 @@
     inferInputTypeFromValueType,
   } from "../Functions/formatting.js";
 
+  console.log("Data: ", data);
+
   // Make an object that stores the values of the inputs
   let inputs = {};
   Object.keys(data).forEach((key) => {
