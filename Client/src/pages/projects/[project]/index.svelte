@@ -106,6 +106,7 @@
           };
           addComponent(project.id, newComponent);
           ModalOpen = false;
+          window.location.reload();
         },
       },
     ]}

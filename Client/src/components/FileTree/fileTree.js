@@ -13,22 +13,25 @@ export const extractTree = (project) => {
   componentNames.forEach((componentName) => {
     // src/components/child-1.js
     // We need to extract each folder, except the first and add it to the right place in the tree, then add the component to the right place in the tree
-    let componentPath = componentName.split("/");
+    // We also need to make sure that a directory is only added once
+    let path = componentName.split("/");
+    // Path: ["src", "components", "child-1.js"]
     let currentNode = tree;
-    for (let i = 1; i < componentPath.length - 1; i++) {
-      let node = currentNode.children.find((child) => {
-        return child.name === componentPath[i];
-      });
-      if (node) {
-        currentNode = node;
+    for (let i = 1; i < path.length - 1; i++) {
+      // We need to find the node that corresponds to the current directory
+      let currentDirectory = path[i];
+      let childNode = currentNode.children.find(
+        (child) => child.text === currentDirectory
+      );
+      if (childNode) {
+        currentNode = childNode;
       } else {
-        currentNode.children.push(new Node(componentPath[i], "folder", {}, []));
-        currentNode = currentNode.children[currentNode.children.length - 1];
+        let newNode = new Node(currentDirectory, "folder", {}, []);
+        currentNode.children.push(newNode);
+        currentNode = newNode;
       }
     }
-    currentNode.children.push(
-      new Node(componentPath[componentPath.length - 1], "file", {}, [])
-    );
+    currentNode.children.push(new Node(path[path.length - 1], "file", {}, []));
   });
 
   return tree;
