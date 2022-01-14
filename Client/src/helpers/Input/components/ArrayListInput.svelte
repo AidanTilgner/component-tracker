@@ -5,12 +5,16 @@
     formatKey,
     inferInputTypeFromValueType,
   } from "../../Functions/formatting.js";
+  import { copyObj } from "../../Functions/typeManipulation.js";
   import CheckboxInput from "./CheckboxInput.svelte";
 
   let inputs = [...field.value];
-  let adding = false;
+  let adding = true;
 
   const addNew = () => {};
+
+  console.log(inputs[0]);
+  console.log(Object.create(inputs[0]));
 </script>
 
 <div class="input">
@@ -24,6 +28,7 @@
         }}
         onChange={(e, data) => {
           inputs[idx] = data;
+          console.log("Inputs: ", inputs);
         }}
       />
     </div>
@@ -31,15 +36,24 @@
   {#if adding}
     <div class="input__section">
       <Input
-        type={inferInputTypeFromValueType(field.value[0])}
+        type="object-list"
         field={{
-          value: "",
-          name: field.value[0] ? formatKey(field.value[0]) : "",
+          value: copyObj(inputs[0]),
+          name: "",
         }}
-        onChange={(e) => {
-          inputs.push(e);
+        onChange={(e, value) => {
+          inputs[inputs.length] = value;
+          console.log("Inputs: ", inputs);
         }}
       />
+      <div class="input__section-buttons">
+        <button
+          class="input__button"
+          on:click={(e) => {
+            adding = false;
+          }}>Done</button
+        >
+      </div>
     </div>
   {/if}
   <button
@@ -59,6 +73,10 @@
   .input {
     &__section {
       border-left: 2px solid $color-orange;
+
+      &-buttons {
+        display: flex;
+      }
     }
 
     &__button {
