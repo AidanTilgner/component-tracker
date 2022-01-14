@@ -20,6 +20,7 @@ export const inferInputTypeFromValueType = (value) => {
       return "switch";
     case "object":
       if (Array.isArray(value)) {
+        if (typeof value[0] === "string") return "checkbox";
         return "array-list";
       }
       return "object-list";

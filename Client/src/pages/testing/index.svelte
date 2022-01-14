@@ -71,17 +71,13 @@
   {/if}
   {#if testing === 2}
     <Input
-      type="object-list"
+      type="array-list"
       field={{
-        value: {
-          metaData: {
-            fileName: "helper.js",
-            example: "https://www.aidantilgner.dev",
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna ",
-            props: [{}],
-          },
-        },
+        value: [
+          { test: "test1", test2: "test2" },
+          { test: "testing", test2: "test2" },
+        ],
+        name: "Testing",
       }}
     />
   {/if}

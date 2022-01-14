@@ -5,6 +5,7 @@
     formatKey,
     inferInputTypeFromValueType,
   } from "../../Functions/formatting.js";
+  import CheckboxInput from "./CheckboxInput.svelte";
 
   let inputs = [...field.value];
   let adding = false;
@@ -13,32 +14,41 @@
 </script>
 
 <div class="input">
-  {#each field.value as val}
-    {console.log("val", val)}
-    <Input
-      type={inferInputTypeFromValueType(val)}
-      field={{
-        value: val.value ? val.value : "",
-        name: formatKey(field.name),
-      }}
-      onChange={(e) => {
-        onChange(e.target.value);
-      }}
-    />
+  {#each inputs as input, idx}
+    <div class="input__section">
+      <Input
+        type="object-list"
+        field={{
+          value: input,
+          name: "",
+        }}
+        onChange={(e, data) => {
+          inputs[idx] = data;
+        }}
+      />
+    </div>
   {/each}
   {#if adding}
-    <Input
-      type={inferInputTypeFromValueType(field.value[0])}
-      field={{
-        value: "",
-        name: field.name ? formatKey(field.name) : "",
-      }}
-      onChange={(e) => {
-        onChange(e.target.value);
-      }}
-    />
+    <div class="input__section">
+      <Input
+        type={inferInputTypeFromValueType(field.value[0])}
+        field={{
+          value: "",
+          name: field.value[0] ? formatKey(field.value[0]) : "",
+        }}
+        onChange={(e) => {
+          inputs.push(e);
+        }}
+      />
+    </div>
   {/if}
-  <button class="input__button">Add {field.name}</button>
+  <button
+    class="input__button"
+    on:click={(e) => {
+      console.log("Adding");
+      adding = true;
+    }}>Add {field.name}</button
+  >
 </div>
 
 <style lang="scss">
@@ -47,6 +57,10 @@
   @import "../../../styles/partials/mixins";
 
   .input {
+    &__section {
+      border-left: 2px solid $color-orange;
+    }
+
     &__button {
       font-size: 14px;
       height: 26px;

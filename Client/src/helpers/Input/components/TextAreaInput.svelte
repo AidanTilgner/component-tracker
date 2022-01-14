@@ -4,7 +4,7 @@
 
 <div class="textarea-input">
   <textarea
-    on:change={(e) => onChange(e)}
+    on:change={(e) => onChange(e, e.target.value)}
     type="text"
     class="textarea-input__input"
     value={field.value}

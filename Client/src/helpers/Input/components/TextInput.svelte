@@ -7,7 +7,7 @@
   <input
     on:change={(e) => {
       console.log("Changing");
-      onChange(e);
+      onChange(e, e.target.value);
     }}
     type="text"
     class="text-input__input"

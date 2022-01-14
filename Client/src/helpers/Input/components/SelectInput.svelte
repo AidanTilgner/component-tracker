@@ -1,9 +1,12 @@
 <script>
-  export let field, onchange;
+  export let field, onChange;
 </script>
 
 <div class="select-input">
-  <select class="select-input__input" on:change={(e) => onchange(e)}>
+  <select
+    class="select-input__input"
+    on:change={(e) => onChange(e, e.target.value)}
+  >
     {#each field.options as option}
       <option
         value={option.value}
