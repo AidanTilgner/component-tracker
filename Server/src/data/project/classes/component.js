@@ -50,13 +50,25 @@
 // }
 
 class Component {
-  constructor(...args) {
-    this.creator = args.creator;
-    this.project = args.project;
-    this.metaData = args.metaData;
-    this.imports = args.imports;
-    this.exports = args.exports;
-    this.functions = args.functions;
-    this.connectedFiles = args.connectedFiles;
+  constructor({
+    creator,
+    name,
+    metaData,
+    imports,
+    exports,
+    functions,
+    connectedFiles,
+  }) {
+    this.creator = creator;
+    this.name = name;
+    this.metaData = metaData;
+    this.imports = imports ? imports : [];
+    this.exports = exports ? exports : [];
+    this.functions = functions ? functions : [];
+    this.connectedFiles = connectedFiles
+      ? connectedFiles
+      : { parents: [], children: [], helpers: [] };
   }
 }
+
+export default Component;

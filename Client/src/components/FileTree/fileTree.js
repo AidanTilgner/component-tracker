@@ -6,7 +6,7 @@ export const extractTree = (project) => {
 
   // First we need an array of all of the names of the components in the project
   let componentNames = project.components.map((component) => {
-    return component.name;
+    return component.metaData.path;
   });
 
   let tree = new Node(componentNames[0].split("/")[0], "folder", {}, []);

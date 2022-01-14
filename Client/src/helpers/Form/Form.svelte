@@ -15,7 +15,7 @@
   });
 </script>
 
-<form class="form" data-testid="form">
+<form class="form" data-testid="form" on:submit|preventDefault={(e) => {}}>
   {#each Object.keys(data) as key}
     <Input
       type={data[key].type
@@ -26,8 +26,8 @@
         name: formatKey(key),
         value: data[key],
       }}
-      onChange={(e) => {
-        inputs[key] = e.target.value;
+      onChange={(e, data) => {
+        inputs[key] = data;
         onChange(e, inputs);
       }}
     />

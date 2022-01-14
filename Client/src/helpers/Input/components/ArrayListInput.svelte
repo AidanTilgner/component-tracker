@@ -9,6 +9,7 @@
 
   let inputs = [...field.value];
   let adding = false;
+  let newInput = {};
 </script>
 
 <div class="input">
@@ -33,12 +34,11 @@
       <Input
         type="object-list"
         field={{
-          value: copyObj(inputs[0]),
+          value: inputs[0] ? copyObj(inputs[0]) : "",
           name: "",
         }}
         onChange={(e, value) => {
-          inputs[inputs.length] = value;
-          console.log("Inputs: ", inputs);
+          newInput = value;
           onChange(e, inputs);
         }}
       />
@@ -46,13 +46,15 @@
         <button
           class="input__new-buttons__cancel"
           on:click={(e) => {
-            inputs.pop();
+            e.preventDefault();
             adding = false;
           }}>Cancel</button
         >
         <button
           class="input__new-buttons__done"
           on:click={(e) => {
+            e.preventDefault();
+            inputs.push(newInput);
             adding = false;
           }}>Done</button
         >

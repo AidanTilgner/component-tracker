@@ -97,7 +97,58 @@
       { text: "Add", type: "primary", action: "" },
     ]}
   >
-    <Form data={{ test1: [{ foo: "bar" }], test2: "" }} prefilled={true} />
+    <Form
+      data={{
+        metaData: {
+          fileName: "",
+          fileType: "",
+          category: "",
+          path: "",
+          example: "",
+          description: "",
+          props: [
+            {
+              name: "",
+              description: "",
+              type: "",
+            },
+          ],
+          state: [
+            {
+              name: "",
+              description: "",
+              type: "",
+            },
+          ],
+          tags: [{ name: "" }],
+        },
+        imports: [
+          {
+            name: "",
+            from: "",
+            type: "",
+            description: "",
+            notes: "",
+          },
+        ],
+        exports: [],
+        functions: [
+          {
+            name: "",
+            description: "",
+            ExternalLocation: "",
+            parameters: "",
+            returns: "",
+            notes: "",
+          },
+        ],
+        connectedFiles: {
+          parents: [],
+          children: [],
+          helpers: [],
+        },
+      }}
+    />
   </Modal>
 </div>
 

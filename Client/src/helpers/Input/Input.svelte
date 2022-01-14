@@ -73,6 +73,7 @@
       font-size: 24px;
       font-weight: 500;
       margin-bottom: 14px;
+      margin-top: 24px;
     }
   }
 </style>

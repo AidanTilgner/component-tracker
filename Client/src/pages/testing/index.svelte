@@ -2,7 +2,7 @@
   import Input from "../../helpers/Input/Input.svelte";
   import Form from "../../helpers/Form/Form.svelte";
 
-  let testing = 2;
+  let testing = 1;
 </script>
 
 <div class="testing">
@@ -10,55 +10,46 @@
     <Form
       data={{
         metaData: {
-          fileName: "helper",
-          fileType: "JavaScript",
-          category: "Views",
-          path: "src/helpers/helper.js",
-          example: "https://www.aidantilgner.dev",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Placerat orci nulla pellentesque dignissim enim sit. Sapien pellentesque habitant morbi tristique senectus et netus. Nibh venenatis cras sed felis eget velit. Nibh cras pulvinar mattis nunc sed blandit. Sed egestas egestas fringilla phasellus faucibus scelerisque eleifend. Consectetur adipiscing elit ut aliquam purus sit amet luctus venenatis. ",
+          fileName: "",
+          fileType: "",
+          category: "",
+          path: "",
+          example: "",
+          description: "",
           props: [
             {
-              name: "routeProps",
-              description:
-                "This provides information about the given component for routing",
-              type: "Object",
-            },
-            {
-              name: "routeProps",
-              description:
-                "This provides information about the given component for routing",
-              type: "Object",
+              name: "",
+              description: "",
+              type: "",
             },
           ],
           state: [
             {
-              name: "data",
-              description: "This is the data of the child-1",
-              type: "Object",
+              name: "",
+              description: "",
+              type: "",
             },
           ],
-          tags: ["Refactor", "Deprecated", "Bugs"],
+          tags: [{ name: "" }],
         },
         imports: [
           {
-            name: "React, { useState, UseEffect }",
-            from: "react",
-            type: "dependency",
-            description:
-              "React is a JavaScript library for building user interfaces.",
-            notes: "Uses deprecated code",
+            name: "",
+            from: "",
+            type: "",
+            description: "",
+            notes: "",
           },
         ],
         exports: [],
         functions: [
           {
-            name: "component/getSomething",
-            description: "This is a function",
-            ExternalLocation: "src/components/helpers/helpers.js",
-            parameters: "(int componentID)",
-            returns: "(Object something)",
-            notes: "Needs to be refactored",
+            name: "",
+            description: "",
+            ExternalLocation: "",
+            parameters: "",
+            returns: "",
+            notes: "",
           },
         ],
         connectedFiles: {
@@ -66,6 +57,9 @@
           children: [],
           helpers: [],
         },
+      }}
+      onChange={(e, data) => {
+        console.log("Usable Data: ", data);
       }}
     />
   {/if}
