@@ -134,13 +134,18 @@ export const deleteProject = async (projectID) => {
 // * Component Functions
 export const addComponent = async (projectID, component) => {
   try {
-    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(component),
-    }).then((res) => res.json());
+    console.log("Adding component to project: ", projectID);
+    console.log("Component: ", JSON.stringify(component));
+    return await fetch(
+      `${baseURL}${EP.projects}/component?projectID=${projectID}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(component),
+      }
+    ).then((res) => console.log("Response: ", res.json()));
   } catch (error) {
     console.error("Error in addComponent: ", error);
   }
@@ -161,7 +166,7 @@ export const updateComponent = async (projectID, name, update) => {
     return await fetch(
       `${baseURL}${EP.projects}/?projectID=${projectID}&name=${name}`,
       {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },

@@ -109,7 +109,6 @@ const deleteProjectFromDatabase = async (id) => {
 const addComponentToProject = async (projectID, component) => {
   let data = await getDataByFilepath("../data/project/projects.json");
   let index = data.findIndex((project) => project.id === projectID);
-  console.log("New component: ", new Component(component));
   data[index].components.push(new Component(component));
   writeFileByFilepath("../data/project/projects.json", JSON.stringify(data));
   return data[index];

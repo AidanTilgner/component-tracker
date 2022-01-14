@@ -17,6 +17,7 @@
   import {
     getProject,
     getUserFromLogin,
+    addComponent,
   } from "../../../helpers/Functions/backend.js";
   import { onMount } from "svelte";
 
@@ -41,6 +42,7 @@
 
   let SideBarOpen = false;
   let ModalOpen = false;
+  let newComponent = {};
 </script>
 
 <Navbar />
@@ -94,59 +96,46 @@
         type: "secondary",
         action: () => (ModalOpen = false),
       },
-      { text: "Add", type: "primary", action: "" },
+      {
+        text: "Add",
+        type: "primary",
+        action: () => {
+          newComponent.creator = {
+            id: userData.id,
+            username: userData.username,
+          };
+          addComponent(project.id, newComponent);
+          ModalOpen = false;
+        },
+      },
     ]}
   >
     <Form
       data={{
-        metaData: {
-          fileName: "",
-          fileType: "",
-          category: "",
-          path: "",
-          example: "",
-          description: "",
-          props: [
-            {
-              name: "",
-              description: "",
-              type: "",
-            },
-          ],
-          state: [
-            {
-              name: "",
-              description: "",
-              type: "",
-            },
-          ],
-          tags: [{ name: "" }],
-        },
-        imports: [
+        fileName: "",
+        fileType: "",
+        category: "",
+        path: "",
+        example: "",
+        description: "",
+        props: [
           {
             name: "",
-            from: "",
+            description: "",
             type: "",
-            description: "",
-            notes: "",
           },
         ],
-        exports: [],
-        functions: [
+        state: [
           {
             name: "",
             description: "",
-            ExternalLocation: "",
-            parameters: "",
-            returns: "",
-            notes: "",
+            type: "",
           },
         ],
-        connectedFiles: {
-          parents: [],
-          children: [],
-          helpers: [],
-        },
+        tags: [{ name: "" }],
+      }}
+      onChange={(e, data) => {
+        newComponent.metaData = data;
       }}
     />
   </Modal>

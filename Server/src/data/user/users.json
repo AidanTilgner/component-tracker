@@ -1,1 +1,17 @@
-[{"id":"ocogt-equmy-hyx56-z45q8","username":"Aidan.Tilgner","email":"laneybrokaw@gmail.com","password":"password","role":"superuser","projects":[{"id":"rco8r-hv41p-axi5l-ocbq9","name":"My Third Project","edited":"1/11/2022","framework":"React"},{"id":"65fvy-3jc6a-qh5pr-5w3ex","name":"Another Project","edited":"1/13/2022","framework":"react"},{"id":"v19ud-kosfs-w45aw-chw92","name":"Svelte Project","edited":"1/13/2022","framework":"svelte"},{"id":"0x0jg-lg33v-ht2af-fo5ky","name":"Test","edited":"1/13/2022","framework":"react"}]}]
+[
+  {
+    "id": "ocogt-equmy-hyx56-z45q8",
+    "username": "Aidan.Tilgner",
+    "email": "laneybrokaw@gmail.com",
+    "password": "password",
+    "role": "superuser",
+    "projects": [
+      {
+        "id": "rco8r-hv41p-axi5l-ocbq9",
+        "name": "My Third Project",
+        "edited": "1/11/2022",
+        "framework": "React"
+      }
+    ]
+  }
+]
