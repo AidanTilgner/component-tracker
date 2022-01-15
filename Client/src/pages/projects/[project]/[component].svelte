@@ -10,62 +10,67 @@
     formatKey,
     inferInfoItemTypeFromValueType,
   } from "../../../helpers/Functions/formatting.js";
+  import { user } from "../../../data/user.js";
+  import { onMount } from "svelte";
+  import {
+    getUserFromLogin,
+    getProject,
+    getComponent,
+    updateComponent,
+    deleteComponent,
+  } from "../../../helpers/Functions/backend.js";
+
+  let userData = {};
+  user.subscribe((data) => {
+    userData = data;
+  });
+
+  let project = {};
 
   let component = {
+    creator: { name: "", id: "" },
     metaData: {
-      name: "Child-1",
-      fileType: "JavaScript",
-      category: "Views",
-      path: "src/child1/child1-2",
-      example: "https://www.aidantilgner.dev",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Placerat orci nulla pellentesque dignissim enim sit. Sapien pellentesque habitant morbi tristique senectus et netus. Nibh venenatis cras sed felis eget velit. Nibh cras pulvinar mattis nunc sed blandit. Sed egestas egestas fringilla phasellus faucibus scelerisque eleifend. Consectetur adipiscing elit ut aliquam purus sit amet luctus venenatis. ",
+      fileName: "",
+      fileType: "",
+      category: "",
+      path: "",
+      example: "",
+      description: "",
       props: [
         {
-          name: "routeProps",
-          description:
-            "This provides information about the given component for routing",
-          type: "Object",
-        },
-        {
-          name: "routeProps",
-          description:
-            "This provides information about the given component for routing",
-          type: "Object",
+          name: "",
+          description: "",
+          type: "",
         },
       ],
       state: [
         {
-          name: "data",
-          description: "This is the data of the child-1",
-          type: "Object",
+          name: "",
+          description: "",
+          type: "",
         },
       ],
-      tags: ["Refactor", "Deprecated", "Bugs"],
+      tags: [""],
     },
-    imports: [
-      {
-        name: "React, { useState, UseEffect }",
-        from: "react",
-        type: "dependency",
-        description:
-          "React is a JavaScript library for building user interfaces.",
-        notes: "Uses deprecated code",
-      },
-    ],
+    imports: [],
     exports: [],
-    functions: [
-      {
-        name: "component/getSomething",
-        description: "This is a function",
-        ExternalLocation: "src/components/helpers/helpers.js",
-        parameters: "(int componentID)",
-        returns: "(Object something)",
-        notes: "Needs to be refactored",
-      },
-    ],
+    functions: [],
     connectedFiles: { parents: [], children: [], helpers: [] },
   };
+
+  onMount(async () => {
+    project = await getProject($params.project);
+    component = await getComponent(
+      $params.project,
+      $params.component.split("+").join("/")
+    );
+    console.log("Project: ", project);
+    console.log("Component: ", component);
+    if (!userData.username) {
+      user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+    }
+    console.log("User: ", userData);
+  });
 
   let EditingMetaData = false;
 </script>
@@ -73,11 +78,25 @@
 <Navbar />
 <div class="component" data-testid="component">
   <Header
-    title="Aidan Tilgner/{$params.project}/{$params.component}"
+    title={`
+      <a href="/projects" style="color:#2256f2;text-decoration:none;">
+        ${userData.username}
+      </a> /   
+      <a href="/projects/${
+        $params.project
+      }" style="color:#2256f2;text-decoration:none;">
+        ${project.name}
+      </a> /
+      <span style='font-weight:bold;'>
+          ${$params.component.split("+").join(" / ")}
+      </span>
+    `}
     type="breadcrumbs"
   />
   <Header
-    title={component.metaData.name}
+    title={component.metaData.path.split("/")[
+      component.metaData.path.split("/").length - 1
+    ]}
     type="title"
     buttons={[
       {
@@ -111,6 +130,11 @@
           type: "primary",
           action: () => {
             EditingMetaData = false;
+            updateComponent(
+              $params.project,
+              $params.component.split("+").join("/"),
+              { metaData: component.metaData }
+            );
           },
         },
       ]}
@@ -121,7 +145,6 @@
           e.preventDefault();
           component.metaData = inputs;
         }}
-        prefilled={true}
       />
     </Modal>
   </div>

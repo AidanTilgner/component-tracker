@@ -59,6 +59,10 @@ Router.put(
 Router.get(
   "/component",
   wrapAsync(async (req, res) => {
+    console.log(
+      "Component: ",
+      await getComponent(req.query.projectID, req.query.name)
+    );
     res
       .send(await getComponent(req.query.projectID, req.query.name))
       .status(200);
@@ -69,6 +73,9 @@ Router.patch(
   "/component",
   BP.json(),
   wrapAsync(async (req, res) => {
+    console.log("Project: ", req.query.projectID);
+    console.log("Component: ", req.query.name);
+    console.log("Req Body: ", req.body);
     res
       .send(
         await updateComponent(req.query.projectID, req.query.name, req.body)

@@ -114,29 +114,31 @@ const addComponentToProject = async (projectID, component) => {
   return data[index];
 };
 
-const getComponentFromProject = async (projectID, name) => {
+const getComponentFromProject = async (projectID, path) => {
   let data = await getDataByFilepath("../data/project/projects.json");
   let index = data.findIndex((project) => project.id === projectID);
-  return data[index].components.find((component) => component.name === name);
+  return data[index].components.find(
+    (component) => component.metaData.path === path
+  );
 };
 
-const updateComponentInProject = async (projectID, name, update) => {
+const updateComponentInProject = async (projectID, path, update) => {
   let data = await getDataByFilepath("../data/project/projects.json");
   let project = data.find((project) => project.id === projectID);
   let index = project.components.findIndex(
-    (component) => component.name === name
+    (component) => component.metaData.path === path
   );
   project.components[index] = Object.assign(project.components[index], update);
   writeFileByFilepath("../data/project/projects.json", JSON.stringify(data));
   return data[index];
 };
 
-export const deleteComponentFromProject = async (projectID, name) => {
+export const deleteComponentFromProject = async (projectID, path) => {
   let data = await getDataByFilepath("../data/project/projects.json");
   let index = data.findIndex((project) => project.id === projectID);
   let project = data[index];
   let componentIndex = project.components.findIndex(
-    (component) => component.name === name
+    (component) => component.metaData.path === path
   );
   project.components.splice(componentIndex, 1);
   writeFileByFilepath("../data/project/projects.json", JSON.stringify(data));

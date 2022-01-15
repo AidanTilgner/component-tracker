@@ -26,12 +26,25 @@ export const extractTree = (project) => {
       if (childNode) {
         currentNode = childNode;
       } else {
-        let newNode = new Node(currentDirectory, "folder", {}, []);
+        // The new node should have a reference to its parent
+        let newNode = new Node(
+          currentDirectory,
+          "folder",
+          { parent: currentNode, endpoint: null },
+          []
+        );
         currentNode.children.push(newNode);
         currentNode = newNode;
       }
     }
-    currentNode.children.push(new Node(path[path.length - 1], "file", {}, []));
+    // We need to add the component to the tree
+    let componentNode = new Node(
+      path[path.length - 1],
+      "file",
+      { parent: currentNode, endpoint: path.join("+") },
+      []
+    );
+    currentNode.children.push(componentNode);
   });
 
   return tree;
