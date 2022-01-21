@@ -1,6 +1,6 @@
 <script>
   export let title, values, onChange;
-  import InfoItem from "./InfoItem.svelte";
+  import InfoItem from "./InfoItem/InfoItem.svelte";
   import Header from "../../helpers/Header/Header.svelte";
   import Modal from "../../helpers/Modal/Modal.svelte";
   import Form from "../../helpers/Form/Form.svelte";
