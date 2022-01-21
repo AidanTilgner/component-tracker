@@ -1,41 +1,40 @@
 <script>
+  // Helpers
   import { goto } from "@roxi/routify";
+  import { onMount } from "svelte";
+  import {
+    getUserFromLogin,
+    addProject,
+  } from "../helpers/Functions/backend.js";
+
+  // Components
   import Navbar from "../components/Navbar/Navbar.svelte";
   import Header from "../helpers/Header/Header.svelte";
   import PreviewGrid from "../components/PreviewGrid/PreviewGrid.svelte";
   import Modal from "../helpers/Modal/Modal.svelte";
   import Form from "../helpers/Form/Form.svelte";
 
+  // Stores
+  import { user } from "../data/user.js";
+  import { assign } from "svelte/internal";
+
+  // Getting user from API
+  let userData = {};
+  let projects = [];
+  user.subscribe((user) => {
+    userData = user;
+    projects = user.projects;
+  });
+
+  onMount(async () => {
+    user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+  });
+
   // TODO: Add functionality for buttons
 
-  let newProject = false;
+  let newProjectModal = false;
 
-  let projects = [
-    {
-      title: "Onyx",
-      edited: "Yesterday",
-      framework: "react",
-      endpoint: "h489-onyx",
-    },
-    {
-      title: "Portfolio",
-      edited: "Yesterday",
-      framework: "svelte",
-      endpoint: "1f4f-portfolio",
-    },
-    {
-      title: "Soapbox",
-      edited: "Yesterday",
-      framework: "react",
-      endpoint: "r5f3-soapbox",
-    },
-    {
-      title: "Tracker",
-      edited: "Yesterday",
-      framework: "svelte",
-      endpoint: "h489-component-tracker",
-    },
-  ];
+  let projectData = {};
 </script>
 
 <Navbar />
@@ -52,17 +51,37 @@
       {
         text: "New Project",
         type: "primary",
-        action: () => (newProject = true),
+        action: () => (newProjectModal = true),
       },
     ]}
   />
-  <PreviewGrid {projects} />
+  {#if projects[0] !== undefined}
+    <PreviewGrid {projects} />
+  {/if}
   <Modal
     title="New Project"
-    open={newProject}
+    open={newProjectModal}
     buttons={[
-      { text: "Close", type: "secondary", action: () => (newProject = false) },
-      { text: "Add", type: "primary", action: () => (newProject = false) },
+      {
+        text: "Close",
+        type: "secondary",
+        action: () => (newProjectModal = false),
+      },
+      {
+        text: "Add",
+        type: "primary",
+        action: () => {
+          newProjectModal = false;
+          addProject({
+            owner: {
+              id: userData.id,
+              username: userData.username,
+            },
+            contributors: [{ id: userData.id, username: userData.username }],
+            ...projectData,
+          });
+        },
+      },
     ]}
   >
     <Form
@@ -70,12 +89,17 @@
         name: "",
         framework: "",
         description: "",
+        externalLinks: "",
       }}
+      onChange={(e, inputs) => {
+        projectData = inputs;
+      }}
+      prefilled={projectData}
     />
   </Modal>
 </div>
 
-<style lang="scss">
+<style type="text/scss">
   @import "../styles/partials/variables.scss";
   @import "../styles/partials/typography.scss";
   @import "../styles/partials/mixins.scss";

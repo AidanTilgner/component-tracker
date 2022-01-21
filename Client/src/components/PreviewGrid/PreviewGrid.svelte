@@ -7,10 +7,10 @@
 <div class="grid" data-testid="preview-grid">
   {#each projects as project}
     <ProjectPreview
-      title={project.title}
+      title={project.name}
       edited={project.edited}
       framework={project.framework}
-      endpoint={project.endpoint}
+      endpoint={project.id}
     />
   {/each}
 </div>

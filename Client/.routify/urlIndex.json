@@ -1,5 +1,6 @@
 [
   "/index",
+  "/login/index",
   "/projects/index",
   "/testing/index"
 ]

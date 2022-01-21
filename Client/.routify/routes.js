@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Tue Jan 04 2022 21:34:42 GMT-0800 (Pacific Standard Time)
+ * File generated Sat Jan 15 2022 14:30:46 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2022-01-05T05:34:42.055Z"
+export const __timestamp = "2022-01-15T22:30:46.244Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -48,6 +48,55 @@ export const _tree = {
       "path": "/index",
       "id": "_index",
       "component": () => import('../src/pages/index.svelte').then(m => m.default)
+    },
+    {
+      "isFile": false,
+      "isDir": true,
+      "file": "login",
+      "filepath": "/login",
+      "name": "login",
+      "ext": "",
+      "badExt": false,
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/login",
+      "children": [
+        {
+          "isFile": true,
+          "isDir": false,
+          "file": "index.svelte",
+          "filepath": "/login/index.svelte",
+          "name": "index",
+          "ext": "svelte",
+          "badExt": false,
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/login/index.svelte",
+          "importPath": "../src/pages/login/index.svelte",
+          "isLayout": false,
+          "isReset": false,
+          "isIndex": true,
+          "isFallback": false,
+          "isPage": true,
+          "ownMeta": {},
+          "meta": {
+            "recursive": true,
+            "preload": false,
+            "prerender": true
+          },
+          "path": "/login/index",
+          "id": "_login_index",
+          "component": () => import('../src/pages/login/index.svelte').then(m => m.default)
+        }
+      ],
+      "isLayout": false,
+      "isReset": false,
+      "isIndex": false,
+      "isFallback": false,
+      "isPage": false,
+      "ownMeta": {},
+      "meta": {
+        "recursive": true,
+        "preload": false,
+        "prerender": true
+      },
+      "path": "/login"
     },
     {
       "isFile": false,

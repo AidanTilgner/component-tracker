@@ -1,5 +1,5 @@
 <script>
-  import { params } from "@roxi/routify";
+  // * Components
   import Navbar from "../../../components/Navbar/Navbar.svelte";
   import Header from "../../../helpers/Header/Header.svelte";
   import FileTree from "../../../components/FileTree/FileTree.svelte";
@@ -7,24 +7,55 @@
   import Modal from "../../../helpers/Modal/Modal.svelte";
   import Form from "../../../helpers/Form/Form.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem.svelte";
+
+  // * Helpers
+  import { params } from "@roxi/routify";
   import {
     formatKey,
     inferInfoItemTypeFromValueType,
   } from "../../../helpers/functions/formatting.js";
-  let project = {
-    name: "project",
-    codeName: $params.project,
-    framework: "React",
-  };
+  import {
+    getProject,
+    getUserFromLogin,
+    addComponent,
+  } from "../../../helpers/Functions/backend.js";
+  import { onMount } from "svelte";
+
+  // * State
+  import { user } from "../../../data/user.js";
+
+  let userData = {};
+  user.subscribe((data) => {
+    userData = data;
+  });
+
+  let project = {};
+
+  onMount(async () => {
+    project = await getProject($params.project);
+    if (!userData.username) {
+      user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+    }
+  });
+
+  console.log("Project", project);
 
   let SideBarOpen = false;
   let ModalOpen = false;
+  let newComponent = {};
 </script>
 
 <Navbar />
 <div class="project" data-testid="project">
   <Header
-    title="Aidan Tilgner/{project.name}"
+    title={`
+      <a href="/projects" style="color:#2256f2;text-decoration:none;">
+        ${userData.username}
+      </a>/
+      <span style='font-weight:bold;'>
+        ${project.name}
+      </span>
+    `}
     type="breadcrumbs"
     buttons={[
       { text: "Add", type: "primary", action: () => (ModalOpen = true) },
@@ -35,17 +66,22 @@
       },
     ]}
   />
-  <Header title="Tree" type="subtitle" />
-  <FileTree />
+  {#if project.components}
+    <Header title="Tree" type="subtitle" />
+    <FileTree {project} />
+  {/if}
+  <FileTree {project} />
   <SideBar open={SideBarOpen} close={() => (SideBarOpen = false)}>
     <Header title="Project Information" type="subtitle" />
-    {#each Object.keys(project) as key}
-      <InfoItem
-        title={formatKey(key)}
-        value={project[key]}
-        type={inferInfoItemTypeFromValueType(project[key])}
-      />
-    {/each}
+    <div class="project-info">
+      {#each Object.keys(project) as key}
+        <InfoItem
+          title={formatKey(key)}
+          value={project[key]}
+          type={inferInfoItemTypeFromValueType(project[key])}
+        />
+      {/each}
+    </div>
     <div class="project-info__buttons">
       <button class="project-info__buttons__settings"> Settings </button>
       <button class="project-info__buttons__edit">Edit</button>
@@ -60,20 +96,47 @@
         type: "secondary",
         action: () => (ModalOpen = false),
       },
-      { text: "Add", type: "primary", action: "" },
+      {
+        text: "Add",
+        type: "primary",
+        action: () => {
+          newComponent.creator = {
+            id: userData.id,
+            username: userData.username,
+          };
+          addComponent(project.id, newComponent);
+          ModalOpen = false;
+          window.location.reload();
+        },
+      },
     ]}
   >
     <Form
       data={{
-        name: "",
+        fileName: "",
         fileType: "",
         category: "",
         path: "",
         example: "",
         description: "",
-        props: [],
-        state: [],
-        tags: [],
+        props: [
+          {
+            name: "",
+            description: "",
+            type: "",
+          },
+        ],
+        state: [
+          {
+            name: "",
+            description: "",
+            type: "",
+          },
+        ],
+        tags: [{ name: "" }],
+      }}
+      onChange={(e, data) => {
+        newComponent.metaData = data;
       }}
     />
   </Modal>
@@ -89,6 +152,7 @@
 
   .project-info {
     font-family: $font-primary;
+    margin-bottom: 120px;
 
     &__section {
       font-size: 24px;
@@ -110,6 +174,7 @@
       justify-content: flex-end;
       align-items: center;
       padding-bottom: 36px;
+      background-color: white;
 
       &__settings {
         @include button-text;

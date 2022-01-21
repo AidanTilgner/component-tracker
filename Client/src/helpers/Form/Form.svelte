@@ -1,12 +1,12 @@
 <script>
-  export let data, onSubmit, id;
+  export let data, onChange;
   import Input from "../Input/Input.svelte";
   import {
     formatKey,
     inferInputTypeFromValueType,
   } from "../Functions/formatting.js";
 
-  console.log("data", data);
+  console.log("Data: ", data);
 
   // Make an object that stores the values of the inputs
   let inputs = {};
@@ -15,15 +15,7 @@
   });
 </script>
 
-<form
-  class="form"
-  {id}
-  data-testid="form"
-  on:submit={(e) => {
-    e.preventDefault();
-    onSubmit(inputs);
-  }}
->
+<form class="form" data-testid="form" on:submit|preventDefault={(e) => {}}>
   {#each Object.keys(data) as key}
     <Input
       type={data[key].type
@@ -34,9 +26,9 @@
         name: formatKey(key),
         value: data[key],
       }}
-      onChange={(e) => {
-        inputs[key] = e.target.value;
-        console.log("inputs", inputs);
+      onChange={(e, data) => {
+        inputs[key] = data;
+        onChange(e, inputs);
       }}
     />
   {/each}

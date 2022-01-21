@@ -5,6 +5,9 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import css from "rollup-plugin-css-only";
 import preprocess from "svelte-preprocess";
+import replace from "@rollup/plugin-replace";
+import dotenv from "dotenv";
+dotenv.config();
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -43,6 +46,13 @@ export default {
     inlineDynamicImports: true, //To deal with dynamic imports
   },
   plugins: [
+    replace({
+      values: {
+        TEST_ENV: JSON.stringify(process.env.TEST_ENV),
+        SERVER_URL: JSON.stringify(process.env.SERVER_URL),
+      },
+      preventAssignment: true,
+    }),
     svelte({
       compilerOptions: {
         // enable run-time checks when not in production

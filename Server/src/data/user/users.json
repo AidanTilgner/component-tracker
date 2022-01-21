@@ -1,0 +1,17 @@
+[
+  {
+    "id": "ocogt-equmy-hyx56-z45q8",
+    "username": "Aidan.Tilgner",
+    "email": "laneybrokaw@gmail.com",
+    "password": "password",
+    "role": "superuser",
+    "projects": [
+      {
+        "id": "rco8r-hv41p-axi5l-ocbq9",
+        "name": "My Third Project",
+        "edited": "1/11/2022",
+        "framework": "React"
+      }
+    ]
+  }
+]

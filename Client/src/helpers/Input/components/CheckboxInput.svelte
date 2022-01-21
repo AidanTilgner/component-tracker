@@ -1,21 +1,22 @@
 <script>
-  export let field, onchange;
+  export let field, onChange;
+  let boxes = field.value;
 </script>
 
 <div class="checkbox-input">
-  {#each field.options as option}
+  {#each boxes as box}
     <div class="checkbox-input__option">
       <input
         class="checkbox-input__option__input"
-        id="multi-{option.value}"
+        id="multi-{box.value}"
         type="checkbox"
-        value={option.value}
-        checked={option.checked}
-        onchange={(e) => onchange(e)}
-        on:click={(e) => (option.checked = !option.checked)}
+        value={box.value}
+        checked={box.checked}
+        onChange={(e) => onChange(e, boxes)}
+        on:click={(e) => (box.checked = !box.checked)}
       />
-      <label class="checkbox-input__option__label" for="multi-{option.value}"
-        >{option.label}</label
+      <label class="checkbox-input__option__label" for="multi-{box.value}"
+        >{box.label}</label
       >
     </div>
   {/each}
