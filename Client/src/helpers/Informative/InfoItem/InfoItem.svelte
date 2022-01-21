@@ -5,7 +5,7 @@
     formatBreadcrumbs,
     formatLink,
     formatList,
-  } from "../Functions/formatting.js";
+  } from "../../Functions/formatting.js";
 
   if (type === "breadcrumbs") {
     value = formatBreadcrumbs(value);
@@ -45,9 +45,9 @@
 </div>
 
 <style type="text/scss">
-  @import "../../styles/partials/variables";
-  @import "../../styles/partials/typography";
-  @import "../../styles/partials/mixins";
+  @import "../../../styles/partials/variables";
+  @import "../../../styles/partials/typography";
+  @import "../../../styles/partials/mixins";
 
   .info-item {
     font-family: $font-primary;

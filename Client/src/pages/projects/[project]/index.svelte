@@ -6,7 +6,7 @@
   import SideBar from "../../../components/SideBar/SideBar.svelte";
   import Modal from "../../../helpers/Modal/Modal.svelte";
   import Form from "../../../helpers/Form/Form.svelte";
-  import InfoItem from "../../../helpers/Informative/InfoItem.svelte";
+  import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
 
   // * Helpers
   import { params } from "@roxi/routify";

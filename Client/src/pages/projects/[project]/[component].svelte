@@ -3,7 +3,7 @@
   import Header from "../../../helpers/Header/Header.svelte";
   import Modal from "../../../helpers/Modal/Modal.svelte";
   import Form from "../../../helpers/Form/Form.svelte";
-  import InfoItem from "../../../helpers/Informative/InfoItem.svelte";
+  import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import Description from "../../../helpers/Informative/Description.svelte";
   import { url, params } from "@roxi/routify";
   import {
