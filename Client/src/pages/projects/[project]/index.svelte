@@ -75,11 +75,7 @@
     <Header title="Project Information" type="subtitle" />
     <div class="project-info">
       {#each Object.keys(project) as key}
-        <InfoItem
-          title={formatKey(key)}
-          value={project[key]}
-          type={inferInfoItemTypeFromValueType(project[key])}
-        />
+        <InfoItem title={formatKey(key)} value={project[key]} />
       {/each}
     </div>
     <div class="project-info__buttons">
