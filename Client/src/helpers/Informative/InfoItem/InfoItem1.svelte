@@ -1,12 +1,12 @@
 <script>
-  export let title, value;
+  export let title, value, type;
   import Text from "./components/Text.svelte";
   import Link from "./components/Link.svelte";
   import List from "./components/List.svelte";
   import Breadcrumbs from "./components/Breadcrumbs.svelte";
   import { inferInfoItemTypeFromValueType } from "../../../helpers/Functions/formatting";
 
-  let type = inferInfoItemTypeFromValueType(value);
+  !type && (type = inferInfoItemTypeFromValueType(value));
 </script>
 
 <div class="info-item">
@@ -23,3 +23,14 @@
     <Breadcrumbs {title} {value} />
   {/if}
 </div>
+
+<style lang="scss">
+  @import "../../../styles/partials/variables";
+  @import "../../../styles/partials/typography";
+  @import "../../../styles/partials/mixins";
+
+  .info-item {
+    font-family: $font-primary;
+    margin-bottom: 24px;
+  }
+</style>

@@ -33,14 +33,15 @@ export const inferInputTypeFromValueType = (value) => {
 export const inferInfoItemTypeFromValueType = (value) => {
   // This function will take a value and return a type based on the value given
   switch (typeof value) {
-    // types are normal, breadcrumbs, link, list, paragraph
+    // types are text, breadcrumbs, link, list
     case "string":
       if (value.includes("http")) return "link";
       if (value.includes("/")) return "breadcrumbs";
       return "text";
-    case "number":
-      return "text";
-    case "boolean":
+    case "object":
+      if (Array.isArray(value)) {
+        return "list";
+      }
       return "text";
     default:
       return "text";
