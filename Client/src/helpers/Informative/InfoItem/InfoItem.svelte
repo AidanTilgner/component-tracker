@@ -8,6 +8,10 @@
   import { inferInfoItemTypeFromValueType } from "../../../helpers/Functions/formatting";
 
   !type && (type = inferInfoItemTypeFromValueType(value));
+
+  console.log("%cTitle: " + title, "color: green");
+  console.log("Value: ", value);
+  console.log("Type: ", type);
 </script>
 
 <div class="info-item">

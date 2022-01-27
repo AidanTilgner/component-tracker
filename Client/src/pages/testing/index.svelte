@@ -1,61 +1,78 @@
 <script>
   import InfoItem from "../../helpers/Informative/InfoItem/InfoItem.svelte";
+  let component = {
+    metaData: {
+      name: "",
+      fileType: "",
+      category: "",
+      path: "",
+      example: "",
+      description: ".",
+      props: [
+        {
+          name: "",
+          description: "",
+          type: "",
+        },
+      ],
+      state: [
+        {
+          name: "",
+          description: "",
+          type: "",
+        },
+      ],
+      tags: [{ name: "", type: "" }],
+    },
+    imports: [],
+    exports: [],
+    functions: [],
+    connectedFiles: { parents: [], children: [], helpers: [] },
+  };
+
+  setTimeout(() => {
+    component = {
+      metaData: {
+        name: "Child-1",
+        fileType: "JavaScript",
+        category: "Views",
+        path: "src/child1/Child1.js",
+        example: "https://www.aidantilgner.dev",
+        description: "This is a new description.",
+        props: [
+          {
+            name: "routeProps",
+            description:
+              "This provides information about the given component for routing",
+            type: "Object",
+          },
+          {
+            name: "routeProps",
+            description: "",
+            type: "",
+          },
+        ],
+        state: [
+          {
+            name: "",
+            description: "",
+            type: "",
+          },
+        ],
+        tags: [{ name: "", type: "" }],
+      },
+      imports: [],
+      exports: [],
+      functions: [],
+      connectedFiles: { parents: [], children: [], helpers: [] },
+    };
+  }, 1000);
 </script>
 
 <div class="testing">
-  <InfoItem title="Text Input" value="I am a simple text input" />
-  <InfoItem
-    title="Paragraph"
-    value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
-  />
-  <InfoItem title="Link" value="https://www.google.com" />
-  <InfoItem
-    title="List Input"
-    value={[
-      "value 1",
-      "value 2",
-      "value 3",
-      `<a href="https://www.google.com" target="_blank" style="color: #2256f2;">https://www.google.com</a>`,
-    ]}
-  />
-  <InfoItem
-    title="tags"
-    value={[
-      {
-        name: "tag 1",
-        type: "primary",
-      },
-      {
-        name: "tag 2",
-        type: "secondary",
-      },
-      {
-        name: "tag 3",
-        type: "success",
-      },
-      {
-        name: "tag 4",
-        type: "danger",
-      },
-      {
-        name: "tag 5",
-        type: "warning",
-      },
-      {
-        name: "tag 6",
-        type: "info",
-      },
-      {
-        name: "tag 7",
-        type: "light",
-      },
-      {
-        name: "tag 8",
-        type: "dark",
-      },
-    ]}
-    type="tags"
-  />
+  {#each Object.keys(component.metaData) as key}
+    <InfoItem title={key} value={component[key]} />
+  {/each}
 </div>
 
 <style type="text/scss">
