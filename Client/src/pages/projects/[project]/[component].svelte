@@ -5,7 +5,7 @@
   import Form from "../../../helpers/Form/Form.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import Description from "../../../helpers/Informative/Description.svelte";
-  import { url, params } from "@roxi/routify";
+  import { url, params, meta, goto } from "@roxi/routify";
   import {
     formatKey,
     inferInfoItemTypeFromValueType,
@@ -58,6 +58,8 @@
     connectedFiles: { parents: [], children: [], helpers: [] },
   };
 
+  $: metaData = Object.keys(component.metaData);
+
   onMount(async () => {
     project = await getProject($params.project);
     component = await getComponent(
@@ -104,11 +106,21 @@
         type: "secondary",
         action: () => (EditingMetaData = true),
       },
-      { text: "Delete", type: "tertiary", action: "" },
+      {
+        text: "Delete",
+        type: "tertiary",
+        action: () => {
+          deleteComponent(
+            $params.project,
+            $params.component.split("+").join("/")
+          );
+          $goto("/projects/" + $params.project);
+        },
+      },
     ]}
   />
   <div class="component__meta-info">
-    {#each Object.keys(component.metaData) as key}
+    {#each metaData as key}
       <InfoItem title={formatKey(key)} value={component.metaData[key]} />
     {/each}
     <Modal

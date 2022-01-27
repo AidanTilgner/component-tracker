@@ -142,5 +142,5 @@ export const deleteComponentFromProject = async (projectID, path) => {
   );
   project.components.splice(componentIndex, 1);
   writeFileByFilepath("../data/project/projects.json", JSON.stringify(data));
-  return component;
+  return project;
 };

@@ -1,6 +1,6 @@
 <script>
   export let title, value;
-  let paragraph = value.length > 30;
+  let paragraph = value?.length > 30;
 </script>
 
 <div class="text-item" style={paragraph && "display: block;"}>

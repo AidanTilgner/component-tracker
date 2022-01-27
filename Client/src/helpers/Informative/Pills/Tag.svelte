@@ -10,8 +10,7 @@
     light: "#c4c4c4",
     dark: "#34495e",
   };
-  console.log("Name: ", name);
-  console.log("Type: ", type);
+  console.log("Name:", name, "Type: ", type);
 </script>
 
 <div

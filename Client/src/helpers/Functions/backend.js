@@ -182,7 +182,7 @@ export const updateComponent = async (projectID, name, update) => {
 export const deleteComponent = async (projectID, name) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/?projectID=${projectID}&name=${name}`,
+      `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
       {
         method: "DELETE",
       }
