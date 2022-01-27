@@ -23,11 +23,35 @@
     value={[
       {
         name: "tag 1",
-        type: "success",
+        type: "primary",
       },
       {
         name: "tag 2",
         type: "secondary",
+      },
+      {
+        name: "tag 3",
+        type: "success",
+      },
+      {
+        name: "tag 4",
+        type: "danger",
+      },
+      {
+        name: "tag 5",
+        type: "warning",
+      },
+      {
+        name: "tag 6",
+        type: "info",
+      },
+      {
+        name: "tag 7",
+        type: "light",
+      },
+      {
+        name: "tag 8",
+        type: "dark",
       },
     ]}
     type="tags"

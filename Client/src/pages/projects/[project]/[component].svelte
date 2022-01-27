@@ -30,7 +30,7 @@
   let component = {
     creator: { name: "", id: "" },
     metaData: {
-      fileName: "",
+      name: "",
       fileType: "",
       category: "",
       path: "",
@@ -50,7 +50,7 @@
           type: "",
         },
       ],
-      tags: [""],
+      tags: [{ name: "", type: "" }],
     },
     imports: [],
     exports: [],
@@ -109,11 +109,7 @@
   />
   <div class="component__meta-info">
     {#each Object.keys(component.metaData) as key}
-      <InfoItem
-        title={formatKey(key)}
-        value={component.metaData[key]}
-        type={inferInfoItemTypeFromValueType(component.metaData[key])}
-      />
+      <InfoItem title={formatKey(key)} value={component.metaData[key]} />
     {/each}
     <Modal
       open={EditingMetaData}
