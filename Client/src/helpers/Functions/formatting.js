@@ -40,6 +40,10 @@ export const inferInfoItemTypeFromValueType = (value) => {
       return "text";
     case "object":
       if (Array.isArray(value)) {
+        if (typeof value[0] === "object") {
+          if ("name" in value[0] && "type" in value[0]) return "tags";
+          return "object-list";
+        }
         return "list";
       }
       return "text";
