@@ -30,7 +30,6 @@
   let component = {
     creator: { name: "", id: "" },
     metaData: {
-      name: "",
       fileType: "",
       category: "",
       path: "",
@@ -87,7 +86,7 @@
       <a href="/projects/${
         $params.project
       }" style="color:#2256f2;text-decoration:none;">
-        ${project.name}
+        ${$params.component.split("+")[$params.component.split("+").length - 1]}
       </a> /
       <span style='font-weight:bold;'>
           ${$params.component.split("+").join(" / ")}

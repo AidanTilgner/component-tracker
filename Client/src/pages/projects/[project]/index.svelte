@@ -109,7 +109,6 @@
   >
     <Form
       data={{
-        fileName: "",
         fileType: "",
         category: "",
         path: "",
@@ -129,7 +128,7 @@
             type: "",
           },
         ],
-        tags: [{ name: "" }],
+        tags: [{ name: "", type: "" }],
       }}
       onChange={(e, data) => {
         newComponent.metaData = data;

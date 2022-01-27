@@ -13,6 +13,8 @@
   Object.keys(data).forEach((key) => {
     inputs[key] = data[key];
   });
+
+  $: console.log("Inputs: ", inputs);
 </script>
 
 <form class="form" data-testid="form" on:submit|preventDefault={(e) => {}}>

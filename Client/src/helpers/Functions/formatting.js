@@ -21,6 +21,7 @@ export const inferInputTypeFromValueType = (value) => {
         if (typeof value[0] === "string") return "checkbox";
         return "array-list";
       }
+      if ("options" in value) return "select";
       return "object-list";
     case "null":
     case "undefined":
