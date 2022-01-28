@@ -1,13 +1,10 @@
 <script>
   export let field, onChange;
   import Input from "../Input.svelte";
-  import {
-    formatKey,
-    inferInputTypeFromValueType,
-  } from "../../Functions/inference.js";
+  import { inferInputTypeFromValueType } from "../../Functions/inference.js";
+  import { formatKey } from "../../Functions/formatting.js";
 
   let inputs = field.value;
-  console.log("Inputs in ObjList: ", inputs);
 </script>
 
 {#each Object.keys(field.value) as key}

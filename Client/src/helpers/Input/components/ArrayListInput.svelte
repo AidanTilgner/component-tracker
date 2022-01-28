@@ -1,10 +1,8 @@
 <script>
   export let field, onChange;
   import Input from "../Input.svelte";
-  import {
-    formatKey,
-    inferInputTypeFromValueType,
-  } from "../../Functions/inference.js";
+  import { inferInputTypeFromValueType } from "../../Functions/inference.js";
+  import { formatKey } from "../../Functions/formatting";
   import { copyObj } from "../../Functions/typeManipulation.js";
 
   let inputs = [...field.value];
@@ -23,7 +21,6 @@
         }}
         onChange={(e, data) => {
           inputs[idx] = data;
-          console.log("Inputs: ", inputs);
           onChange(e, inputs);
         }}
       />

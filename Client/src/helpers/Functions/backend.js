@@ -134,8 +134,6 @@ export const deleteProject = async (projectID) => {
 // * Component Functions
 export const addComponent = async (projectID, component) => {
   try {
-    console.log("Adding component to project: ", projectID);
-    console.log("Component: ", JSON.stringify(component));
     return await fetch(
       `${baseURL}${EP.projects}/component?projectID=${projectID}`,
       {
@@ -163,7 +161,6 @@ export const getComponent = async (projectID, name) => {
 
 export const updateComponent = async (projectID, name, update) => {
   try {
-    console.log("Updating Component: ", name);
     return await fetch(
       `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
       {

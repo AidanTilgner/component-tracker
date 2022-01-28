@@ -79,7 +79,6 @@ const deleteUserFromDatabaseByID = async (id) => {
 const addUserToDatabase = async (user) => {
   user = new User(user);
   let data = await getDataByFilepath("../data/user/users.json");
-  console.log(data);
   data.push(user);
   writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
   return {
@@ -110,7 +109,6 @@ const getUserProjects = async (id) => {
 
 const getUserFromDatabaseByLogin = async (username, password) => {
   let data = await getDataByFilepath("../data/user/users.json");
-  console.log("Data: ", data);
   return data.find(
     (user) => user.username === username && user.password === password
   );

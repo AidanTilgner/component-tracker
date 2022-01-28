@@ -17,7 +17,6 @@
   user.subscribe((user) => {
     userData = user;
     projects = user.projects;
-    console.log("Setting user");
   });
 
   onMount(async () => {

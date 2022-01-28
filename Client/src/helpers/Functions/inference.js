@@ -26,6 +26,8 @@ export const inferInputTypeFromValueType = (value) => {
 };
 
 export const inferInfoItemTypeFromValueType = (value) => {
+  console.log("%cValue: " + value, "color: #2256f2;");
+  console.log("%cType: " + typeof value, "color: #2256f2;");
   // This function will take a value and return a type based on the value given
   switch (typeof value) {
     // types are text, breadcrumbs, link, list
@@ -35,9 +37,12 @@ export const inferInfoItemTypeFromValueType = (value) => {
       return "text";
     case "object":
       if (Array.isArray(value)) {
+        console.log("Object is an array");
         if (typeof value[0] === "object") {
+          console.log("Object is an array of objects");
           if ("name" in value[0] && "type" in value[0]) return "tags";
-          return "object";
+          console.log("Object is an array of objects with no name or type");
+          return "object-list";
         }
         return "list";
       }

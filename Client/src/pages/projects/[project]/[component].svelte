@@ -6,10 +6,8 @@
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import Description from "../../../helpers/Informative/Description.svelte";
   import { url, params, meta, goto } from "@roxi/routify";
-  import {
-    formatKey,
-    inferInfoItemTypeFromValueType,
-  } from "../../../helpers/Functions/inference.js";
+  import { inferInfoItemTypeFromValueType } from "../../../helpers/Functions/inference.js";
+  import { formatKey } from "../../../helpers/Functions/formatting.js";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
   import {
@@ -65,12 +63,9 @@
       $params.project,
       $params.component.split("+").join("/")
     );
-    console.log("Project: ", project);
-    console.log("Component: ", component);
     if (!userData.username) {
       user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
     }
-    console.log("User: ", userData);
   });
 
   let EditingMetaData = false;
@@ -172,7 +167,6 @@
             // TODO: Fix bug where the description title is not updated
             e.preventDefault();
             imp = values;
-            console.log("Imports ", component.imports);
           }}
         />
       {/each}

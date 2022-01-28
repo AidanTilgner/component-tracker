@@ -10,10 +10,8 @@
 
   // * Helpers
   import { params } from "@roxi/routify";
-  import {
-    formatKey,
-    inferInfoItemTypeFromValueType,
-  } from "../../../helpers/functions/inference.js";
+  import { inferInfoItemTypeFromValueType } from "../../../helpers/functions/inference.js";
+  import { formatKey } from "../../../helpers/functions/formatting.js";
   import {
     getProject,
     getUserFromLogin,
@@ -30,7 +28,6 @@
   });
 
   let project = {};
-  $: console.log("Project: ", project);
 
   onMount(async () => {
     project = await getProject($params.project);
@@ -39,9 +36,7 @@
     }
   });
 
-  console.log("Project", project);
-
-  let SideBarOpen = false;
+  let SideBarOpen = true;
   let ModalOpen = false;
   let newComponent = {};
 </script>

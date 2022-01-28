@@ -1,7 +1,5 @@
 <script>
   export let field, onChange;
-  console.log("Select Selected");
-  console.log("Field: ", field);
 </script>
 
 <div class="select-input">

@@ -1,20 +1,14 @@
 <script>
   export let data, onChange;
   import Input from "../Input/Input.svelte";
-  import {
-    formatKey,
-    inferInputTypeFromValueType,
-  } from "../Functions/inference.js";
-
-  console.log("Data: ", data);
+  import { inferInputTypeFromValueType } from "../Functions/inference.js";
+  import { formatKey } from "../Functions/formatting.js";
 
   // Make an object that stores the values of the inputs
   let inputs = {};
   Object.keys(data).forEach((key) => {
     inputs[key] = data[key];
   });
-
-  $: console.log("Inputs: ", inputs);
 </script>
 
 <form class="form" data-testid="form" on:submit|preventDefault={(e) => {}}>

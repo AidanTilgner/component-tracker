@@ -1,7 +1,6 @@
 <script>
   export let title, value;
   import { formatKey } from "../../../Functions/formatting";
-  console.log("Called");
 </script>
 
 <div class="object-item">

@@ -30,8 +30,6 @@
 
   $: metaData = Object.keys(component.metaData);
   $: metaDataObject = component.metaData;
-  $: console.log("MetaData: ", metaData);
-  $: console.log("MetaDataObject: ", metaDataObject);
 
   // onMount(async () => {
   //   component = await getComponent(
