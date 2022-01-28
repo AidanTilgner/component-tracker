@@ -13,7 +13,7 @@
   import {
     formatKey,
     inferInfoItemTypeFromValueType,
-  } from "../../../helpers/functions/formatting.js";
+  } from "../../../helpers/functions/inference.js";
   import {
     getProject,
     getUserFromLogin,
@@ -30,6 +30,7 @@
   });
 
   let project = {};
+  $: console.log("Project: ", project);
 
   onMount(async () => {
     project = await getProject($params.project);

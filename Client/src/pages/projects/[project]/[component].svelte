@@ -9,7 +9,7 @@
   import {
     formatKey,
     inferInfoItemTypeFromValueType,
-  } from "../../../helpers/Functions/formatting.js";
+  } from "../../../helpers/Functions/inference.js";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
   import {

@@ -5,9 +5,12 @@
   import List from "./components/List.svelte";
   import Breadcrumbs from "./components/Breadcrumbs.svelte";
   import Tags from "./components/Tags.svelte";
-  import { inferInfoItemTypeFromValueType } from "../../../helpers/Functions/formatting";
+  import Object from "./components/Object.svelte";
+  import { inferInfoItemTypeFromValueType } from "../../../helpers/Functions/inference";
 
   !type && (type = inferInfoItemTypeFromValueType(value));
+
+  console.log("Title: ", title, "Value: ", value, "Type: ", type);
 </script>
 
 <div class="info-item">
@@ -25,6 +28,9 @@
   {/if}
   {#if type === "tags"}
     <Tags {title} {value} />
+  {/if}
+  {#if type === "object"}
+    <Object {title} {value} />
   {/if}
 </div>
 

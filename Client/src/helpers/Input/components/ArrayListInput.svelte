@@ -4,7 +4,7 @@
   import {
     formatKey,
     inferInputTypeFromValueType,
-  } from "../../Functions/formatting.js";
+  } from "../../Functions/inference.js";
   import { copyObj } from "../../Functions/typeManipulation.js";
 
   let inputs = [...field.value];
