@@ -8,11 +8,8 @@
   import Object from "./components/Object.svelte";
   import ObjectList from "./components/ObjectList.svelte";
   import { inferInfoItemTypeFromValueType } from "../../../helpers/Functions/inference";
-  console.log("%cTitle", "color: green; font-weight: bold;", title);
 
   !type && (type = inferInfoItemTypeFromValueType(value));
-
-  console.log("%cType", "color: #f00; font-weight: bold;", type);
 </script>
 
 <div class="info-item">
@@ -46,6 +43,6 @@
 
   .info-item {
     font-family: $font-primary;
-    margin-bottom: 24px;
+    margin: 10px 0;
   }
 </style>

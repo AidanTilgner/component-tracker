@@ -24,6 +24,10 @@
 {/each}
 
 <style lang="scss">
+  @import "../../../styles/partials/variables";
+  @import "../../../styles/partials/typography";
+  @import "../../../styles/partials/mixins";
+
   .input {
     padding-inline-start: 24px;
   }

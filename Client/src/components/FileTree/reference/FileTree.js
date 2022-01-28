@@ -26,7 +26,6 @@ class Node {
     container.appendChild(node);
 
     // I need to get the difference between the text length mutliplied by 20, and the nearest multiple of 60
-    console.log("Width: ", this.text.length * 20);
     const width = Math.ceil(this.text.length * 20);
     node.style.width = `${width}px`;
     this.width = width;
@@ -69,7 +68,6 @@ class Node {
     const row = document.createElement("div");
     row.classList.add("row");
     this.children.forEach((child) => {
-      console.log("Child: ", child);
       child.init(row);
     });
 
@@ -103,7 +101,6 @@ class Node {
       return sum;
     };
 
-    console.log("Start, ", start, "End, ", end());
     const lineHorizontal = document.createElement("div");
     lineHorizontal.classList.add("line-horizontal");
     lineHorizontal.style.top = "0px";
@@ -132,10 +129,8 @@ class Node {
       this.elements.current.addEventListener("click", (event) => {
         event.stopPropagation();
         if (this.elements.row) {
-          console.log("removing row");
           this.removeChildren();
         } else {
-          console.log("drawing children");
           this.drawChildren(this.elements.current);
         }
       });

@@ -1,5 +1,6 @@
 <script>
   export let title, value;
+  import InfoItem from "../InfoItem.svelte";
   import { formatKey } from "../../../Functions/formatting";
 </script>
 
@@ -10,12 +11,7 @@
   <div class="object-item__items">
     {#each Object.keys(value) as key}
       <div class="object-item__item">
-        <p class="object-item__item-title">
-          {formatKey(key)}:
-        </p>
-        <p class="object-item__item-value">
-          {value[key]}
-        </p>
+        <InfoItem title={formatKey(key)} value={value[key]} />
       </div>
     {/each}
   </div>

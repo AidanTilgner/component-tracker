@@ -146,6 +146,7 @@ export const addComponent = async (projectID, component) => {
     ).then((res) => console.log("Response: ", res.json()));
   } catch (error) {
     console.error("Error in addComponent: ", error);
+    alert("Error in addComponent: ", error);
   }
 };
 

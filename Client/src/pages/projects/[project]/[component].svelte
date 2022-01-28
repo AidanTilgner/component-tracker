@@ -28,7 +28,6 @@
   let component = {
     creator: { name: "", id: "" },
     metaData: {
-      fileType: "",
       category: "",
       path: "",
       example: "",
