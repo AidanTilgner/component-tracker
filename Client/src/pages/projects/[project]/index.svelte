@@ -9,15 +9,14 @@
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
 
   // * Helpers
-  import { params } from "@roxi/routify";
-  import {
-    formatKey,
-    inferInfoItemTypeFromValueType,
-  } from "../../../helpers/functions/formatting.js";
+  import { goto, params } from "@roxi/routify";
+  import { inferInfoItemTypeFromValueType } from "../../../helpers/functions/inference.js";
+  import { formatKey } from "../../../helpers/functions/formatting.js";
   import {
     getProject,
     getUserFromLogin,
     addComponent,
+    updateProject,
   } from "../../../helpers/Functions/backend.js";
   import { onMount } from "svelte";
 
@@ -38,11 +37,27 @@
     }
   });
 
-  console.log("Project", project);
-
   let SideBarOpen = false;
-  let ModalOpen = false;
-  let newComponent = {};
+  let Modal1Open = false;
+  let Modal2Open = false;
+  let newComponent = {
+    metaData: {
+      category: "",
+      path: "",
+      example: "",
+      description: "",
+      props: [{ name: "", type: "", description: "" }],
+      state: [{ name: "", type: "", description: "" }],
+      tags: [{ name: "", type: "" }],
+    },
+  };
+  $: editableProject = {
+    owner: project.owner,
+    name: project.name,
+    framework: project.framework,
+    description: project.description,
+    externalLinks: project.externalLinks,
+  };
 </script>
 
 <Navbar />
@@ -58,7 +73,7 @@
     `}
     type="breadcrumbs"
     buttons={[
-      { text: "Add", type: "primary", action: () => (ModalOpen = true) },
+      { text: "Add", type: "primary", action: () => (Modal1Open = true) },
       {
         text: "Project Info",
         type: "slide-left",
@@ -74,27 +89,30 @@
   <SideBar open={SideBarOpen} close={() => (SideBarOpen = false)}>
     <Header title="Project Information" type="subtitle" />
     <div class="project-info">
-      {#each Object.keys(project) as key}
-        <InfoItem
-          title={formatKey(key)}
-          value={project[key]}
-          type={inferInfoItemTypeFromValueType(project[key])}
-        />
+      {#each Object.keys(project).filter((key) => key !== "components") as key}
+        <div class="project-info__section">
+          <InfoItem title={formatKey(key)} value={project[key]} />
+        </div>
       {/each}
     </div>
     <div class="project-info__buttons">
       <button class="project-info__buttons__settings"> Settings </button>
-      <button class="project-info__buttons__edit">Edit</button>
+      <button
+        class="project-info__buttons__edit"
+        on:click={(e) => {
+          Modal2Open = true;
+        }}>Edit</button
+      >
     </div>
   </SideBar>
   <Modal
-    open={ModalOpen}
+    open={Modal1Open}
     title="New Component"
     buttons={[
       {
         text: "Close",
         type: "secondary",
-        action: () => (ModalOpen = false),
+        action: () => (Modal1Open = false),
       },
       {
         text: "Add",
@@ -105,16 +123,16 @@
             username: userData.username,
           };
           addComponent(project.id, newComponent);
-          ModalOpen = false;
-          window.location.reload();
+          Modal1Open = false;
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         },
       },
     ]}
   >
     <Form
       data={{
-        fileName: "",
-        fileType: "",
         category: "",
         path: "",
         example: "",
@@ -133,10 +151,39 @@
             type: "",
           },
         ],
-        tags: [{ name: "" }],
+        tags: [{ name: "", type: "" }],
       }}
       onChange={(e, data) => {
-        newComponent.metaData = data;
+        newComponent.metaData = { ...newComponent.metaData, ...data };
+      }}
+    />
+  </Modal>
+  <Modal
+    open={Modal2Open}
+    title="Edit Project"
+    buttons={[
+      {
+        text: "Close",
+        type: "secondary",
+        action: () => (Modal2Open = false),
+      },
+      {
+        text: "Submit",
+        type: "primary",
+        action: () => {
+          Modal2Open = false;
+          updateProject(project.id, editableProject);
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        },
+      },
+    ]}
+  >
+    <Form
+      data={editableProject}
+      onChange={(e, data) => {
+        editableProject = data;
       }}
     />
   </Modal>
@@ -152,11 +199,12 @@
 
   .project-info {
     font-family: $font-primary;
-    margin-bottom: 120px;
+    margin-bottom: 200px;
 
     &__section {
       font-size: 24px;
       margin-bottom: 36px;
+      border-bottom: 2px solid #f4f4f4;
 
       &__title {
         font-weight: 500;

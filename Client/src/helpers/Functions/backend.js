@@ -134,8 +134,6 @@ export const deleteProject = async (projectID) => {
 // * Component Functions
 export const addComponent = async (projectID, component) => {
   try {
-    console.log("Adding component to project: ", projectID);
-    console.log("Component: ", JSON.stringify(component));
     return await fetch(
       `${baseURL}${EP.projects}/component?projectID=${projectID}`,
       {
@@ -148,6 +146,7 @@ export const addComponent = async (projectID, component) => {
     ).then((res) => console.log("Response: ", res.json()));
   } catch (error) {
     console.error("Error in addComponent: ", error);
+    alert("Error in addComponent: ", error);
   }
 };
 
@@ -163,7 +162,6 @@ export const getComponent = async (projectID, name) => {
 
 export const updateComponent = async (projectID, name, update) => {
   try {
-    console.log("Updating Component: ", name);
     return await fetch(
       `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
       {
@@ -182,7 +180,7 @@ export const updateComponent = async (projectID, name, update) => {
 export const deleteComponent = async (projectID, name) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/?projectID=${projectID}&name=${name}`,
+      `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
       {
         method: "DELETE",
       }

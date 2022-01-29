@@ -66,7 +66,7 @@
   .field {
     display: flex;
     flex-direction: column;
-    margin-bottom: 24px;
+    margin: 10px 0;
     font-family: $font-primary;
 
     &__label {

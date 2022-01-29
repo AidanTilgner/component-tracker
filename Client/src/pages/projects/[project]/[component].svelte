@@ -5,11 +5,9 @@
   import Form from "../../../helpers/Form/Form.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import Description from "../../../helpers/Informative/Description.svelte";
-  import { url, params } from "@roxi/routify";
-  import {
-    formatKey,
-    inferInfoItemTypeFromValueType,
-  } from "../../../helpers/Functions/formatting.js";
+  import { url, params, meta, goto } from "@roxi/routify";
+  import { inferInfoItemTypeFromValueType } from "../../../helpers/Functions/inference.js";
+  import { formatKey } from "../../../helpers/Functions/formatting.js";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
   import {
@@ -30,8 +28,6 @@
   let component = {
     creator: { name: "", id: "" },
     metaData: {
-      fileName: "",
-      fileType: "",
       category: "",
       path: "",
       example: "",
@@ -50,7 +46,7 @@
           type: "",
         },
       ],
-      tags: [""],
+      tags: [{ name: "", type: "" }],
     },
     imports: [],
     exports: [],
@@ -58,18 +54,17 @@
     connectedFiles: { parents: [], children: [], helpers: [] },
   };
 
+  $: metaData = Object.keys(component.metaData);
+
   onMount(async () => {
     project = await getProject($params.project);
     component = await getComponent(
       $params.project,
       $params.component.split("+").join("/")
     );
-    console.log("Project: ", project);
-    console.log("Component: ", component);
     if (!userData.username) {
       user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
     }
-    console.log("User: ", userData);
   });
 
   let EditingMetaData = false;
@@ -85,7 +80,7 @@
       <a href="/projects/${
         $params.project
       }" style="color:#2256f2;text-decoration:none;">
-        ${project.name}
+        ${$params.component.split("+")[$params.component.split("+").length - 1]}
       </a> /
       <span style='font-weight:bold;'>
           ${$params.component.split("+").join(" / ")}
@@ -104,16 +99,22 @@
         type: "secondary",
         action: () => (EditingMetaData = true),
       },
-      { text: "Delete", type: "tertiary", action: "" },
+      {
+        text: "Delete",
+        type: "tertiary",
+        action: () => {
+          deleteComponent(
+            $params.project,
+            $params.component.split("+").join("/")
+          );
+          $goto("/projects/" + $params.project);
+        },
+      },
     ]}
   />
   <div class="component__meta-info">
-    {#each Object.keys(component.metaData) as key}
-      <InfoItem
-        title={formatKey(key)}
-        value={component.metaData[key]}
-        type={inferInfoItemTypeFromValueType(component.metaData[key])}
-      />
+    {#each metaData as key}
+      <InfoItem title={formatKey(key)} value={component.metaData[key]} />
     {/each}
     <Modal
       open={EditingMetaData}
@@ -165,7 +166,6 @@
             // TODO: Fix bug where the description title is not updated
             e.preventDefault();
             imp = values;
-            console.log("Imports ", component.imports);
           }}
         />
       {/each}

@@ -1,83 +1,90 @@
 <script>
-  import Input from "../../helpers/Input/Input.svelte";
-  import Form from "../../helpers/Form/Form.svelte";
-
-  let testing = 1;
-</script>
-
-<div class="testing">
-  {#if testing === 1}
-    <Form
-      data={{
-        metaData: {
-          fileName: "",
-          fileType: "",
-          category: "",
-          path: "",
-          example: "",
+  import InfoItem from "../../helpers/Informative/InfoItem/InfoItem.svelte";
+  import { onMount } from "svelte";
+  import { getComponent } from "../../helpers/Functions/backend";
+  let component = {
+    metaData: {
+      name: "",
+      fileType: "",
+      category: "",
+      path: "",
+      example: "",
+      description: "",
+      props: [
+        {
+          name: "",
           description: "",
+          type: "",
+        },
+      ],
+      state: [
+        {
+          name: "",
+          description: "",
+          type: "",
+        },
+      ],
+      tags: [{ name: "", type: "" }],
+    },
+  };
+
+  $: metaData = Object.keys(component.metaData);
+  $: metaDataObject = component.metaData;
+
+  // onMount(async () => {
+  //   component = await getComponent(
+  //     "rco8r-hv41p-axi5l-ocbq9",
+  //     "src/child1/Child1.js"
+  //   );
+  // });
+
+  onMount(async () => {
+    setTimeout(() => {
+      component = {
+        creator: { name: "aidan.tilgner", id: "1284-341f-214341-d134" },
+        metaData: {
+          name: "Child-1",
+          fileType: "JavaScript",
+          category: "Views",
+          path: "src/child1/Child1.js",
+          example: "https://www.aidantilgner.dev",
+          description: "This is a new description.",
           props: [
             {
-              name: "",
-              description: "",
-              type: "",
+              name: "routeProps",
+              description:
+                "This provides information about the given component for routing",
+              type: "Object",
+            },
+            {
+              name: "routeProps",
+              description:
+                "This provides information about the given component for routing",
+              type: "Object",
             },
           ],
           state: [
             {
-              name: "",
-              description: "",
-              type: "",
+              name: "data",
+              description: "This is a new description",
+              type: "Object",
             },
           ],
-          tags: [{ name: "" }],
+          tags: [{ name: "bugs", type: "danger" }],
         },
-        imports: [
-          {
-            name: "",
-            from: "",
-            type: "",
-            description: "",
-            notes: "",
-          },
-        ],
+        imports: [],
         exports: [],
-        functions: [
-          {
-            name: "",
-            description: "",
-            ExternalLocation: "",
-            parameters: "",
-            returns: "",
-            notes: "",
-          },
-        ],
-        connectedFiles: {
-          parents: [],
-          children: [],
-          helpers: [],
-        },
-      }}
-      onChange={(e, data) => {
-        console.log("Usable Data: ", data);
-      }}
-    />
-  {/if}
-  {#if testing === 2}
-    <Input
-      type="array-list"
-      field={{
-        value: [
-          { test: "test1", test2: "test2" },
-          { test: "testing", test2: "test2" },
-        ],
-        name: "Testing",
-      }}
-      onChange={(e, data) => {
-        console.log("Data: ", data);
-      }}
-    />
-  {/if}
+        functions: [],
+        connectedFiles: { parents: [], children: [], helpers: [] },
+      };
+    }, 1000);
+  });
+</script>
+
+<div class="testing">
+  {#each metaData as key}
+    <InfoItem title={key} value={component.metaData[key]} />
+  {/each}
 </div>
 
 <style type="text/scss">

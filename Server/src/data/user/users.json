@@ -1,17 +1,1 @@
-[
-  {
-    "id": "ocogt-equmy-hyx56-z45q8",
-    "username": "Aidan.Tilgner",
-    "email": "laneybrokaw@gmail.com",
-    "password": "password",
-    "role": "superuser",
-    "projects": [
-      {
-        "id": "rco8r-hv41p-axi5l-ocbq9",
-        "name": "My Third Project",
-        "edited": "1/11/2022",
-        "framework": "React"
-      }
-    ]
-  }
-]
+[{"id":"ocogt-equmy-hyx56-z45q8","username":"Aidan.Tilgner","email":"laneybrokaw@gmail.com","password":"password","role":"superuser","projects":[{"id":"z1bql-s67mu-or42g-3u87q","name":"My Third Project","edited":"1/27/2022","framework":"React"}]}]

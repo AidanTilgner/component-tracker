@@ -1,12 +1,8 @@
 <script>
   export let data, onChange;
   import Input from "../Input/Input.svelte";
-  import {
-    formatKey,
-    inferInputTypeFromValueType,
-  } from "../Functions/formatting.js";
-
-  console.log("Data: ", data);
+  import { inferInputTypeFromValueType } from "../Functions/inference.js";
+  import { formatKey } from "../Functions/formatting.js";
 
   // Make an object that stores the values of the inputs
   let inputs = {};

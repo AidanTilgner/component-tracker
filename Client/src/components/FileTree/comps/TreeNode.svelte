@@ -3,7 +3,6 @@
   import { root } from "../TreeContext";
   export let node, parent;
   let tree;
-  node.type === "file" && console.log(node.references);
 
   root.subscribe((value) => {
     tree = value;

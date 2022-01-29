@@ -7,7 +7,7 @@
     class="select-input__input"
     on:change={(e) => onChange(e, e.target.value)}
   >
-    {#each field.options as option}
+    {#each field.value.options as option}
       <option
         value={option.value}
         selected={option.value == field.value ? true : false}

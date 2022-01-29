@@ -1,13 +1,10 @@
 <script>
   export let field, onChange;
   import Input from "../Input.svelte";
-  import {
-    formatKey,
-    inferInputTypeFromValueType,
-  } from "../../Functions/formatting.js";
+  import { inferInputTypeFromValueType } from "../../Functions/inference.js";
+  import { formatKey } from "../../Functions/formatting.js";
 
   let inputs = field.value;
-  console.log("Inputs in ObjList: ", inputs);
 </script>
 
 {#each Object.keys(field.value) as key}
@@ -27,6 +24,10 @@
 {/each}
 
 <style lang="scss">
+  @import "../../../styles/partials/variables";
+  @import "../../../styles/partials/typography";
+  @import "../../../styles/partials/mixins";
+
   .input {
     padding-inline-start: 24px;
   }

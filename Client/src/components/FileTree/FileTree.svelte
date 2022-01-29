@@ -5,9 +5,6 @@
   import { extractTree } from "./fileTree.js";
   import { root } from "./TreeContext.js";
 
-  // TODO: Make this dynamic based on data from the server
-  console.log("Project in FileTree: ", project);
-
   let tree = extractTree(project);
   root.set(tree);
 </script>
