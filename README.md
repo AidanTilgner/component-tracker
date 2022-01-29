@@ -30,5 +30,8 @@
         If there is an issue with <code>node-sass</code> on MacOS, run <code>npm rebuild node-sass</code>
     </li>
     <li>In the second instance <code>cd Server/</code> then run <code>npm run dev</code></li>
+    <li>In each directory, (Client and Server) create an <code>.env</code></li>
+    <li>In the Client directory, add <code>SERVER_URL=8080</code> to the <code>.env</code>file</li>
+    <li>In the Server directory, add <code>PORT=8080</code> to the <code>.env</code> file</li>
 </ol>
 </div>
