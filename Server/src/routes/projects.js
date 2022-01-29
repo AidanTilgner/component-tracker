@@ -52,7 +52,6 @@ Router.put(
   "/component",
   BP.json(),
   wrapAsync(async (req, res) => {
-    console.log("req.body: ", req.body);
     res.send(await addComponent(req.query.projectID, req.body)).status(200);
   })
 );

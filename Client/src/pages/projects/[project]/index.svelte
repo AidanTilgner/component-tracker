@@ -37,7 +37,7 @@
     }
   });
 
-  let SideBarOpen = true;
+  let SideBarOpen = false;
   let Modal1Open = false;
   let Modal2Open = false;
   let newComponent = {
@@ -58,9 +58,6 @@
     description: project.description,
     externalLinks: project.externalLinks,
   };
-
-  $: console.log("project", project);
-  $: console.log("Editable Project", editableProject);
 </script>
 
 <Navbar />
@@ -127,7 +124,9 @@
           };
           addComponent(project.id, newComponent);
           Modal1Open = false;
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         },
       },
     ]}
