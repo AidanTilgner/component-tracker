@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Fri Jan 28 2022 16:25:08 GMT-0800 (Pacific Standard Time)
+ * File generated Fri Jan 28 2022 17:54:32 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2022-01-29T00:25:08.566Z"
+export const __timestamp = "2022-01-29T01:54:32.473Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -32,7 +32,7 @@ export const _tree = {
       "name": "index",
       "ext": "svelte",
       "badExt": false,
-      "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/index.svelte",
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/index.svelte",
       "importPath": "../src/pages/index.svelte",
       "isLayout": false,
       "isReset": false,
@@ -57,7 +57,7 @@ export const _tree = {
       "name": "login",
       "ext": "",
       "badExt": false,
-      "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/login",
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/login",
       "children": [
         {
           "isFile": true,
@@ -67,7 +67,7 @@ export const _tree = {
           "name": "index",
           "ext": "svelte",
           "badExt": false,
-          "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/login/index.svelte",
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/login/index.svelte",
           "importPath": "../src/pages/login/index.svelte",
           "isLayout": false,
           "isReset": false,
@@ -106,7 +106,7 @@ export const _tree = {
       "name": "projects",
       "ext": "",
       "badExt": false,
-      "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/projects",
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects",
       "children": [
         {
           "isFile": false,
@@ -116,7 +116,7 @@ export const _tree = {
           "name": "[project]",
           "ext": "",
           "badExt": false,
-          "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/projects/[project]",
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/[project]",
           "children": [
             {
               "isFile": true,
@@ -126,7 +126,7 @@ export const _tree = {
               "name": "[component]",
               "ext": "svelte",
               "badExt": false,
-              "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/projects/[project]/[component].svelte",
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/[project]/[component].svelte",
               "importPath": "../src/pages/projects/[project]/[component].svelte",
               "isLayout": false,
               "isReset": false,
@@ -151,7 +151,7 @@ export const _tree = {
               "name": "index",
               "ext": "svelte",
               "badExt": false,
-              "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/projects/[project]/index.svelte",
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/[project]/index.svelte",
               "importPath": "../src/pages/projects/[project]/index.svelte",
               "isLayout": false,
               "isReset": false,
@@ -190,7 +190,7 @@ export const _tree = {
           "name": "index",
           "ext": "svelte",
           "badExt": false,
-          "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/projects/index.svelte",
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/projects/index.svelte",
           "importPath": "../src/pages/projects/index.svelte",
           "isLayout": false,
           "isReset": false,
@@ -229,7 +229,7 @@ export const _tree = {
       "name": "testing",
       "ext": "",
       "badExt": false,
-      "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/testing",
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/testing",
       "children": [
         {
           "isFile": true,
@@ -239,7 +239,7 @@ export const _tree = {
           "name": "index",
           "ext": "svelte",
           "badExt": false,
-          "absolutePath": "/Users/atilgner/Desktop/Development/component-tracker/Client/src/pages/testing/index.svelte",
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/testing/index.svelte",
           "importPath": "../src/pages/testing/index.svelte",
           "isLayout": false,
           "isReset": false,
