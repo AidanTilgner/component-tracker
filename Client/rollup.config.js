@@ -49,7 +49,7 @@ export default {
     replace({
       values: {
         TEST_ENV: JSON.stringify(process.env.TEST_ENV),
-        SERVER_URL: JSON.stringify(process.env.SERVER_URL),
+        SERVER_URL: JSON.stringify(process.env.SERVER_URL) || "http://localhost:3000",
       },
       preventAssignment: true,
     }),
