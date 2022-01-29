@@ -19,6 +19,7 @@ export const getUserFromLogin = async (username, password) => {
     ).then((res) => res.json());
   } catch (error) {
     console.error("Error in getUserFromLogin: ", error);
+    return false;
   }
 };
 

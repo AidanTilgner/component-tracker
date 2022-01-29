@@ -13,3 +13,5 @@ export const user = writable({
   role: "",
   projects: [],
 });
+
+export const userCookie = writable("");

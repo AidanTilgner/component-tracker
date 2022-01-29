@@ -1,7 +1,10 @@
 <script>
-  import { url } from "@roxi/routify";
+  import { url, goto } from "@roxi/routify";
   import { get } from "svelte/store";
   import { getUserFromLogin } from "../../../helpers/Functions/backend.js";
+  import { user, userCookie } from "../../../data/user";
+
+  let verified = false;
 
   const submitLogin = async (e) => {
     let data = {
@@ -10,6 +13,17 @@
     };
     const response = await getUserFromLogin(data.username, data.password);
     console.log(response);
+    // Create a cookie with the user object
+    console.log("");
+    if (!response) {
+      verified = false;
+      return;
+    }
+    document.cookie = `user=${JSON.stringify(response)}`;
+    console.log(document.cookie);
+    user.set(response);
+    // Redirect to the home page
+    // $goto("/");
   };
 </script>
 
