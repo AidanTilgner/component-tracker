@@ -1,6 +1,7 @@
 [
   "/index",
-  "/login/index",
   "/projects/index",
-  "/testing/index"
+  "/testing/index",
+  "/users/login/index",
+  "/users/signup/index"
 ]

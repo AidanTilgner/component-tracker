@@ -10,8 +10,9 @@
   import ObjectListInput from "./components/ObjectListInput.svelte";
   import SwitchInput from "./components/SwitchInput.svelte";
   import ArrayListInput from "./components/ArrayListInput.svelte";
+  import { inferInputTypeFromValueType } from "../Functions/inference.js";
 
-  // ! Finish implementing onChange event for the rest of the types
+  !type && (type = inferInputTypeFromValueType(field.value));
 </script>
 
 <div class="field">

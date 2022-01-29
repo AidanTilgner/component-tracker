@@ -15,8 +15,14 @@
   import Form from "../helpers/Form/Form.svelte";
 
   // Stores
-  import { user } from "../data/user.js";
+  import { user, userCookie } from "../data/user.js";
   import { assign } from "svelte/internal";
+
+  let userCookieData;
+  userCookie.subscribe((val) => {
+    userCookieData = val;
+  });
+  console.log("New User Cookie: ", userCookieData);
 
   // Getting user from API
   let userData = {};

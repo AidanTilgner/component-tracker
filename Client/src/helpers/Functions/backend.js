@@ -10,11 +10,16 @@ const EP = {
 // * User Functions
 export const getUserFromLogin = async (username, password) => {
   try {
+    console.log(
+      "URL: ",
+      `${baseURL}${EP.users}/login?username=${username}&password=${password}`
+    );
     return await fetch(
       `${baseURL}${EP.users}/login?username=${username}&password=${password}`
     ).then((res) => res.json());
   } catch (error) {
     console.error("Error in getUserFromLogin: ", error);
+    return false;
   }
 };
 

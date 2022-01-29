@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Fri Jan 28 2022 16:08:09 GMT-0800 (Pacific Standard Time)
+ * File generated Sat Jan 29 2022 00:43:31 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2022-01-29T00:08:09.251Z"
+export const __timestamp = "2022-01-29T08:43:31.641Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -48,55 +48,6 @@ export const _tree = {
       "path": "/index",
       "id": "_index",
       "component": () => import('../src/pages/index.svelte').then(m => m.default)
-    },
-    {
-      "isFile": false,
-      "isDir": true,
-      "file": "login",
-      "filepath": "/login",
-      "name": "login",
-      "ext": "",
-      "badExt": false,
-      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/login",
-      "children": [
-        {
-          "isFile": true,
-          "isDir": false,
-          "file": "index.svelte",
-          "filepath": "/login/index.svelte",
-          "name": "index",
-          "ext": "svelte",
-          "badExt": false,
-          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/login/index.svelte",
-          "importPath": "../src/pages/login/index.svelte",
-          "isLayout": false,
-          "isReset": false,
-          "isIndex": true,
-          "isFallback": false,
-          "isPage": true,
-          "ownMeta": {},
-          "meta": {
-            "recursive": true,
-            "preload": false,
-            "prerender": true
-          },
-          "path": "/login/index",
-          "id": "_login_index",
-          "component": () => import('../src/pages/login/index.svelte').then(m => m.default)
-        }
-      ],
-      "isLayout": false,
-      "isReset": false,
-      "isIndex": false,
-      "isFallback": false,
-      "isPage": false,
-      "ownMeta": {},
-      "meta": {
-        "recursive": true,
-        "preload": false,
-        "prerender": true
-      },
-      "path": "/login"
     },
     {
       "isFile": false,
@@ -269,6 +220,128 @@ export const _tree = {
         "prerender": true
       },
       "path": "/testing"
+    },
+    {
+      "isFile": false,
+      "isDir": true,
+      "file": "users",
+      "filepath": "/users",
+      "name": "users",
+      "ext": "",
+      "badExt": false,
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/users",
+      "children": [
+        {
+          "isFile": false,
+          "isDir": true,
+          "file": "login",
+          "filepath": "/users/login",
+          "name": "login",
+          "ext": "",
+          "badExt": false,
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/users/login",
+          "children": [
+            {
+              "isFile": true,
+              "isDir": false,
+              "file": "index.svelte",
+              "filepath": "/users/login/index.svelte",
+              "name": "index",
+              "ext": "svelte",
+              "badExt": false,
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/users/login/index.svelte",
+              "importPath": "../src/pages/users/login/index.svelte",
+              "isLayout": false,
+              "isReset": false,
+              "isIndex": true,
+              "isFallback": false,
+              "isPage": true,
+              "ownMeta": {},
+              "meta": {
+                "recursive": true,
+                "preload": false,
+                "prerender": true
+              },
+              "path": "/users/login/index",
+              "id": "_users_login_index",
+              "component": () => import('../src/pages/users/login/index.svelte').then(m => m.default)
+            }
+          ],
+          "isLayout": false,
+          "isReset": false,
+          "isIndex": false,
+          "isFallback": false,
+          "isPage": false,
+          "ownMeta": {},
+          "meta": {
+            "recursive": true,
+            "preload": false,
+            "prerender": true
+          },
+          "path": "/users/login"
+        },
+        {
+          "isFile": false,
+          "isDir": true,
+          "file": "signup",
+          "filepath": "/users/signup",
+          "name": "signup",
+          "ext": "",
+          "badExt": false,
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/users/signup",
+          "children": [
+            {
+              "isFile": true,
+              "isDir": false,
+              "file": "index.svelte",
+              "filepath": "/users/signup/index.svelte",
+              "name": "index",
+              "ext": "svelte",
+              "badExt": false,
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/users/signup/index.svelte",
+              "importPath": "../src/pages/users/signup/index.svelte",
+              "isLayout": false,
+              "isReset": false,
+              "isIndex": true,
+              "isFallback": false,
+              "isPage": true,
+              "ownMeta": {},
+              "meta": {
+                "recursive": true,
+                "preload": false,
+                "prerender": true
+              },
+              "path": "/users/signup/index",
+              "id": "_users_signup_index",
+              "component": () => import('../src/pages/users/signup/index.svelte').then(m => m.default)
+            }
+          ],
+          "isLayout": false,
+          "isReset": false,
+          "isIndex": false,
+          "isFallback": false,
+          "isPage": false,
+          "ownMeta": {},
+          "meta": {
+            "recursive": true,
+            "preload": false,
+            "prerender": true
+          },
+          "path": "/users/signup"
+        }
+      ],
+      "isLayout": false,
+      "isReset": false,
+      "isIndex": false,
+      "isFallback": false,
+      "isPage": false,
+      "ownMeta": {},
+      "meta": {
+        "recursive": true,
+        "preload": false,
+        "prerender": true
+      },
+      "path": "/users"
     }
   ],
   "isLayout": false,

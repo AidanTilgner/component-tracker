@@ -204,7 +204,6 @@
     &__section {
       font-size: 24px;
       margin-bottom: 36px;
-      border-bottom: 2px solid #f4f4f4;
 
       &__title {
         font-weight: 500;
