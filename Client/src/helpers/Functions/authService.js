@@ -1,6 +1,6 @@
 import createAuth0Client from "@auth0/auth0-spa-js";
 import { isAuthenticated, popupOpen, error } from "../../data/auth";
-import config from "../../../auth_config.js";
+import { config } from "../../../auth_config.js";
 
 export const createClient = async () => {
   let auth0Client = await createAuth0Client({
@@ -11,7 +11,7 @@ export const createClient = async () => {
   return auth0Client;
 };
 
-export const loginWithPopup = (client, options) => {
+export const loginWithPopup = async (client, options) => {
   popupOpen.set(true);
   try {
     await client.loginWithPopup(options);
@@ -26,12 +26,14 @@ export const loginWithPopup = (client, options) => {
   }
 };
 
-export const logout = (client) => {
+export const logout = async (client) => {
   client.logout();
 };
 
-export default auth = {
+const auth = {
   createClient,
   loginWithPopup,
   logout,
 };
+
+export default auth;
