@@ -27,8 +27,9 @@ export const verifyLoginStatus = async () => {
     console.log("verifyLoginStatus: ", response.status);
     if (response.status === 403) {
       console.log("Forbidden");
-      window.location.href = "/users/login";
+      return false;
     }
+    return true;
   } catch (error) {
     console.error("Error in verifyLoginStatus: ", error);
     return false;

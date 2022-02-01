@@ -24,7 +24,9 @@
   // * State
   import { user } from "../../../data/user.js";
 
-  verifyLoginStatus();
+  if (!verifyLoginStatus()) {
+    $goto("/login");
+  }
 
   let userData = {};
   user.subscribe((data) => {

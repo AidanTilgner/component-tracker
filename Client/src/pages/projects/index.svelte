@@ -12,8 +12,11 @@
   } from "../../helpers/Functions/backend";
   import { verifyLoginStatus } from "../../helpers/Functions/authentication.js";
   import { onMount } from "svelte";
+  import { goto } from "@roxi/routify";
 
-  verifyLoginStatus();
+  if (!verifyLoginStatus()) {
+    $goto("/login");
+  }
 
   let projects = [];
   let userData = {};

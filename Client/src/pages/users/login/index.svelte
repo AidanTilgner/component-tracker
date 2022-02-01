@@ -1,10 +1,19 @@
 <script>
   import { url, goto } from "@roxi/routify";
   import { get } from "svelte/store";
+  import { onMount } from "svelte";
   import { getUser, login } from "../../../helpers/Functions/backend.js";
   import { user, tokens } from "../../../data/user";
+  import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
 
   let verified = false;
+
+  onMount(async () => {
+    const isLoggedIn = await verifyLoginStatus();
+    if (isLoggedIn) {
+      $goto("/home");
+    }
+  });
 
   tokens.subscribe((tokens) => {
     console.log("Tokens: ", tokens);

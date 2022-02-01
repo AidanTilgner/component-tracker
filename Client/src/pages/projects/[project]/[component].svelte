@@ -19,7 +19,9 @@
   } from "../../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
 
-  verifyLoginStatus();
+  if (!verifyLoginStatus()) {
+    $goto("/users/login");
+  }
 
   let userData = {};
   user.subscribe((data) => {

@@ -18,8 +18,6 @@
   // Stores
   import { user } from "../../data/user";
 
-  verifyLoginStatus();
-
   // Getting user from API
   let userData = {};
   let projects = [];
@@ -29,9 +27,12 @@
   });
 
   onMount(async () => {
-    user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+    const isLoggedIn = await verifyLoginStatus();
+    if (!isLoggedIn) {
+      console.log("Redirecting to login");
+      $goto("/users/login");
+    }
   });
-
   // TODO: Add functionality for buttons
 
   let newProjectModal = false;
