@@ -1,29 +1,29 @@
 <script>
   import { url, goto } from "@roxi/routify";
   import { get } from "svelte/store";
-  import { getUserFromLogin } from "../../../helpers/Functions/backend.js";
-  import { user, userCookie } from "../../../data/user";
+  import { getUser, login } from "../../../helpers/Functions/backend.js";
+  import { user, tokens } from "../../../data/user";
 
   let verified = false;
+
+  tokens.subscribe((tokens) => {
+    console.log("Tokens: ", tokens);
+  });
+
+  user.subscribe((user) => {
+    console.log("User: ", user);
+  });
 
   const submitLogin = async (e) => {
     let data = {
       username: document.getElementById("username").value,
       password: document.getElementById("password").value,
     };
-    const response = await getUserFromLogin(data.username, data.password);
+    const response = await login(data.username, data.password);
     console.log(response);
-    // Create a cookie with the user object
-    console.log("");
-    if (!response) {
-      verified = false;
-      return;
-    }
-    document.cookie = `user=${JSON.stringify(response)}`;
-    console.log(document.cookie);
-    user.set(response);
-    // Redirect to the home page
-    // $goto("/");
+    tokens.set(response.tokens);
+    user.set(response.user);
+    $goto("/home");
   };
 </script>
 

@@ -1,8 +1,8 @@
 import { writable } from "svelte/store";
 
-export const userCredentials = writable({
-  username: "",
-  password: "",
+export const tokens = writable({
+  access: "",
+  refresh: "",
 });
 
 export const user = writable({

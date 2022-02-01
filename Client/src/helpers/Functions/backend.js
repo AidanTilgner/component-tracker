@@ -1,24 +1,59 @@
 /** @purpose This file contains functions that fetch data from the server */
 
+import { tokens } from "../../data/user";
+
 // * Global variables
 const baseURL = SERVER_URL;
 const EP = {
   users: "/users",
   projects: "/projects",
+  auth: "/auth",
+};
+
+// * Auth Functions
+export const login = async (username, password) => {
+  const response = await fetch(`${baseURL}${EP.auth}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }),
+  });
+  const data = await response.json();
+  return data;
 };
 
 // * User Functions
 export const getUserFromLogin = async (username, password) => {
   try {
-    console.log(
-      "URL: ",
-      `${baseURL}${EP.users}/login?username=${username}&password=${password}`
-    );
     return await fetch(
-      `${baseURL}${EP.users}/login?username=${username}&password=${password}`
+      `${baseURL}${EP.users}/login?username=${username}&password=${password}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokens.access}`,
+        },
+      }
     ).then((res) => res.json());
   } catch (error) {
     console.error("Error in getUserFromLogin: ", error);
+    return false;
+  }
+};
+
+export const refreshAccessToken = async (refreshToken) => {
+  try {
+    return await fetch(`${baseURL}${EP.auth}/refresh`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${refreshToken}`,
+      },
+      body: JSON.stringify({ refreshToken }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in refreshAccessToken: ", error);
     return false;
   }
 };

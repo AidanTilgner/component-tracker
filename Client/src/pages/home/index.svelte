@@ -6,6 +6,7 @@
     getUserFromLogin,
     addProject,
   } from "../../helpers/Functions/backend.js";
+  import { verifyLoginStatus } from "../../helpers/Functions/authentication";
 
   // Components
   import Navbar from "../../components/Navbar/Navbar.svelte";
@@ -13,6 +14,11 @@
   import PreviewGrid from "../../components/PreviewGrid/PreviewGrid.svelte";
   import Modal from "../../helpers/Modal/Modal.svelte";
   import Form from "../../helpers/Form/Form.svelte";
+
+  // Stores
+  import { user } from "../../data/user";
+
+  verifyLoginStatus();
 
   // Getting user from API
   let userData = {};
