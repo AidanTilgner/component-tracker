@@ -18,10 +18,13 @@
     addComponent,
     updateProject,
   } from "../../../helpers/Functions/backend.js";
+  import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
   import { onMount } from "svelte";
 
   // * State
   import { user } from "../../../data/user.js";
+
+  verifyLoginStatus();
 
   let userData = {};
   user.subscribe((data) => {

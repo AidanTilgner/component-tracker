@@ -3,6 +3,9 @@ import Express from "express";
 import BP from "body-parser";
 const Router = Express.Router();
 
+// Middleware
+import { authenticateUser } from "../helpers/tokens.js";
+
 // Helpers
 import { wrapAsync } from "../helpers/routing.js";
 
@@ -18,8 +21,11 @@ import {
   deleteComponent,
 } from "../controllers/ProjectsController.js";
 
+Router.use(BP.json());
+
 Router.get(
   "/",
+  authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await getProject(req.query.projectID)).status(200);
   })
@@ -27,7 +33,7 @@ Router.get(
 
 Router.post(
   "/add",
-  BP.json(),
+  authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await addProject(req.body)).status(200);
   })
@@ -35,7 +41,7 @@ Router.post(
 
 Router.put(
   "/",
-  BP.json(),
+  authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await updateProject(req.query.projectID, req.body)).status(200);
   })
@@ -43,6 +49,7 @@ Router.put(
 
 Router.delete(
   "/",
+  authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await deleteProject(req.query.projectID)).status(200);
   })
@@ -50,7 +57,7 @@ Router.delete(
 
 Router.put(
   "/component",
-  BP.json(),
+  authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await addComponent(req.query.projectID, req.body)).status(200);
   })
@@ -58,11 +65,8 @@ Router.put(
 
 Router.get(
   "/component",
+  authenticateUser,
   wrapAsync(async (req, res) => {
-    console.log(
-      "Component: ",
-      await getComponent(req.query.projectID, req.query.name)
-    );
     res
       .send(await getComponent(req.query.projectID, req.query.name))
       .status(200);
@@ -71,11 +75,8 @@ Router.get(
 
 Router.patch(
   "/component",
-  BP.json(),
+  authenticateUser,
   wrapAsync(async (req, res) => {
-    console.log("Project: ", req.query.projectID);
-    console.log("Component: ", req.query.name);
-    console.log("Req Body: ", req.body);
     res
       .send(
         await updateComponent(req.query.projectID, req.query.name, req.body)
@@ -86,6 +87,7 @@ Router.patch(
 
 Router.delete(
   "/component",
+  authenticateUser,
   wrapAsync(async (req, res) => {
     res
       .send(await deleteComponent(req.query.projectID, req.query.name))

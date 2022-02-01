@@ -10,7 +10,10 @@
     getUserFromLogin,
     addProject,
   } from "../../helpers/Functions/backend";
+  import { verifyLoginStatus } from "../../helpers/Functions/authentication.js";
   import { onMount } from "svelte";
+
+  verifyLoginStatus();
 
   let projects = [];
   let userData = {};

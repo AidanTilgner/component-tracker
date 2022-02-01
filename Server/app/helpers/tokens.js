@@ -32,12 +32,10 @@ export const addRefreshTokenToDatabase = async (tkn) => {
 export const refreshUserToken = async (tkn) => {
   try {
     let data = await getDataByFilepath("../data/tokens/refreshTokens.json");
-    console.log("Data: ", data);
     if (tkn === null) return 401;
     if (!data.includes(tkn)) return 403;
     return JWT.verify(tkn, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
       if (err) return 403;
-      console.log("User: ", user);
       return {
         accessToken: generateAccessToken(
           {
@@ -69,4 +67,16 @@ export const deleteRefreshTokenFromDatabase = async (tkn) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const authenticateUser = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) return res.sendStatus(401);
+
+  JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
 };

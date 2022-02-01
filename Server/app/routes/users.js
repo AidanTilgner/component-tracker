@@ -6,6 +6,9 @@ const Router = Express.Router();
 // Helpers
 import { wrapAsync } from "../helpers/routing.js";
 
+// Middleware
+import { authenticateUser } from "../helpers/tokens.js";
+
 // Controller
 import {
   addUser,
@@ -15,9 +18,12 @@ import {
   getProjects,
 } from "../controllers/UsersController.js";
 
+Router.use(BP.json());
+
+// ! DEPRECATED
 Router.post(
   "/add",
-  BP.json(),
+  authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await addUser(req.body)).status(200);
   })
@@ -25,6 +31,7 @@ Router.post(
 
 Router.get(
   "/",
+  authenticateUser,
   wrapAsync(async (req, res) => {
     console.log("Getting user");
     res.send(await getUser(req.query.id)).status(200);
@@ -33,7 +40,7 @@ Router.get(
 
 Router.put(
   "/",
-  BP.json(),
+  authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await updateUser(req.query.id, req.body)).status(200);
   })
@@ -41,6 +48,7 @@ Router.put(
 
 Router.delete(
   "/",
+  authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await deleteUser(req.query.id)).status(200);
   })
@@ -48,6 +56,7 @@ Router.delete(
 
 Router.get(
   "/projects",
+  authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await getProjects(req.query.id)).status(200);
   })

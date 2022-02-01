@@ -17,6 +17,9 @@
     updateComponent,
     deleteComponent,
   } from "../../../helpers/Functions/backend.js";
+  import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
+
+  verifyLoginStatus();
 
   let userData = {};
   user.subscribe((data) => {

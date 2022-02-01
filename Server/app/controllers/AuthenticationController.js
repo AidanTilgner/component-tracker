@@ -13,30 +13,33 @@ import User from "../data/user/user.js";
 
 export const loginUser = async (username, password) => {
   const user = await getUserFromDatabaseByLogin(username, password);
-  console.log("Logging in user", user);
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
   addRefreshTokenToDatabase(refreshToken);
   return {
-    accessToken,
-    refreshToken,
+    tokens: {
+      access: accessToken,
+      refresh: refreshToken,
+    },
+    user: user,
   };
 };
 
 export const registerUser = async (user) => {
   user = await addUserToDatabase(user);
-  console.log("New user registered: ", user);
   const accessToken = generateAccessToken(user, { expiresIn: "1h" });
   const refreshToken = generateRefreshToken(user, { expiresIn: "1d" });
   addRefreshTokenToDatabase(refreshToken);
   return {
-    accessToken,
-    refreshToken,
+    tokens: {
+      access: accessToken,
+      refresh: refreshToken,
+    },
+    user: user,
   };
 };
 
 export const refreshUser = async (refreshToken) => {
-  console.log("Returns: ", await refreshUserToken(refreshToken));
   return await refreshUserToken(refreshToken);
 };
 

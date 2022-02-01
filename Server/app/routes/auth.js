@@ -18,7 +18,6 @@ Router.post(
   "/login",
   BP.json(),
   wrapAsync(async (req, res) => {
-    console.log("Getting tokens");
     res.send(await loginUser(req.body.username, req.body.password)).status(200);
   })
 );
@@ -27,7 +26,6 @@ Router.post(
   "/refresh",
   BP.json(),
   wrapAsync(async (req, res) => {
-    console.log("Refreshing tokens");
     res.send(await refreshUser(req.body.refreshToken)).status(200);
   })
 );
