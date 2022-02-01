@@ -65,7 +65,7 @@ export const deleteRefreshTokenFromDatabase = async (tkn) => {
       "../data/tokens/refreshTokens.json",
       JSON.stringify(data)
     );
-    return tkn;
+    return { message: "Refresh token deleted" };
   } catch (err) {
     console.log(err);
   }

@@ -5,6 +5,7 @@ import {
   generateRefreshToken,
   addRefreshTokenToDatabase,
   refreshUserToken,
+  deleteRefreshTokenFromDatabase,
 } from "../helpers/tokens.js";
 
 // Classes

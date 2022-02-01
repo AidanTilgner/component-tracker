@@ -11,6 +11,7 @@ import {
   loginUser,
   registerUser,
   refreshUser,
+  logoutUser,
 } from "../controllers/AuthenticationController.js";
 
 Router.post(
@@ -39,6 +40,12 @@ Router.post(
   })
 );
 
-Router.post("/logout");
+Router.delete(
+  "/logout",
+  BP.json(),
+  wrapAsync(async (req, res) => {
+    res.send(await logoutUser(req.body.refreshToken)).status(204);
+  })
+);
 
 export default Router;
