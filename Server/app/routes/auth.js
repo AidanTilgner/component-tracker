@@ -10,6 +10,7 @@ import { wrapAsync } from "../helpers/routing.js";
 import {
   loginUser,
   registerUser,
+  refreshUser,
 } from "../controllers/AuthenticationController.js";
 
 Router.post(
@@ -22,11 +23,22 @@ Router.post(
 );
 
 Router.post(
+  "/refresh",
+  BP.json(),
+  wrapAsync(async (req, res) => {
+    console.log("Refreshing tokens");
+    res.send(await refreshUser(req.body.refreshToken)).status(200);
+  })
+);
+
+Router.post(
   "/register",
   BP.json(),
   wrapAsync(async (req, res) => {
     res.send(await registerUser(req.body)).status(200);
   })
 );
+
+Router.post("/logout");
 
 export default Router;

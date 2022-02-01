@@ -1,1 +1,25 @@
-[{"id":"ocogt-equmy-hyx56-z45q8","username":"Aidan.Tilgner","email":"aidantilgner@gmail.com","password":"password","role":"superuser","projects":[{"id":"z1bql-s67mu-or42g-3u87q","name":"My Third Project","edited":"1/27/2022","framework":"React"}]},{"id":"h14ij-d5iwm-rilrk-abmld","username":"bobthebuilder","email":"","password":"coolnewpassword","role":"user","projects":[]}]
+[
+  {
+    "id": "ocogt-equmy-hyx56-z45q8",
+    "username": "Aidan.Tilgner",
+    "email": "aidantilgner@gmail.com",
+    "password": "password",
+    "role": "superuser",
+    "projects": [
+      {
+        "id": "z1bql-s67mu-or42g-3u87q",
+        "name": "My Third Project",
+        "edited": "1/27/2022",
+        "framework": "React"
+      }
+    ]
+  },
+  {
+    "id": "2ed8w-b6m79-i3i43-t0gtb",
+    "username": "bobthebuilder",
+    "email": "",
+    "password": "coolnewpassword",
+    "role": "user",
+    "projects": []
+  }
+]
