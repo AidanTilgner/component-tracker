@@ -1,12 +1,13 @@
 class User {
   constructor({ username, email, password, role }) {
+    console.log("Creating new user...", username, email, password, role);
     this.id = `${this.randomString(5)}-${this.randomString(
       5
     )}-${this.randomString(5)}-${this.randomString(5)}`;
     this.username = username;
-    this.email = email;
+    this.email = email || "";
     this.password = password;
-    this.role = role;
+    this.role = role || "user";
     this.projects = [];
   }
 

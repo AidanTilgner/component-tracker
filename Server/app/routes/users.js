@@ -13,7 +13,6 @@ import {
   updateUser,
   deleteUser,
   getProjects,
-  getUserFromLogin,
 } from "../controllers/UsersController.js";
 
 Router.post(
@@ -29,20 +28,6 @@ Router.get(
   wrapAsync(async (req, res) => {
     console.log("Getting user");
     res.send(await getUser(req.query.id)).status(200);
-  })
-);
-
-Router.get(
-  "/login",
-  wrapAsync(async (req, res) => {
-    console.log("Getting user from login");
-    res
-      .send(
-        (await getUserFromLogin(req.query.username, req.query.password)) || {
-          error: "No such user exists.",
-        }
-      )
-      .status(200);
   })
 );
 

@@ -1,116 +1,106 @@
 <script>
-  // Helpers
-  import { goto } from "@roxi/routify";
   import { onMount } from "svelte";
   import {
-    getUserFromLogin,
-    addProject,
-  } from "../helpers/Functions/backend.js";
+    createClient,
+    loginWithPopup,
+    logout,
+  } from "../helpers/Functions/authService";
+  import { isAuthenticated, popupOpen, error } from "../data/auth";
+  import { user } from "../data/user";
 
-  // Components
-  import Navbar from "../components/Navbar/Navbar.svelte";
-  import Header from "../helpers/Header/Header.svelte";
-  import PreviewGrid from "../components/PreviewGrid/PreviewGrid.svelte";
-  import Modal from "../helpers/Modal/Modal.svelte";
-  import Form from "../helpers/Form/Form.svelte";
-
-  // Stores
-  import { user, userCookie } from "../data/user.js";
-  import { assign } from "svelte/internal";
-
-  let userCookieData;
-  userCookie.subscribe((val) => {
-    userCookieData = val;
-  });
-  console.log("New User Cookie: ", userCookieData);
-
-  // Getting user from API
-  let userData = {};
-  let projects = [];
-  user.subscribe((user) => {
-    userData = user;
-    projects = user.projects;
-  });
+  let authClient;
 
   onMount(async () => {
-    user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+    authClient = await createClient();
+    isAuthenticated.set(await authClient.isAuthenticated());
+    console.log("User is: ", authClient.getUser());
   });
-
-  // TODO: Add functionality for buttons
-
-  let newProjectModal = false;
-
-  let projectData = {};
 </script>
 
-<Navbar />
-<div class="home" data-testid="home">
-  <Header
-    title="Recent Projects"
-    type="subtitle"
-    buttons={[
-      {
-        text: "All Projects",
-        type: "secondary",
-        action: () => $goto("/projects"),
-      },
-      {
-        text: "New Project",
-        type: "primary",
-        action: () => (newProjectModal = true),
-      },
-    ]}
-  />
-  {#if projects[0] !== undefined}
-    <PreviewGrid {projects} />
-  {/if}
-  <Modal
-    title="New Project"
-    open={newProjectModal}
-    buttons={[
-      {
-        text: "Close",
-        type: "secondary",
-        action: () => (newProjectModal = false),
-      },
-      {
-        text: "Add",
-        type: "primary",
-        action: () => {
-          newProjectModal = false;
-          addProject({
-            owner: {
-              id: userData.id,
-              username: userData.username,
-            },
-            contributors: [{ id: userData.id, username: userData.username }],
-            ...projectData,
-          });
-        },
-      },
-    ]}
-  >
-    <Form
-      data={{
-        name: "",
-        framework: "",
-        description: "",
-        externalLinks: "",
-      }}
-      onChange={(e, inputs) => {
-        projectData = inputs;
-      }}
-      prefilled={projectData}
-    />
-  </Modal>
-</div>
+<main class="login">
+  <div class="login__modal" />
+</main>
 
-<style type="text/scss">
-  @import "../styles/partials/variables.scss";
-  @import "../styles/partials/typography.scss";
-  @import "../styles/partials/mixins.scss";
+<style lang="scss">
+  @import "../styles/partials/variables";
+  @import "../styles/partials/typography";
+  @import "../styles/partials/mixins";
 
-  .home {
-    @include default-padding;
+  .login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: $font-primary;
+    background-color: #f8f8f8;
+    height: 100vh;
+
+    &__modal {
+      width: 40vw;
+      box-shadow: 0.2px 0.2px 10px 0 rgba(0, 0, 0, 0.25);
+      background-color: white;
+      border-radius: 8px;
+    }
+
+    &__title {
+      font-size: 36px;
+      border-bottom: 1px solid #c4c4c4;
+      padding: 24px 36px;
+      margin: 0;
+      font-weight: 500;
+    }
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    &__label {
+      font-size: 24px;
+      margin: 0;
+      margin-bottom: 8px;
+      margin-left: 36px;
+      font-weight: 500;
+      margin-top: 36px;
+    }
+
+    &__input {
+      background-color: white;
+      height: 45px;
+      border: 1.5px solid #c4c4c4;
+      border-radius: 5px;
+      box-shadow: inset 0.2px 0.2px 2px 0 rgba($color: #000000, $alpha: 0.25);
+      padding-inline-start: 14px;
+      margin: 0 36px;
+
+      &:focus {
+        outline: none;
+        border: 2px solid $color-primary;
+      }
+    }
+
+    &__buttons {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin: 36px;
+    }
+
+    &__button {
+      &-primary {
+        @include button;
+        @include button-primary;
+        margin: 0;
+      }
+
+      &-secondary {
+        @include button-text;
+        width: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 14px;
+      }
+    }
   }
 </style>

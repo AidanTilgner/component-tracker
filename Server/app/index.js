@@ -11,9 +11,9 @@ app.use(
   })
 );
 
-import AuthRouter from "./routes/auth.js";
 import UsersRouter from "./routes/users.js";
 import ProjectsRouter from "./routes/projects.js";
+import AuthRouter from "./routes/auth.js";
 
 // Auth
 app.use("/auth", AuthRouter);

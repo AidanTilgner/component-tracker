@@ -11,6 +11,10 @@ import path from "path";
 
 // Helpers
 import { getDataByFilepath, writeFileByFilepath } from "../helpers/files.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../helpers/tokens.js";
 
 export const addUser = async (user) => {
   return await addUserToDatabase(user);
