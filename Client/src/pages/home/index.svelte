@@ -5,6 +5,7 @@
   import {
     getUserFromLogin,
     addProject,
+    getUserProjects,
   } from "../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../helpers/Functions/authentication";
 
@@ -22,9 +23,8 @@
   let userData = {};
   let projects = [];
   user.subscribe((user) => {
-    console.log("User: ", user)
+    console.log("User: ", user);
     userData = user;
-    projects = user.projects;
   });
 
   onMount(async () => {
@@ -33,6 +33,7 @@
       console.log("Redirecting to login");
       $goto("/users/login");
     }
+    projects = await getUserProjects(userData.id);
   });
 
   let newProjectModal = false;

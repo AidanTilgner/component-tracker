@@ -107,7 +107,7 @@ const updateUserInDatabase = async (id, update) => {
 
 const getUserProjects = async (id) => {
   let data = await getDataByFilepath("../data/user/users.json");
-  let user = data.find((user) => user.id === id);
+  let user = data.find((user) => user.id === id.toString());
   return user.projects;
 };
 

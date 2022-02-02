@@ -21,5 +21,20 @@
     "password": "coolnewpassword",
     "role": "user",
     "projects": []
+  },
+  {
+    "id": "f21i3-yaojx-kz2c3-026xa",
+    "username": "Bob",
+    "email": "aidantilgner02@gmail.com",
+    "password": "password",
+    "role": "user",
+    "projects": [
+      {
+        "id": "4i3l0-o9xyl-pikdj-ko6fw",
+        "name": "Cool new project",
+        "edited": "2/1/2022",
+        "framework": "React"
+      }
+    ]
   }
 ]

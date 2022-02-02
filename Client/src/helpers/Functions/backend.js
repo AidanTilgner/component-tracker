@@ -28,6 +28,18 @@ export const login = async (username, password) => {
   return data;
 };
 
+export const signUp = async (username, email, password) => {
+  const response = await fetch(`${baseURL}${EP.auth}/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, email, password }),
+  });
+  const data = await response.json();
+  return data;
+};
+
 // * User Functions
 export const getUserFromLogin = async (username, password) => {
   try {
@@ -99,13 +111,15 @@ export const getUser = async (id) => {
 
 export const getUserProjects = async (id) => {
   try {
-    return await fetch(`${baseURL}${EP.users}/?id=${id}/projects`, {
+    return await fetch(`${baseURL}${EP.users}/projects?id=${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-    }).then((res) => res.json());
+    }).then((res) => {
+      return res.json();
+    });
   } catch (error) {
     console.error("Error in getUserProjects: ", error);
   }

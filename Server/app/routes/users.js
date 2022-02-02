@@ -33,7 +33,6 @@ Router.get(
   "/",
   authenticateUser,
   wrapAsync(async (req, res) => {
-    console.log("Getting user");
     res.send(await getUser(req.query.id)).status(200);
   })
 );

@@ -9,6 +9,7 @@
   import {
     getUserFromLogin,
     addProject,
+    getUserProjects,
   } from "../../helpers/Functions/backend";
   import { verifyLoginStatus } from "../../helpers/Functions/authentication.js";
   import { onMount } from "svelte";
@@ -22,7 +23,6 @@
   let userData = {};
   user.subscribe((user) => {
     userData = user;
-    projects = user.projects;
   });
 
   onMount(async () => {
@@ -30,9 +30,7 @@
     if (!isLoggedIn) {
       $goto("/users/login");
     }
-    if (!projects[0]) {
-      user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
-    }
+    projects = await getUserProjects(userData.id);
   });
 
   let newProjectModal = false;
