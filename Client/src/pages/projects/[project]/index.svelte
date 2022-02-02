@@ -24,10 +24,6 @@
   // * State
   import { user } from "../../../data/user.js";
 
-  if (!verifyLoginStatus()) {
-    $goto("/login");
-  }
-
   let userData = {};
   user.subscribe((data) => {
     userData = data;
@@ -36,6 +32,10 @@
   let project = {};
 
   onMount(async () => {
+    const isLoggedIn = await verifyLoginStatus();
+    if (!isLoggedIn) {
+      $goto("/users/login");
+    }
     project = await getProject($params.project);
     if (!userData.username) {
       user.set(await getUserFromLogin("Aidan.Tilgner", "password"));

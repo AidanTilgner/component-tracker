@@ -22,6 +22,7 @@
   let userData = {};
   let projects = [];
   user.subscribe((user) => {
+    console.log("User: ", user)
     userData = user;
     projects = user.projects;
   });
@@ -33,7 +34,6 @@
       $goto("/users/login");
     }
   });
-  // TODO: Add functionality for buttons
 
   let newProjectModal = false;
 

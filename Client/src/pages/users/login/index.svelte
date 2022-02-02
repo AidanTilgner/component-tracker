@@ -5,6 +5,13 @@
   import { getUser, login } from "../../../helpers/Functions/backend.js";
   import { user, tokens } from "../../../data/user";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
+  import {
+    writeToLocalStorage,
+    logLocalStorage,
+    writeToSessionStorage,
+    readFromLocalStorage,
+    readFromSessionStorage,
+  } from "../../../helpers/Functions/local.js";
 
   let verified = false;
 
@@ -30,8 +37,18 @@
     };
     const response = await login(data.username, data.password);
     console.log(response);
+    writeToLocalStorage("refreshToken", response.tokens.refresh);
+    writeToSessionStorage("accessToken", response.tokens.access);
+    writeToLocalStorage("user", JSON.stringify(response.user));
+    logLocalStorage();
     tokens.set(response.tokens);
     user.set(response.user);
+    console.log(
+      "Tokens: ",
+      readFromLocalStorage("refreshToken"),
+      readFromSessionStorage("accessToken")
+    );
+    console.log("User: ", JSON.parse(readFromLocalStorage("user")));
     $goto("/home");
   };
 </script>

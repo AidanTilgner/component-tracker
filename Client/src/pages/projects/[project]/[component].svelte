@@ -19,10 +19,6 @@
   } from "../../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
 
-  if (!verifyLoginStatus()) {
-    $goto("/users/login");
-  }
-
   let userData = {};
   user.subscribe((data) => {
     userData = data;
@@ -62,6 +58,10 @@
   $: metaData = Object.keys(component.metaData);
 
   onMount(async () => {
+    const isLoggedIn = await verifyLoginStatus();
+    if (!isLoggedIn) {
+      $goto("/users/login");
+    }
     project = await getProject($params.project);
     component = await getComponent(
       $params.project,

@@ -1,6 +1,11 @@
 /** @purpose This file contains functions that fetch data from the server */
 
 import { tokens } from "../../data/user";
+let accessToken, refreshToken;
+tokens.subscribe((tokens) => {
+  accessToken = tokens.access;
+  refreshToken = tokens.refresh;
+});
 
 // * Global variables
 const baseURL = SERVER_URL;
@@ -32,7 +37,7 @@ export const getUserFromLogin = async (username, password) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${tokens.access}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       }
     ).then((res) => res.json());
@@ -80,9 +85,13 @@ export const addUserFromSignup = async (username, email, password) => {
 
 export const getUser = async (id) => {
   try {
-    return await fetch(`${baseURL}${EP.users}/?id=${id}`).then((res) =>
-      res.json()
-    );
+    return await fetch(`${baseURL}${EP.users}/?id=${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }).then((res) => res.json());
   } catch (error) {
     console.error("Error in getUser: ", error);
   }
@@ -90,9 +99,13 @@ export const getUser = async (id) => {
 
 export const getUserProjects = async (id) => {
   try {
-    return await fetch(`${baseURL}${EP.users}/?id=${id}/projects`).then((res) =>
-      res.json()
-    );
+    return await fetch(`${baseURL}${EP.users}/?id=${id}/projects`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }).then((res) => res.json());
   } catch (error) {
     console.error("Error in getUserProjects: ", error);
   }
@@ -104,6 +117,7 @@ export const updateUser = async (id, update) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(update),
     }).then((res) => res.json());
@@ -116,6 +130,10 @@ export const deleteUser = async (id) => {
   try {
     return await fetch(`${baseURL}${EP.users}/?id=${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     }).then((res) => res.json());
   } catch (error) {
     console.error("Error in deleteUser: ", error);
@@ -129,6 +147,7 @@ export const addProject = async (project) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(project),
     }).then((res) => res.json());
@@ -139,9 +158,13 @@ export const addProject = async (project) => {
 
 export const getProject = async (projectID) => {
   try {
-    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`).then(
-      (res) => res.json()
-    );
+    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }).then((res) => res.json());
   } catch (error) {
     console.error("Error in getProject: ", error);
   }
@@ -153,6 +176,7 @@ export const updateProject = async (projectID, update) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(update),
     }).then((res) => res.json());
@@ -165,6 +189,10 @@ export const deleteProject = async (projectID) => {
   try {
     return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     }).then((res) => res.json());
   } catch (error) {
     console.error("Error in deleteProject: ", error);
@@ -180,6 +208,7 @@ export const addComponent = async (projectID, component) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(component),
       }
@@ -193,7 +222,14 @@ export const addComponent = async (projectID, component) => {
 export const getComponent = async (projectID, name) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`
+      `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     ).then((res) => res.json());
   } catch (error) {
     console.error("Error in getComponent: ", error);
@@ -208,6 +244,7 @@ export const updateComponent = async (projectID, name, update) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(update),
       }
@@ -223,6 +260,10 @@ export const deleteComponent = async (projectID, name) => {
       `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
       {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
       }
     ).then((res) => res.json());
   } catch (error) {

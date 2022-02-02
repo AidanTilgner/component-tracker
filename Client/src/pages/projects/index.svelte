@@ -26,6 +26,10 @@
   });
 
   onMount(async () => {
+    const isLoggedIn = await verifyLoginStatus();
+    if (!isLoggedIn) {
+      $goto("/users/login");
+    }
     if (!projects[0]) {
       user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
     }
