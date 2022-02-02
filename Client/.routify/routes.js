@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Tue Feb 01 2022 23:39:27 GMT-0800 (Pacific Standard Time)
+ * File generated Wed Feb 02 2022 00:24:45 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2022-02-02T07:39:27.520Z"
+export const __timestamp = "2022-02-02T08:24:45.501Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -97,6 +97,55 @@ export const _tree = {
       "path": "/index",
       "id": "_index",
       "component": () => import('../src/pages/index.svelte').then(m => m.default)
+    },
+    {
+      "isFile": false,
+      "isDir": true,
+      "file": "profile",
+      "filepath": "/profile",
+      "name": "profile",
+      "ext": "",
+      "badExt": false,
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/profile",
+      "children": [
+        {
+          "isFile": true,
+          "isDir": false,
+          "file": "index.svelte",
+          "filepath": "/profile/index.svelte",
+          "name": "index",
+          "ext": "svelte",
+          "badExt": false,
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/profile/index.svelte",
+          "importPath": "../src/pages/profile/index.svelte",
+          "isLayout": false,
+          "isReset": false,
+          "isIndex": true,
+          "isFallback": false,
+          "isPage": true,
+          "ownMeta": {},
+          "meta": {
+            "recursive": true,
+            "preload": false,
+            "prerender": true
+          },
+          "path": "/profile/index",
+          "id": "_profile_index",
+          "component": () => import('../src/pages/profile/index.svelte').then(m => m.default)
+        }
+      ],
+      "isLayout": false,
+      "isReset": false,
+      "isIndex": false,
+      "isFallback": false,
+      "isPage": false,
+      "ownMeta": {},
+      "meta": {
+        "recursive": true,
+        "preload": false,
+        "prerender": true
+      },
+      "path": "/profile"
     },
     {
       "isFile": false,

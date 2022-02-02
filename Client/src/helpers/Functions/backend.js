@@ -1,6 +1,7 @@
 /** @purpose This file contains functions that fetch data from the server */
 
 import { tokens } from "../../data/user";
+import { deleteFromLocalStorage, deleteFromSessionStorage } from "./local";
 let accessToken, refreshToken;
 tokens.subscribe((tokens) => {
   accessToken = tokens.access;
@@ -17,27 +18,55 @@ const EP = {
 
 // * Auth Functions
 export const login = async (username, password) => {
-  const response = await fetch(`${baseURL}${EP.auth}/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ username, password }),
-  });
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(`${baseURL}${EP.auth}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log("Error in login: ", err);
+  }
 };
 
 export const signUp = async (username, email, password) => {
-  const response = await fetch(`${baseURL}${EP.auth}/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ username, email, password }),
-  });
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(`${baseURL}${EP.auth}/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, email, password }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log("Error in signUp: ", err);
+  }
+};
+
+export const logout = async () => {
+  try {
+    const response = await fetch(`${baseURL}${EP.auth}/logout`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ refreshToken }),
+    });
+    const data = await response.json();
+    deleteFromLocalStorage("refreshToken");
+    deleteFromLocalStorage("user");
+    deleteFromSessionStorage("accessToken");
+    return data;
+  } catch (err) {
+    console.log("Error in logout: ", err);
+  }
 };
 
 // * User Functions
