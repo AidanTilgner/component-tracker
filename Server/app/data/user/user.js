@@ -1,12 +1,14 @@
+import { hashPassword } from "../../helpers/crypto.js";
+
 class User {
   constructor({ username, email, password, role }) {
     console.log("Creating new user...", username, email, password, role);
-    this.id = `${this.randomString(5)}-${this.randomString(
+    this.user_id = `${this.randomString(5)}-${this.randomString(
       5
     )}-${this.randomString(5)}-${this.randomString(5)}`;
     this.username = username;
     this.email = email || "";
-    this.password = password;
+    this.password = hashPassword(password);
     this.role = role || "user";
     this.projects = [];
   }

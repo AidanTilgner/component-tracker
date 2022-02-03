@@ -1,20 +1,9 @@
 // Classes
 import User from "../data/user/user.js";
 
-// Path Stuff
-import FS, { writeFile, readFile } from "fs";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-import path from "path";
-
 // Helpers
 import { getDataByFilepath, writeFileByFilepath } from "../helpers/files.js";
-import {
-  generateAccessToken,
-  generateRefreshToken,
-} from "../helpers/tokens.js";
+import { saveUserToDatabase } from "../database/actions/save.js";
 
 export const addUser = async (user) => {
   return await addUserToDatabase(user);

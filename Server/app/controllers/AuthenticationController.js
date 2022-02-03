@@ -7,6 +7,7 @@ import {
   refreshUserToken,
   deleteRefreshTokenFromDatabase,
 } from "../helpers/tokens.js";
+import { saveUserToDatabase } from "../database/actions/save.js";
 
 // Classes
 import User from "../data/user/user.js";
@@ -26,7 +27,7 @@ export const loginUser = async (username, password) => {
 };
 
 export const registerUser = async (user) => {
-  user = await addUserToDatabase(user);
+  user = await saveUserToDatabase(user);
   const accessToken = generateAccessToken(user, { expiresIn: "1h" });
   const refreshToken = generateRefreshToken(user, { expiresIn: "1d" });
   addRefreshTokenToDatabase(refreshToken);
