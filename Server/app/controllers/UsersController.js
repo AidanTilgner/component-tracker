@@ -102,7 +102,7 @@ const updateUserInDatabase = async (id, update) => {
   let index = data.findIndex((u) => u.id === id);
   data[index] = Object.assign(data[index], update);
   writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
-  return data;
+  return data[index];
 };
 
 const getUserProjects = async (id) => {

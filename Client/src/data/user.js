@@ -29,5 +29,3 @@ export const user = writable(
         projects: [],
       }
 );
-
-export const userCookie = writable("");

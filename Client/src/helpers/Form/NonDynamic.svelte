@@ -1,7 +1,14 @@
 <script>
-  export let title, fields;
+  export let title, fields, onChange;
   import Input from "../Input/Input.svelte";
   import Header from "../../helpers/Header/Header.svelte";
+
+  let inputs = {};
+  fields.forEach((field) => {
+    console.log("Field: ", field);
+    inputs[field.name.toLowerCase()] = field.value;
+  });
+  console.log("Inputs: ", inputs);
 </script>
 
 <form class="form">
@@ -12,6 +19,10 @@
     <Input
       field={{ name: field.name, value: field.value, required: field.required }}
       type={field.type}
+      onChange={(e, data) => {
+        inputs[field.name.toLowerCase()] = data;
+        onChange(e, inputs);
+      }}
     />
   {/each}
 </form>

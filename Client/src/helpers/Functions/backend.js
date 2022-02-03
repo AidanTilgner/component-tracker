@@ -69,6 +69,22 @@ export const logout = async () => {
   }
 };
 
+export const refreshAccessToken = async (refreshToken) => {
+  try {
+    return await fetch(`${baseURL}${EP.auth}/refresh`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${refreshToken}`,
+      },
+      body: JSON.stringify({ refreshToken }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in refreshAccessToken: ", error);
+    return false;
+  }
+};
+
 // * User Functions
 export const getUserFromLogin = async (username, password) => {
   try {
@@ -84,22 +100,6 @@ export const getUserFromLogin = async (username, password) => {
     ).then((res) => res.json());
   } catch (error) {
     console.error("Error in getUserFromLogin: ", error);
-    return false;
-  }
-};
-
-export const refreshAccessToken = async (refreshToken) => {
-  try {
-    return await fetch(`${baseURL}${EP.auth}/refresh`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${refreshToken}`,
-      },
-      body: JSON.stringify({ refreshToken }),
-    }).then((res) => res.json());
-  } catch (error) {
-    console.error("Error in refreshAccessToken: ", error);
     return false;
   }
 };
