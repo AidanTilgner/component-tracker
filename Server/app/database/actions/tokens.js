@@ -1,13 +1,3 @@
-import mongoose from "mongoose";
-
-// * User
-import UserModel from "../models/user.js";
-import UserClass from "../../data/user/user.js";
-
-// * Project
-import ProjectModel from "../models/project.js";
-import ProjectClass from "../../data/project/project.js";
-
 // * Tokens
 import Token from "../models/token.js";
 
@@ -32,6 +22,6 @@ export const deleteRefreshTokenFromDatabase = async (refreshToken) => {
     }
     return false;
   } catch (err) {
-    console.log("Error deleting refresh token from database: " + err);
+    console.log("Error deleting refresh token from database: ", err);
   }
 };

@@ -5,12 +5,12 @@ import {
   generateRefreshToken,
   addRefreshTokenToDatabase,
   refreshUserToken,
-  deleteRefreshTokenFromDatabase,
 } from "../helpers/tokens.js";
+import { saveUserToDatabase } from "../database/actions/users.js";
 import {
-  saveUserToDatabase,
   saveRefreshTokenToDatabase,
-} from "../database/actions/save.js";
+  deleteRefreshTokenFromDatabase,
+} from "../database/actions/tokens.js";
 import { getUserByLogin } from "../database/queries/users.js";
 
 // Classes
@@ -50,25 +50,4 @@ export const refreshUser = async (refreshToken) => {
 
 export const logoutUser = async (refreshToken) => {
   return await deleteRefreshTokenFromDatabase(refreshToken);
-};
-
-const addUserToDatabase = async (user) => {
-  user = new User(user);
-  let data = await getDataByFilepath("../data/user/users.json");
-  data.push(user);
-  writeFileByFilepath("../data/user/users.json", JSON.stringify(data));
-  return {
-    id: user.id,
-    username: user.username,
-    email: user.email,
-    role: user.role,
-    projects: user.projects,
-  };
-};
-
-const getUserFromDatabaseByLogin = async (username, password) => {
-  let data = await getDataByFilepath("../data/user/users.json");
-  return data.find(
-    (user) => user.username === username && user.password === password
-  );
 };

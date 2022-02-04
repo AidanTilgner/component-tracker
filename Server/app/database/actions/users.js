@@ -25,3 +25,25 @@ export const saveUserToDatabase = async (user) => {
     projects: newUser.projects,
   };
 };
+
+export const getUserFromDatabase = async (user_id) => {
+  const user = await UserModel.findOne({ user_id: user_id }).exec();
+  return user;
+};
+
+export const updateUserInDatabase = async (user_id, update) => {
+  const user = await UserModel.findOneAndUpdate({ user_id: user_id }, update, {
+    new: true,
+  }).exec();
+  return user;
+};
+
+export const deleteUserFromDatabase = async (user_id) => {
+  const user = await UserModel.findOneAndDelete({ user_id: user_id }).exec();
+  return user;
+};
+
+export const getUserProjectsFromDatabase = async (user_id) => {
+  const user = await UserModel.findOne({ user_id: user_id }).exec();
+  return user.projects;
+};
