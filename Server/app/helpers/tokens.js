@@ -34,21 +34,25 @@ export const refreshUserToken = async (tkn) => {
   try {
     if (tkn === null) return 401;
     if (!checkRefreshTokenInDatabase(tkn)) return 403;
-    return JWT.verify(tkn, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-      if (err) return 403;
-      return {
-        accessToken: generateAccessToken(
-          {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: user.role,
-            projects: user.projects,
-          },
-          { expiresIn: "1hr" }
-        ),
-      };
-    });
+    return await JWT.verify(
+      tkn,
+      process.env.REFRESH_TOKEN_SECRET,
+      (err, user) => {
+        if (err) return 403;
+        return {
+          accessToken: generateAccessToken(
+            {
+              id: user.id,
+              username: user.username,
+              email: user.email,
+              role: user.role,
+              projects: user.projects,
+            },
+            { expiresIn: "1hr" }
+          ),
+        };
+      }
+    );
   } catch (err) {
     console.log(err);
   }

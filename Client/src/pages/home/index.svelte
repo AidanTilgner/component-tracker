@@ -33,7 +33,7 @@
       console.log("Redirecting to login");
       $goto("/users/login");
     }
-    projects = await getUserProjects(userData.id);
+    projects = await getUserProjects(userData.user_id);
   });
 
   let newProjectModal = false;

@@ -30,7 +30,8 @@
     if (!isLoggedIn) {
       $goto("/users/login");
     }
-    projects = await getUserProjects(userData.id);
+    console.log("User Data: ", userData);
+    projects = await getUserProjects(userData.user_id);
   });
 
   let newProjectModal = false;

@@ -14,7 +14,7 @@ import Token from "../models/token.js";
 export const saveUserToDatabase = async (user) => {
   const newUser = new UserClass(user);
   console.log("New User: ", newUser);
-  const userModel = new UserModel(newUser);
+  const userModel = await UserModel.create(newUser);
   await userModel.save();
   console.log("User Model: ", userModel);
   return {

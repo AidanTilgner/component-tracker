@@ -12,8 +12,8 @@ export const saveProjectToDatabase = async (project) => {
   console.log("Raw Project: ", project);
   const newProject = new ProjectClass(project);
   console.log("New Project: ", newProject);
-  const projectModel = new ProjectModel(newProject);
-  // await projectModel.save();
+  const projectModel = await ProjectModel.create(newProject);
+  await projectModel.save();
   console.log("Project Model: ", projectModel);
   newProject.contributors.forEach(async (contributor) => {
     console.log("Adding project to contributor: ", {
@@ -30,17 +30,17 @@ export const saveProjectToDatabase = async (project) => {
           projects: {
             project_id: newProject.project_id,
             name: newProject.name,
-            edited: newProject.created,
             framework: newProject.framework,
+            created: projectModel.created,
+            edited: projectModel.edited,
           },
         },
       },
       { new: true }
-    );
-    //.exec();
+    ).exec();
   });
   return {
-    id: newProject.id,
+    id: newProject.project_id,
     name: newProject.name,
     edited: newProject.edited,
     framework: newProject.framework,
@@ -48,7 +48,14 @@ export const saveProjectToDatabase = async (project) => {
 };
 
 export const getProjectFromDatabase = async (project_id) => {
+  console.log("Getting project from database: ", project_id);
   const project = await ProjectModel.findOne({ project_id: project_id }).exec();
+  console.log("Project: ", project);
+  if (!project) {
+    return {
+      error: "Project not found",
+    };
+  }
   return project;
 };
 

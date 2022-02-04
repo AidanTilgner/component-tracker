@@ -9,14 +9,14 @@ const ProjectSchema = new Schema(
     owner: { user_id: String, username: String },
     contributors: [{ user_id: String, username: String }],
     name: String,
-    edited: String,
     framework: String,
     description: String,
     externalLink: String,
     components: [ComponentSchema],
   },
-  // Add created at and updated at timestamps with the names "created" and "edited"
-  { timestamps: { createdAt: "created", updatedAt: "edited" } }
+  {
+    timestamps: { createdAt: "created", updatedAt: "edited" },
+  }
 );
 
 export default model("Project", ProjectSchema);

@@ -1,6 +1,7 @@
 import { user, tokens } from "../../data/user";
 import { goto } from "@roxi/routify";
-import { refreshAccessToken } from "./backend";
+import { refreshAccessToken } from "./backend.js";
+import { writeToSessionStorage } from "./local.js";
 
 const EP = {
   users: "/users",
@@ -23,12 +24,13 @@ export const verifyLoginStatus = async () => {
         Authorization: `Bearer ${tokens.refresh}`,
       },
       body: JSON.stringify({ refreshToken: refreshToken }),
-    });
-    console.log("verifyLoginStatus: ", response.status);
+    }).then((res) => res.json());
+    console.log("verifyLoginStatus: ", response.accessToken);
     if (response.status === 403) {
       console.log("Forbidden");
       return false;
     }
+    writeToSessionStorage("accessToken", response.accessToken);
     return true;
   } catch (error) {
     console.error("Error in verifyLoginStatus: ", error);

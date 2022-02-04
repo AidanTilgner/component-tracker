@@ -29,8 +29,10 @@ export const getUserProjectsFromDatabase = async (user_id) => {
   try {
     let user = await User.findOne({ user_id: user_id }).exec();
     if (user) {
+      console.log("Returning user projects, ", user.projects);
       return user.projects;
     }
+    console.log("Did not find user with id: ", user_id);
     return {
       error: "User not found",
     };

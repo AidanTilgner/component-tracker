@@ -140,6 +140,7 @@ export const getUser = async (id) => {
 
 export const getUserProjects = async (id) => {
   try {
+    console.log("ID: ", id);
     return await fetch(`${baseURL}${EP.users}/projects?id=${id}`, {
       method: "GET",
       headers: {
