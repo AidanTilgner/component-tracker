@@ -1,6 +1,7 @@
-import { Schema, SchemaTypes, model } from "mongoose";
+import mongoose from "mongoose";
+const { Schema, model, SchemaTypes } = mongoose;
 
-export const ComponentSchema = new Schema({
+const ComponentSchema = new Schema({
   creator: { username: String, id: String },
   description: String,
   type: String,
@@ -66,3 +67,5 @@ export const ComponentSchema = new Schema({
     ],
   },
 });
+
+export default ComponentSchema;

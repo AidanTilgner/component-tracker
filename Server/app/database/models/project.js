@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 const { Schema, model, SchemaTypes } = mongoose;
-import ComponentSchema from "./schemas/component";
+import ComponentSchema from "./schemas/component.js";
 
 const ProjectSchema = new Schema({
   id: SchemaTypes.ObjectId,
-  owner: { id: String, username: String },
+  project_id: String,
+  owner: { user_id: String, username: String },
   contributors: [{ id: String, username: String }],
   name: String,
   edited: String,
@@ -13,3 +14,5 @@ const ProjectSchema = new Schema({
   externalLinks: [{ name: String, url: String }],
   components: [ComponentSchema],
 });
+
+export default model("Project", ProjectSchema);

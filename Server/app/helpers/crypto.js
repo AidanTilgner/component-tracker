@@ -7,11 +7,7 @@ export const hashPassword = (password) => {
 };
 
 export const comparePassword = (password, hash) => {
-  const matches = bcrypt.compare(password, hash, (err, res) => {
-    if (err) {
-      console.log(err);
-    }
-    console.log(res);
-  });
+  const matches = bcrypt.compareSync(password, hash);
+  console.log("Matches: ", matches);
   return matches;
 };

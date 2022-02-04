@@ -4,6 +4,7 @@ import Component from "../data/project/classes/component.js";
 
 // Helpers
 import { getDataByFilepath, writeFileByFilepath } from "../helpers/files.js";
+import { saveProjectToDatabase } from "../database/actions/save.js";
 
 // Controllers
 import {
@@ -13,7 +14,7 @@ import {
 } from "./UsersController.js";
 
 export const addProject = async (project) => {
-  return await addProjectToDatabase(project);
+  return await saveProjectToDatabase(project);
 };
 
 export const getProject = async (id) => {

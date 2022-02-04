@@ -8,7 +8,7 @@ class Project {
     description,
     externalLinks,
   }) {
-    this.id = `${this.randomString(5)}-${this.randomString(
+    this.project_id = `${this.randomString(5)}-${this.randomString(
       5
     )}-${this.randomString(5)}-${this.randomString(5)}`;
     this.owner = owner;

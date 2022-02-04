@@ -2,6 +2,7 @@ import JWT from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 import { getDataByFilepath, writeFileByFilepath } from "../helpers/files.js";
+import { checkRefreshTokenInDatabase } from "../database/queries/tokens.js";
 
 // Generates a JWT token
 export const generateAccessToken = (payload, opts) => {
@@ -31,9 +32,8 @@ export const addRefreshTokenToDatabase = async (tkn) => {
 // Verifies a refresh token and then sends back a new one
 export const refreshUserToken = async (tkn) => {
   try {
-    let data = await getDataByFilepath("../data/tokens/refreshTokens.json");
     if (tkn === null) return 401;
-    if (!data.includes(tkn)) return 403;
+    if (!checkRefreshTokenInDatabase(tkn)) return 403;
     return JWT.verify(tkn, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
       if (err) return 403;
       return {
