@@ -3,10 +3,10 @@ import {
   getUserFromDatabase,
   updateUserInDatabase,
   deleteUserFromDatabase,
-  getUserProjectsFromDatabase,
 } from "../database/actions/users.js";
+import { getUserProjectsFromDatabase } from "../database/queries/users.js";
 
-export const getUserFromDatabase = async (user_id) => {
+export const getUser = async (user_id) => {
   return await getUserFromDatabase(user_id);
 };
 

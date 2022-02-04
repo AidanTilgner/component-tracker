@@ -11,7 +11,6 @@ import { authenticateUser } from "../helpers/tokens.js";
 
 // Controller
 import {
-  addUser,
   getUser,
   updateUser,
   deleteUser,
@@ -19,15 +18,6 @@ import {
 } from "../controllers/UsersController.js";
 
 Router.use(BP.json());
-
-// ! DEPRECATED
-Router.post(
-  "/add",
-  authenticateUser,
-  wrapAsync(async (req, res) => {
-    res.send(await addUser(req.body)).status(200);
-  })
-);
 
 Router.get(
   "/",

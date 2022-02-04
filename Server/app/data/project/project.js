@@ -3,10 +3,9 @@ class Project {
     owner,
     contributors,
     name,
-    edited,
     framework,
     description,
-    externalLinks,
+    externalLink,
   }) {
     this.project_id = `${this.randomString(5)}-${this.randomString(
       5
@@ -14,10 +13,9 @@ class Project {
     this.owner = owner;
     this.contributors = contributors;
     this.name = name;
-    this.edited = edited;
-    this.framework = framework;
+    this.framework = framework.toLowerCase();
     this.description = description;
-    this.externalLinks = externalLinks;
+    this.externalLink = externalLink;
     this.components = [];
   }
 

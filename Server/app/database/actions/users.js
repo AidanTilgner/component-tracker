@@ -42,8 +42,3 @@ export const deleteUserFromDatabase = async (user_id) => {
   const user = await UserModel.findOneAndDelete({ user_id: user_id }).exec();
   return user;
 };
-
-export const getUserProjectsFromDatabase = async (user_id) => {
-  const user = await UserModel.findOne({ user_id: user_id }).exec();
-  return user.projects;
-};

@@ -24,3 +24,17 @@ export const getUserByLogin = async (username, password) => {
     console.log("Error getting user by login: " + err);
   }
 };
+
+export const getUserProjectsFromDatabase = async (user_id) => {
+  try {
+    let user = await User.findOne({ user_id: user_id }).exec();
+    if (user) {
+      return user.projects;
+    }
+    return {
+      error: "User not found",
+    };
+  } catch (err) {
+    console.log("Error getting user projects from database: " + err);
+  }
+};

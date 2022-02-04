@@ -9,26 +9,35 @@ import ProjectModel from "../models/project.js";
 import ProjectClass from "../../data/project/project.js";
 
 export const saveProjectToDatabase = async (project) => {
+  console.log("Raw Project: ", project);
   const newProject = new ProjectClass(project);
   console.log("New Project: ", newProject);
   const projectModel = new ProjectModel(newProject);
-  await projectModel.save();
+  // await projectModel.save();
   console.log("Project Model: ", projectModel);
   newProject.contributors.forEach(async (contributor) => {
+    console.log("Adding project to contributor: ", {
+      project_id: newProject.project_id,
+      name: newProject.name,
+      framework: newProject.framework,
+      created: projectModel.created,
+      edited: projectModel.edited,
+    });
     UserModel.findOneAndUpdate(
       { user_id: contributor.user_id },
       {
         $push: {
           projects: {
-            id: newProject.id,
+            project_id: newProject.project_id,
             name: newProject.name,
-            edited: newProject.edited,
+            edited: newProject.created,
             framework: newProject.framework,
           },
         },
       },
       { new: true }
-    ).exec();
+    );
+    //.exec();
   });
   return {
     id: newProject.id,
@@ -63,7 +72,7 @@ export const deleteProjectFromDatabase = async (project_id) => {
       {
         $pull: {
           projects: {
-            id: project_id,
+            project_id: project_id,
           },
         },
       },

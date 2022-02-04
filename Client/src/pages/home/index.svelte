@@ -78,10 +78,12 @@
           newProjectModal = false;
           addProject({
             owner: {
-              id: userData.id,
+              user_id: userData.user_id,
               username: userData.username,
             },
-            contributors: [{ id: userData.id, username: userData.username }],
+            contributors: [
+              { user_id: userData.user_id, username: userData.username },
+            ],
             ...projectData,
           });
         },
@@ -93,7 +95,7 @@
         name: "",
         framework: "",
         description: "",
-        externalLinks: "",
+        externalLink: "",
       }}
       onChange={(e, inputs) => {
         projectData = inputs;
