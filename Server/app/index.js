@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import UsersRouter from "./routes/users.js";
 import ProjectsRouter from "./routes/projects.js";
 import AuthRouter from "./routes/auth.js";
+import OrganizationsRouter from "./routes/organizations.js";
 
 // * Config
 dotenv.config();
@@ -37,5 +38,8 @@ app.use("/users", UsersRouter);
 
 // Initialize the Projects route
 app.use("/projects", ProjectsRouter);
+
+// Initialize the Organizations route
+app.use("/organizations", OrganizationsRouter);
 
 app.listen(PORT, () => console.log("Listening on port " + PORT));

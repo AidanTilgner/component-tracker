@@ -23,6 +23,7 @@
   let userData = {};
   user.subscribe((user) => {
     userData = user;
+    projects = user.projects;
   });
 
   onMount(async () => {

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const { Schema, model, SchemaTypes } = mongoose;
 import ComponentSchema from "./schemas/component.js";
 
-const ProjectSchema = new Schema(
+export const ProjectSchema = new Schema(
   {
     id: SchemaTypes.ObjectId,
     project_id: String,

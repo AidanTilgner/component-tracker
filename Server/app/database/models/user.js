@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema, model, SchemaTypes } = mongoose;
 
-const UserSchema = new Schema(
+export const UserSchema = new Schema(
   {
     id: SchemaTypes.ObjectId,
     user_id: String,
