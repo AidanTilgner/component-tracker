@@ -1,11 +1,16 @@
 class Organization {
-  constructor(organization) {
-    this.organization_id = organization.organization_id;
-    this.name = organization.name;
-    this.created = organization.created;
-    this.edited = organization.edited;
-    this.users = organization.users;
-    this.projects = organization.projects;
+  constructor({ owner, name, users, projects }) {
+    this.organization_id = `${this.randomString(4)}-${this.randomString(
+      4
+    )}-${this.randomString(4)}-${this.randomString(4)}`;
+    this.owner = owner;
+    this.name = name;
+    this.users = users;
+    this.projects = projects;
+  }
+
+  randomString(length) {
+    return Math.random().toString(36).substr(2, length);
   }
 }
 
