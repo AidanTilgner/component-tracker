@@ -18,29 +18,37 @@
   } from "../../../helpers/Functions/local.js";
 
   onMount(async () => {
-    const isLoggedIn = await verifyLoginStatus();
-    if (isLoggedIn) {
-      $goto("/home");
+    try {
+      const isLoggedIn = await verifyLoginStatus();
+      if (isLoggedIn) {
+        $goto("/home");
+      }
+    } catch (error) {
+      console.log("Error in onMount: ", error);
     }
   });
 
   const submitSignup = async (e) => {
-    let data = {
-      username: document.getElementById("username").value,
-      email: document.getElementById("email").value,
-      password: document.getElementById("password").value,
-    };
+    try {
+      let data = {
+        username: document.getElementById("username").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+      };
 
-    const response = await signUp(data.username, data.email, data.password);
-    console.log(response);
+      const response = await signUp(data.username, data.email, data.password);
+      console.log(response);
 
-    writeToLocalStorage("refreshToken", response.tokens.refresh);
-    writeToSessionStorage("accessToken", response.tokens.access);
-    writeToLocalStorage("user", JSON.stringify(response.user));
+      writeToLocalStorage("refreshToken", response.tokens.refresh);
+      writeToSessionStorage("accessToken", response.tokens.access);
+      writeToLocalStorage("user", JSON.stringify(response.user));
 
-    tokens.set(response.tokens);
-    user.set(response.user);
-    $goto("/home");
+      tokens.set(response.tokens);
+      user.set(response.user);
+      $goto("/home");
+    } catch (error) {
+      console.log("Error in submitSignup: ", error);
+    }
   };
 </script>
 

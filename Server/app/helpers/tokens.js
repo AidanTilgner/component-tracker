@@ -73,6 +73,7 @@ export const deleteRefreshTokenFromDatabase = async (tkn) => {
   }
 };
 
+// * Helper functions
 export const authenticateUser = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -83,4 +84,9 @@ export const authenticateUser = (req, res, next) => {
     req.user = user;
     next();
   });
+};
+
+export const getUserRoleFromToken = (token) => {
+  const user = JWT.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  return user.role;
 };

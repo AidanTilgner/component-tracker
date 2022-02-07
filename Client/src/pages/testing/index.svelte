@@ -31,13 +31,6 @@
   $: metaData = Object.keys(component.metaData);
   $: metaDataObject = component.metaData;
 
-  // onMount(async () => {
-  //   component = await getComponent(
-  //     "rco8r-hv41p-axi5l-ocbq9",
-  //     "src/child1/Child1.js"
-  //   );
-  // });
-
   onMount(async () => {
     setTimeout(() => {
       component = {

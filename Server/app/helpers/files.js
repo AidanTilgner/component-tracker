@@ -7,12 +7,20 @@ const __dirname = dirname(__filename);
 import path from "path";
 
 export const getDataByFilepath = async (filepath) => {
-  let data = FS.readFileSync(path.resolve(__dirname, filepath), "utf8");
-  data = !Buffer.isBuffer(data) ? [...JSON.parse(data)] : [];
-  return data;
+  try {
+    let data = FS.readFileSync(path.resolve(__dirname, filepath), "utf8");
+    data = !Buffer.isBuffer(data) ? [...JSON.parse(data)] : [];
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const writeFileByFilepath = async (filepath, data) => {
-  FS.writeFileSync(path.resolve(__dirname, filepath), data, "utf8");
-  return data;
+  try {
+    FS.writeFileSync(path.resolve(__dirname, filepath), data, "utf8");
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
 };

@@ -28,12 +28,16 @@
   });
 
   onMount(async () => {
-    const isLoggedIn = await verifyLoginStatus();
-    if (!isLoggedIn) {
-      console.log("Redirecting to login");
-      $goto("/users/login");
+    try {
+      const isLoggedIn = await verifyLoginStatus();
+      if (!isLoggedIn) {
+        console.log("Redirecting to login");
+        $goto("/users/login");
+      }
+      projects = await getUserProjects(userData.user_id);
+    } catch (err) {
+      console.log("Error in onMount: ", err);
     }
-    projects = await getUserProjects(userData.user_id);
   });
 
   let newProjectModal = false;

@@ -19,9 +19,13 @@
   console.log("User:", userData);
 
   onMount(async () => {
-    const loggedIn = await verifyLoginStatus();
-    if (!loggedIn) {
-      $goto("/users/login");
+    try {
+      const loggedIn = await verifyLoginStatus();
+      if (!loggedIn) {
+        $goto("/users/login");
+      }
+    } catch (error) {
+      console.log("Error in onMount:", error);
     }
   });
 

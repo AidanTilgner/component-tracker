@@ -58,17 +58,21 @@
   $: metaData = Object.keys(component.metaData);
 
   onMount(async () => {
-    const isLoggedIn = await verifyLoginStatus();
-    if (!isLoggedIn) {
-      $goto("/users/login");
-    }
-    project = await getProject($params.project);
-    component = await getComponent(
-      $params.project,
-      $params.component.split("+").join("/")
-    );
-    if (!userData.username) {
-      user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+    try {
+      const isLoggedIn = await verifyLoginStatus();
+      if (!isLoggedIn) {
+        $goto("/users/login");
+      }
+      project = await getProject($params.project);
+      component = await getComponent(
+        $params.project,
+        $params.component.split("+").join("/")
+      );
+      if (!userData.username) {
+        user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+      }
+    } catch (error) {
+      console.log("Error in onMount: ", error);
     }
   });
 

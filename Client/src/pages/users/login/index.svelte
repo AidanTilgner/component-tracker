@@ -16,9 +16,13 @@
   let verified = false;
 
   onMount(async () => {
-    const isLoggedIn = await verifyLoginStatus();
-    if (isLoggedIn) {
-      $goto("/home");
+    try {
+      const isLoggedIn = await verifyLoginStatus();
+      if (isLoggedIn) {
+        $goto("/home");
+      }
+    } catch (error) {
+      console.log("Error in onMount: ", error);
     }
   });
 

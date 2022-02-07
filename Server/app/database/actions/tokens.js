@@ -4,10 +4,14 @@ import Token from "../models/token.js";
 // * Helpers
 
 export const saveRefreshTokenToDatabase = async (refreshToken) => {
-  console.log("Refresh Token: ", refreshToken);
-  const refreshTokenModel = new Token({ token: refreshToken });
-  await refreshTokenModel.save();
-  console.log("Refresh Token Model: ", refreshTokenModel);
+  try {
+    console.log("Refresh Token: ", refreshToken);
+    const refreshTokenModel = new Token({ token: refreshToken });
+    await refreshTokenModel.save();
+    console.log("Refresh Token Model: ", refreshTokenModel);
+  } catch (error) {
+    console.log("Error in saveRefreshTokenToDatabase: ", error);
+  }
 };
 
 export const deleteRefreshTokenFromDatabase = async (refreshToken) => {

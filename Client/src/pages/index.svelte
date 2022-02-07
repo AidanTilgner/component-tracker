@@ -4,11 +4,15 @@
   import { onMount } from "svelte";
 
   onMount(async () => {
-    const isLoggedIn = await verifyLoginStatus();
-    if (!isLoggedIn) {
-      $goto("/users/login");
+    try {
+      const isLoggedIn = await verifyLoginStatus();
+      if (!isLoggedIn) {
+        $goto("/users/login");
+      }
+      $redirect("/home");
+    } catch (error) {
+      console.log("Error in onMount", error);
     }
-    $redirect("/home");
   });
 </script>
 

@@ -17,37 +17,53 @@ import { getUserByLogin } from "../database/queries/users.js";
 import User from "../data/user/user.js";
 
 export const loginUser = async (username, password) => {
-  const user = await getUserByLogin(username, password);
-  const accessToken = generateAccessToken(user);
-  const refreshToken = generateRefreshToken(user);
-  saveRefreshTokenToDatabase(refreshToken);
-  return {
-    tokens: {
-      access: accessToken,
-      refresh: refreshToken,
-    },
-    user: user,
-  };
+  try {
+    const user = await getUserByLogin(username, password);
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+    saveRefreshTokenToDatabase(refreshToken);
+    return {
+      tokens: {
+        access: accessToken,
+        refresh: refreshToken,
+      },
+      user: user,
+    };
+  } catch (error) {
+    console.log("Error in loginUser: ", error);
+  }
 };
 
 export const registerUser = async (user) => {
-  user = await saveUserToDatabase(user);
-  const accessToken = generateAccessToken(user, { expiresIn: "1h" });
-  const refreshToken = generateRefreshToken(user, { expiresIn: "1d" });
-  addRefreshTokenToDatabase(refreshToken);
-  return {
-    tokens: {
-      access: accessToken,
-      refresh: refreshToken,
-    },
-    user: user,
-  };
+  try {
+    user = await saveUserToDatabase(user);
+    const accessToken = generateAccessToken(user, { expiresIn: "1h" });
+    const refreshToken = generateRefreshToken(user, { expiresIn: "1d" });
+    addRefreshTokenToDatabase(refreshToken);
+    return {
+      tokens: {
+        access: accessToken,
+        refresh: refreshToken,
+      },
+      user: user,
+    };
+  } catch (error) {
+    console.log("Error in registerUser: ", error);
+  }
 };
 
 export const refreshUser = async (refreshToken) => {
-  return await refreshUserToken(refreshToken);
+  try {
+    return await refreshUserToken(refreshToken);
+  } catch (error) {
+    console.log("Error in refreshUser: ", error);
+  }
 };
 
 export const logoutUser = async (refreshToken) => {
-  return await deleteRefreshTokenFromDatabase(refreshToken);
+  try {
+    return await deleteRefreshTokenFromDatabase(refreshToken);
+  } catch (error) {
+    console.log("Error in logoutUser: ", error);
+  }
 };
