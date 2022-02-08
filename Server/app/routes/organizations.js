@@ -5,10 +5,8 @@ const Router = Express.Router();
 
 // Helpers
 import { wrapAsync } from "../helpers/routing.js";
-import {
-  authenticateUser,
-  confirmUserOrganizationRights,
-} from "../helpers/tokens.js";
+import { authenticateUser } from "../helpers/tokens.js";
+import { confirmUserOrganizationRights } from "../helpers/authorization.js";
 
 // Controller
 import {
@@ -24,7 +22,6 @@ import {
 
 Router.use(BP.json());
 Router.use(authenticateUser);
-Router.use(confirmUserOrganizationRights);
 
 Router.post(
   "/",
@@ -36,6 +33,7 @@ Router.post(
 
 Router.get(
   "/",
+  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res.send(await getOrganization(req.query.organizationID)).status(200);
   })
@@ -43,6 +41,7 @@ Router.get(
 
 Router.put(
   "/",
+  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res
       .send(await updateOrganization(req.query.organization_id, req.body))
@@ -51,6 +50,8 @@ Router.put(
 );
 
 Router.delete(
+  "/",
+  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res.send(await deleteOrganization(req.query.organization_id)).status(204);
   })
@@ -58,6 +59,7 @@ Router.delete(
 
 Router.put(
   "/users",
+  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res
       .send(
@@ -72,6 +74,7 @@ Router.put(
 
 Router.delete(
   "/users",
+  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res
       .send(
@@ -86,6 +89,7 @@ Router.delete(
 
 Router.put(
   "/projects",
+  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res.send(
       await addProjectToOrganization(
@@ -98,6 +102,7 @@ Router.put(
 
 Router.delete(
   "/projects",
+  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res.send(
       await removeProjectFromOrganization(

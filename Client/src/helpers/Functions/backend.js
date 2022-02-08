@@ -210,7 +210,7 @@ export const deleteUser = async (id) => {
 // * Project Functions
 export const addProject = async (project) => {
   try {
-    return await fetch(`${baseURL}${EP.projects}/add`, {
+    return await fetch(`${baseURL}${EP.projects}/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

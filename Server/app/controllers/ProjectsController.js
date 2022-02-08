@@ -1,14 +1,17 @@
 // Helpers
 import {
   saveProjectToDatabase,
-  getProjectFromDatabase,
   updateProjectInDatabase,
   deleteProjectFromDatabase,
   addComponentToProjectInDatabase,
-  getComponentFromProjectInDatabase,
   updateComponentInProjectInDatabase,
   deleteComponentFromProjectInDatabase,
 } from "../database/actions/projects.js";
+
+import {
+  getProjectFromDatabase,
+  getComponentFromProjectInDatabase,
+} from "../database/queries/projects.js";
 
 export const addProject = async (project) => {
   try {
