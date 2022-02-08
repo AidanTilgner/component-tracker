@@ -15,6 +15,7 @@ const EP = {
   users: "/users",
   projects: "/projects",
   auth: "/auth",
+  organizations: "/organizations",
 };
 
 // * Auth Functions
@@ -156,6 +157,20 @@ export const getUserProjects = async (id) => {
     });
   } catch (error) {
     console.error("Error in getUserProjects: ", error);
+  }
+};
+
+export const getUserOrganizations = async (id) => {
+  try {
+    return await fetch(`${baseURL}${EP.users}/organizations?id=${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in getUserOrganizations: ", error);
   }
 };
 
@@ -316,5 +331,38 @@ export const deleteComponent = async (projectID, name) => {
     ).then((res) => res.json());
   } catch (error) {
     console.error("Error in deleteComponent: ", error);
+  }
+};
+
+// * Organization Functions
+export const addOrganization = async (organization) => {
+  try {
+    return await fetch(`${baseURL}${EP.organizations}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(organization),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in addOrganization: ", error);
+  }
+};
+
+export const getOrganization = async (organizationID) => {
+  try {
+    return await fetch(
+      `${baseURL}${EP.organizations}/?organizationID=${organizationID}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in getOrganization: ", error);
   }
 };

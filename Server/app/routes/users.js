@@ -15,6 +15,7 @@ import {
   updateUser,
   deleteUser,
   getProjects,
+  getOrganizations,
 } from "../controllers/UsersController.js";
 
 Router.use(BP.json());
@@ -49,6 +50,14 @@ Router.get(
   wrapAsync(async (req, res) => {
     console.log("req.query.id: ", req.query.id);
     res.send(await getProjects(req.query.id)).status(200);
+  })
+);
+
+Router.get(
+  "/organizations",
+  authenticateUser,
+  wrapAsync(async (req, res) => {
+    res.send(await getOrganizations(req.query.id)).status(200);
   })
 );
 

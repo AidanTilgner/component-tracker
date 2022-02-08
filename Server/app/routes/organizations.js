@@ -29,7 +29,7 @@ Router.post(
 Router.get(
   "/",
   wrapAsync(async (req, res) => {
-    res.send(await getOrganization(req.query.organization_id)).status(200);
+    res.send(await getOrganization(req.query.organizationID)).status(200);
   })
 );
 

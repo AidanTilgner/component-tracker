@@ -1,11 +1,11 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Mon Feb 07 2022 16:32:36 GMT-0800 (Pacific Standard Time)
+ * File generated Mon Feb 07 2022 21:18:24 GMT-0800 (Pacific Standard Time)
  */
 
 export const __version = "2.18.3"
-export const __timestamp = "2022-02-08T00:32:36.372Z"
+export const __timestamp = "2022-02-08T05:18:24.353Z"
 
 //buildRoutes
 import { buildClientTree } from "@roxi/routify/runtime/buildRoutes"
@@ -97,6 +97,104 @@ export const _tree = {
       "path": "/index",
       "id": "_index",
       "component": () => import('../src/pages/index.svelte').then(m => m.default)
+    },
+    {
+      "isFile": false,
+      "isDir": true,
+      "file": "organizations",
+      "filepath": "/organizations",
+      "name": "organizations",
+      "ext": "",
+      "badExt": false,
+      "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/organizations",
+      "children": [
+        {
+          "isFile": false,
+          "isDir": true,
+          "file": "[organization]",
+          "filepath": "/organizations/[organization]",
+          "name": "[organization]",
+          "ext": "",
+          "badExt": false,
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/organizations/[organization]",
+          "children": [
+            {
+              "isFile": true,
+              "isDir": false,
+              "file": "index.svelte",
+              "filepath": "/organizations/[organization]/index.svelte",
+              "name": "index",
+              "ext": "svelte",
+              "badExt": false,
+              "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/organizations/[organization]/index.svelte",
+              "importPath": "../src/pages/organizations/[organization]/index.svelte",
+              "isLayout": false,
+              "isReset": false,
+              "isIndex": true,
+              "isFallback": false,
+              "isPage": true,
+              "ownMeta": {},
+              "meta": {
+                "recursive": true,
+                "preload": false,
+                "prerender": true
+              },
+              "path": "/organizations/:organization/index",
+              "id": "_organizations__organization_index",
+              "component": () => import('../src/pages/organizations/[organization]/index.svelte').then(m => m.default)
+            }
+          ],
+          "isLayout": false,
+          "isReset": false,
+          "isIndex": false,
+          "isFallback": false,
+          "isPage": false,
+          "ownMeta": {},
+          "meta": {
+            "recursive": true,
+            "preload": false,
+            "prerender": true
+          },
+          "path": "/organizations/:organization"
+        },
+        {
+          "isFile": true,
+          "isDir": false,
+          "file": "index.svelte",
+          "filepath": "/organizations/index.svelte",
+          "name": "index",
+          "ext": "svelte",
+          "badExt": false,
+          "absolutePath": "C:/Coding/Web Development/Framework Component Tracker/Client/src/pages/organizations/index.svelte",
+          "importPath": "../src/pages/organizations/index.svelte",
+          "isLayout": false,
+          "isReset": false,
+          "isIndex": true,
+          "isFallback": false,
+          "isPage": true,
+          "ownMeta": {},
+          "meta": {
+            "recursive": true,
+            "preload": false,
+            "prerender": true
+          },
+          "path": "/organizations/index",
+          "id": "_organizations_index",
+          "component": () => import('../src/pages/organizations/index.svelte').then(m => m.default)
+        }
+      ],
+      "isLayout": false,
+      "isReset": false,
+      "isIndex": false,
+      "isFallback": false,
+      "isPage": false,
+      "ownMeta": {},
+      "meta": {
+        "recursive": true,
+        "preload": false,
+        "prerender": true
+      },
+      "path": "/organizations"
     },
     {
       "isFile": false,

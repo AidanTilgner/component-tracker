@@ -29,6 +29,8 @@ export const saveOrganizationToDatabase = async (organization) => {
     return {
       organization_id: newOrganization.organization_id,
       name: newOrganization.name,
+      projects: newOrganization.projects,
+      users: newOrganization.users,
       created: newOrganization.created,
       edited: newOrganization.edited,
     };
@@ -45,6 +47,8 @@ export const getOrganizationFromDatabase = async (organization_id) => {
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
+      projects: organizationModel.projects,
+      users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
     };
@@ -63,6 +67,8 @@ export const updateOrganizationInDatabase = async (organization_id, update) => {
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
+      projects: organizationModel.projects,
+      users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
     };
@@ -90,6 +96,8 @@ export const deleteOrganizationFromDatabase = async (organization_id) => {
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
+      projects: organizationModel.projects,
+      users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
     };
@@ -112,6 +120,8 @@ export const addUserToOrganizationInDatabase = async (
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
+      projects: organizationModel.projects,
+      users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
     };
@@ -145,6 +155,8 @@ export const updateUserInOrganizationInDatabase = async (
     ).exec();
     return {
       organization_id: organizationModel.organization_id,
+      name: organizationModel.name,
+      users: organizationModel.users,
     };
   } catch (error) {
     console.log("Error in updateUserInOrganizationInDatabase: ", error);
@@ -164,6 +176,8 @@ export const deleteUserFromOrganizationInDatabase = async (
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
+      users: organizationModel.users,
+      projects: organizationModel.projects,
       created: organizationModel.created,
       edited: organizationModel.edited,
     };
@@ -186,6 +200,8 @@ export const addProjectToOrganizationInDatabase = async (
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
+      projects: organizationModel.projects,
+      users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
     };

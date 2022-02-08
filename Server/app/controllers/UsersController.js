@@ -4,7 +4,10 @@ import {
   updateUserInDatabase,
   deleteUserFromDatabase,
 } from "../database/actions/users.js";
-import { getUserProjectsFromDatabase } from "../database/queries/users.js";
+import {
+  getUserProjectsFromDatabase,
+  getUserOrganizationsFromDatabase,
+} from "../database/queries/users.js";
 
 export const getUser = async (user_id) => {
   try {
@@ -35,5 +38,13 @@ export const getProjects = async (user_id) => {
     return await getUserProjectsFromDatabase(user_id);
   } catch (error) {
     console.log("Error in getProjects: ", error);
+  }
+};
+
+export const getOrganizations = async (user_id) => {
+  try {
+    return await getUserOrganizationsFromDatabase(user_id);
+  } catch (error) {
+    console.log("Error in getOrganizations: ", error);
   }
 };
