@@ -38,9 +38,6 @@
         $goto("/users/login");
       }
       project = await getProject($params.project);
-      if (!userData.username) {
-        user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
-      }
     } catch (error) {
       console.log("Error in onMount: ", error);
     }

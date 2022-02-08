@@ -68,9 +68,6 @@
         $params.project,
         $params.component.split("+").join("/")
       );
-      if (!userData.username) {
-        user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
-      }
     } catch (error) {
       console.log("Error in onMount: ", error);
     }

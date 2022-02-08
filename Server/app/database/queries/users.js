@@ -14,14 +14,27 @@ export const getUserByLogin = async (username, password) => {
           email: user.email,
           role: user.role,
           projects: user.projects,
+          organizations: user.organizations,
         };
       }
       return {
         error: "Invalid password",
       };
     }
+    return {
+      error: "User not found",
+    };
   } catch (err) {
     console.log("Error getting user by login: " + err);
+  }
+};
+
+export const getUserFromDatabase = async (user_id) => {
+  try {
+    const user = await UserModel.findOne({ user_id: user_id }).exec();
+    return user;
+  } catch (error) {
+    console.log("Error in getUserFromDatabase: ", error);
   }
 };
 

@@ -10,6 +10,11 @@ import ProjectClass from "../../data/project/project.js";
 
 // * Tokens
 import Token from "../models/token.js";
+import Project from "../../data/project/project.js";
+
+// * Organization
+import OrganizationModel from "../models/organization.js";
+import OrganizationClass from "../../data/organization/organization.js";
 
 export const saveUserToDatabase = async (user) => {
   try {
@@ -48,6 +53,17 @@ export const updateUserInDatabase = async (user_id, update) => {
         new: true,
       }
     ).exec();
+    const organizations = user.organizations;
+    organizations.forEach(async (organization) => {
+      OrganizationModel.findOneAndUpdate(
+        { organization_id: organization.organization_id },
+        { $pull: { users: { user_id: user_id } } },
+        { $push: { users: { user_id: user_id, username: user.username } } },
+        {
+          new: true,
+        }
+      ).exec();
+    });
     return user;
   } catch (error) {
     console.log("Error in updateUserInDatabase: ", error);

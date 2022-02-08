@@ -1,10 +1,10 @@
 // Helpers
 import {
-  getUserFromDatabase,
   updateUserInDatabase,
   deleteUserFromDatabase,
 } from "../database/actions/users.js";
 import {
+  getUserFromDatabase,
   getUserProjectsFromDatabase,
   getUserOrganizationsFromDatabase,
 } from "../database/queries/users.js";

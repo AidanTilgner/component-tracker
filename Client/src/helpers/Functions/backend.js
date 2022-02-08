@@ -1,12 +1,16 @@
 /** @purpose This file contains functions that fetch data from the server */
 
-import { tokens } from "../../data/user";
+import { tokens, user } from "../../data/user";
 import { deleteFromLocalStorage, deleteFromSessionStorage } from "./local";
 import { goto } from "@roxi/routify";
 let accessToken, refreshToken;
+let userData = {};
 tokens.subscribe((tokens) => {
   accessToken = tokens.access;
   refreshToken = tokens.refresh;
+});
+user.subscribe((user) => {
+  userData = user;
 });
 
 // * Global variables
@@ -353,7 +357,7 @@ export const addOrganization = async (organization) => {
 export const getOrganization = async (organizationID) => {
   try {
     return await fetch(
-      `${baseURL}${EP.organizations}/?organizationID=${organizationID}`,
+      `${baseURL}${EP.organizations}/?organizationID=${organizationID}&userID=${userData.user_id}`,
       {
         method: "GET",
         headers: {
@@ -364,5 +368,111 @@ export const getOrganization = async (organizationID) => {
     ).then((res) => res.json());
   } catch (error) {
     console.error("Error in getOrganization: ", error);
+  }
+};
+
+export const updateOrganization = async (organizationID, update) => {
+  try {
+    return await fetch(
+      `${baseURL}${EP.organizations}/?organizationID=${organizationID}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(update),
+      }
+    ).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in updateOrganization: ", error);
+  }
+};
+
+export const deleteOrganization = async (organizationID) => {
+  try {
+    return await fetch(
+      `${baseURL}${EP.organizations}/?organizationID=${organizationID}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in deleteOrganization: ", error);
+  }
+};
+
+export const addUserToOrganization = async (organizationID, userID) => {
+  try {
+    return await fetch(
+      `${baseURL}${EP.organizations}/user?organizationID=${organizationID}&userID=${userID}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in addUserToOrganization: ", error);
+  }
+};
+
+export const removeUserFromOrganization = async (organizationID, userID) => {
+  try {
+    return await fetch(
+      `${baseURL}${EP.organizations}/user?organizationID=${organizationID}&userID=${userID}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in removeUserFromOrganization: ", error);
+  }
+};
+
+export const addProjectToOrganization = async (organizationID, projectID) => {
+  try {
+    return await fetch(
+      `${baseURL}${EP.organizations}/project?organizationID=${organizationID}&projectID=${projectID}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in addProjectToOrganization: ", error);
+  }
+};
+
+export const removeProjectFromOrganization = async (
+  organizationID,
+  projectID
+) => {
+  try {
+    return await fetch(
+      `${baseURL}${EP.organizations}/project?organizationID=${organizationID}&projectID=${projectID}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in removeProjectFromOrganization: ", error);
   }
 };

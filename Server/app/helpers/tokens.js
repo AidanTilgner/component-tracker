@@ -47,6 +47,7 @@ export const refreshUserToken = async (tkn) => {
               email: user.email,
               role: user.role,
               projects: user.projects,
+              organizations: user.organizations,
             },
             { expiresIn: "1hr" }
           ),
@@ -89,4 +90,26 @@ export const authenticateUser = (req, res, next) => {
 export const getUserRoleFromToken = (token) => {
   const user = JWT.verify(token, process.env.ACCESS_TOKEN_SECRET);
   return user.role;
+};
+
+export const confirmUserOrganizationRights = (req, res, next) => {
+  console.log("Req: ", req);
+  const token = req.headers.authorization?.split(" ")[1];
+  const user = JWT.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  if (user.role === "admin") return next();
+  if (user.role === "user") {
+    console.log("User: ", user);
+    console.log("Organization ID: ", req.query.organizationID);
+    if (
+      user.organizations.some(
+        (or) => or.organization_id === req.query.organizationID
+      )
+    ) {
+      console.log("User has rights to this organization");
+      return next();
+    }
+    console.log("User does not have rights to this organization");
+    return res.sendStatus(403);
+  }
+  return res.sendStatus(403);
 };

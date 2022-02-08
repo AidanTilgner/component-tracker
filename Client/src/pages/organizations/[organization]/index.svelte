@@ -2,10 +2,13 @@
   import Navbar from "../../../components/Navbar/Navbar.svelte";
   import Header from "../../../helpers/Header/Header.svelte";
   import PreviewGrid from "../../../components/PreviewGrid/PreviewGrid.svelte";
-  import { params } from "@roxi/routify";
+  import Modal from "../../../helpers/Modal/Modal.svelte";
+  import NonDynamic from "../../../helpers/Form/NonDynamic.svelte";
+  import { goto, params } from "@roxi/routify";
   import { getOrganization } from "../../../helpers/Functions/backend.js";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
+  import { verifyLoginStatus } from "../../../helpers/Functions/authentication";
 
   let userData = {};
   let organization = { projects: [] };
@@ -15,6 +18,10 @@
   console.log("Getting organization data:", $params.organization);
 
   onMount(async () => {
+    const loggedIn = await verifyLoginStatus();
+    if (!loggedIn) {
+      $goto("/users/login");
+    }
     organization = await getOrganization($params.organization);
     console.log("Organization:", organization);
   });

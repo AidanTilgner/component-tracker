@@ -5,6 +5,8 @@
   import { user } from "../../data/user.js";
   import { onMount } from "svelte";
   import { getUserOrganizations } from "../../helpers/Functions/backend.js";
+  import { verifyLoginStatus } from "../../helpers/Functions/authentication.js";
+  import { goto } from "@roxi/routify";
 
   let userData = {};
   let organizations = [];
@@ -13,6 +15,10 @@
   });
 
   onMount(async () => {
+    const loggedIn = await verifyLoginStatus();
+    if (!loggedIn) {
+      $goto("/users/login");
+    }
     organizations = await getUserOrganizations(userData.user_id);
     console.log(organizations);
   });

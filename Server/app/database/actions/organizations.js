@@ -109,12 +109,20 @@ export const deleteOrganizationFromDatabase = async (organization_id) => {
 // * Users
 export const addUserToOrganizationInDatabase = async (
   organization_id,
-  user
+  user_id
 ) => {
   try {
+    const { username } = await UserModel.findOne({ user_id }).exec();
     const organizationModel = await OrganizationModel.findOneAndUpdate(
       { organization_id },
-      { $push: { users: user } },
+      {
+        $push: {
+          users: {
+            user_id,
+            username,
+          },
+        },
+      },
       { new: true }
     ).exec();
     return {
@@ -165,21 +173,18 @@ export const updateUserInOrganizationInDatabase = async (
 
 export const deleteUserFromOrganizationInDatabase = async (
   organization_id,
-  user
+  user_id
 ) => {
   try {
     const organizationModel = await OrganizationModel.findOneAndUpdate(
       { organization_id },
-      { $pull: { users: { user_id: user.user_id } } },
+      { $pull: { users: { user_id } } },
       { new: true }
     ).exec();
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
       users: organizationModel.users,
-      projects: organizationModel.projects,
-      created: organizationModel.created,
-      edited: organizationModel.edited,
     };
   } catch (error) {
     console.log("Error in deleteUserFromOrganizationInDatabase: ", error);
@@ -189,12 +194,23 @@ export const deleteUserFromOrganizationInDatabase = async (
 // * Projects
 export const addProjectToOrganizationInDatabase = async (
   organization_id,
-  project
+  project_id
 ) => {
   try {
+    const project = await ProjectModel.findOne({ project_id }).exec();
     const organizationModel = await OrganizationModel.findOneAndUpdate(
       { organization_id },
-      { $push: { projects: project } },
+      {
+        $push: {
+          projects: {
+            project: project_id,
+            name: project.name,
+            framework: project.framework,
+            created: project.created,
+            edited: project.edited,
+          },
+        },
+      },
       { new: true }
     ).exec();
     return {
