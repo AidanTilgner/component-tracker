@@ -5,7 +5,10 @@
   import {
     getUserFromLogin,
     addProject,
+    getUserProjects,
+    getUserOrganizations,
   } from "../../helpers/Functions/backend.js";
+  import { verifyLoginStatus } from "../../helpers/Functions/authentication";
 
   // Components
   import Navbar from "../../components/Navbar/Navbar.svelte";
@@ -13,27 +16,82 @@
   import PreviewGrid from "../../components/PreviewGrid/PreviewGrid.svelte";
   import Modal from "../../helpers/Modal/Modal.svelte";
   import Form from "../../helpers/Form/Form.svelte";
+  import MiniCard from "../../helpers/Informative/Cards/MiniCard.svelte";
+
+  // Stores
+  import { user } from "../../data/user";
 
   // Getting user from API
   let userData = {};
   let projects = [];
+  let organizations = [];
   user.subscribe((user) => {
+    console.log("User: ", user);
     userData = user;
-    projects = user.projects;
   });
 
   onMount(async () => {
-    user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+    try {
+      const isLoggedIn = await verifyLoginStatus();
+      if (!isLoggedIn) {
+        console.log("Redirecting to login");
+        $goto("/users/login");
+      }
+      projects = (await getUserProjects(userData.user_id)).projects;
+      organizations = (await getUserOrganizations(userData.user_id))
+        .organizations;
+      console.log("Projects: ", projects, "Organizations: ", organizations);
+    } catch (err) {
+      console.log("Error in onMount: ", err);
+    }
   });
-
-  // TODO: Add functionality for buttons
 
   let newProjectModal = false;
 
   let projectData = {};
 </script>
 
-<Navbar />
+<Navbar /><Modal
+  title="New Project"
+  open={newProjectModal}
+  buttons={[
+    {
+      text: "Close",
+      type: "secondary",
+      action: () => (newProjectModal = false),
+    },
+    {
+      text: "Add",
+      type: "primary",
+      action: () => {
+        newProjectModal = false;
+        addProject({
+          owner: {
+            user_id: userData.user_id,
+            username: userData.username,
+          },
+          contributors: [
+            { user_id: userData.user_id, username: userData.username },
+          ],
+          ...projectData,
+        });
+      },
+    },
+  ]}
+>
+  <Form
+    data={{
+      name: "",
+      framework: "",
+      description: "",
+      externalLink: "",
+    }}
+    onChange={(e, inputs) => {
+      projectData = inputs;
+    }}
+    prefilled={projectData}
+  />
+</Modal>
 <div class="home" data-testid="home">
   <Header
     title="Recent Projects"
@@ -53,46 +111,54 @@
   />
   {#if projects[0] !== undefined}
     <PreviewGrid {projects} />
+  {:else}
+    <p
+      style="text-align: center;color: rgba(0, 0, 0, .65);margin: 14px 0;font-family: 'Quicksand', sans-serif;font-weight: 500;"
+    >
+      You have no projects, would you like to <span
+        style="color: #2256f2;text-decoration: underline;cursor: pointer;font-weight: 600;"
+        on:click={() => {
+          newProjectModal = true;
+        }}>create a new one</span
+      >?
+    </p>
   {/if}
-  <Modal
-    title="New Project"
-    open={newProjectModal}
+  <Header
+    title="Teams"
+    type="subtitle"
     buttons={[
       {
-        text: "Close",
+        text: "All Teams",
         type: "secondary",
-        action: () => (newProjectModal = false),
-      },
-      {
-        text: "Add",
-        type: "primary",
         action: () => {
-          newProjectModal = false;
-          addProject({
-            owner: {
-              id: userData.id,
-              username: userData.username,
-            },
-            contributors: [{ id: userData.id, username: userData.username }],
-            ...projectData,
-          });
+          $goto("/organizations");
         },
       },
     ]}
-  >
-    <Form
-      data={{
-        name: "",
-        framework: "",
-        description: "",
-        externalLinks: "",
-      }}
-      onChange={(e, inputs) => {
-        projectData = inputs;
-      }}
-      prefilled={projectData}
-    />
-  </Modal>
+  />
+  {#if organizations[0] !== undefined}
+    <div class="organizations">
+      {#each organizations as organization}
+        <div class="organizations__item">
+          <MiniCard
+            title={organization.name}
+            endpoint={`/organizations/${organization.organization_id}`}
+          />
+        </div>
+      {/each}
+    </div>
+  {:else}
+    <p
+      style="text-align: center;color: rgba(0, 0, 0, .65);margin: 14px 0;font-family: 'Quicksand', sans-serif;font-weight: 500;"
+    >
+      You have no teams, would you like to <span
+        style="color: #2256f2;text-decoration: underline;cursor: pointer;font-weight: 600;"
+        on:click={() => {
+          $goto("/organizations");
+        }}>create a new one</span
+      >?
+    </p>
+  {/if}
 </div>
 
 <style type="text/scss">
@@ -102,5 +168,12 @@
 
   .home {
     @include default-padding;
+  }
+
+  .organizations {
+    &__item {
+      margin-bottom: 36px;
+      width: 48%;
+    }
   }
 </style>

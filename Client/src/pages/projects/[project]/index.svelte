@@ -18,6 +18,7 @@
     addComponent,
     updateProject,
   } from "../../../helpers/Functions/backend.js";
+  import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
   import { onMount } from "svelte";
 
   // * State
@@ -31,9 +32,14 @@
   let project = {};
 
   onMount(async () => {
-    project = await getProject($params.project);
-    if (!userData.username) {
-      user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+    try {
+      const isLoggedIn = await verifyLoginStatus();
+      if (!isLoggedIn) {
+        $goto("/users/login");
+      }
+      project = (await getProject($params.project)).project;
+    } catch (error) {
+      console.log("Error in onMount: ", error);
     }
   });
 

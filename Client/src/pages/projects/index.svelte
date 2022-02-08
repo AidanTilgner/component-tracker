@@ -9,8 +9,15 @@
   import {
     getUserFromLogin,
     addProject,
+    getUserProjects,
   } from "../../helpers/Functions/backend";
+  import { verifyLoginStatus } from "../../helpers/Functions/authentication.js";
   import { onMount } from "svelte";
+  import { goto } from "@roxi/routify";
+
+  if (!verifyLoginStatus()) {
+    $goto("/login");
+  }
 
   let projects = [];
   let userData = {};
@@ -20,8 +27,15 @@
   });
 
   onMount(async () => {
-    if (!projects[0]) {
-      user.set(await getUserFromLogin("Aidan.Tilgner", "password"));
+    try {
+      const isLoggedIn = await verifyLoginStatus();
+      if (!isLoggedIn) {
+        $goto("/users/login");
+      }
+      console.log("User Data: ", userData);
+      projects = (await getUserProjects(userData.id)).projects;
+    } catch (error) {
+      console.log("Error in onMount: ", error);
     }
   });
 
@@ -59,10 +73,12 @@
           newProjectModal = false;
           addProject({
             owner: {
-              id: userData.id,
+              user_id: userData.user_id,
               username: userData.username,
             },
-            contributors: [{ id: userData.id, username: userData.username }],
+            contributors: [
+              { user_id: userData.user_id, username: userData.username },
+            ],
             ...projectData,
           });
         },
@@ -74,7 +90,7 @@
         name: "",
         framework: "",
         description: "",
-        externalLinks: "",
+        externalLink: "",
       }}
       onChange={(e, inputs) => {
         projectData = inputs;

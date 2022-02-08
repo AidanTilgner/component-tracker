@@ -2,6 +2,13 @@
   import SearchBar from "../SearchBar/SearchBar.svelte";
   import Profile from "../Profile/Profile.svelte";
   import { goto, url } from "@roxi/routify";
+  import { user } from "../../data/user";
+
+  let initials;
+  user.subscribe((u) => {
+    console.log("User in navbar:  ", u);
+    initials = u.username[0] + u.username[1];
+  });
 
   // TODO: Make this component dynamic based on user data
 </script>
@@ -18,7 +25,7 @@
   </p>
   <div class="navbar__items">
     <SearchBar />
-    <Profile initials="AT" />
+    <Profile {initials} />
   </div>
 </div>
 

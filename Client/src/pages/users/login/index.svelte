@@ -1,33 +1,89 @@
 <script>
   import { url, goto } from "@roxi/routify";
-  import { get } from "svelte/store";
-  import { getUserFromLogin } from "../../../helpers/Functions/backend.js";
-  import { user, userCookie } from "../../../data/user";
+  import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
+  import { onMount } from "svelte";
+  import { getUser, login } from "../../../helpers/Functions/backend.js";
+  import { user, tokens } from "../../../data/user";
+  import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
+  import {
+    writeToLocalStorage,
+    logLocalStorage,
+    writeToSessionStorage,
+    readFromLocalStorage,
+    readFromSessionStorage,
+  } from "../../../helpers/Functions/local.js";
 
   let verified = false;
 
-  const submitLogin = async (e) => {
-    let data = {
-      username: document.getElementById("username").value,
-      password: document.getElementById("password").value,
-    };
-    const response = await getUserFromLogin(data.username, data.password);
-    console.log(response);
-    // Create a cookie with the user object
-    console.log("");
-    if (!response) {
-      verified = false;
-      return;
+  onMount(async () => {
+    try {
+      const isLoggedIn = await verifyLoginStatus();
+      if (isLoggedIn) {
+        $goto("/home");
+      }
+    } catch (error) {
+      console.log("Error in onMount: ", error);
     }
-    document.cookie = `user=${JSON.stringify(response)}`;
-    console.log(document.cookie);
-    user.set(response);
-    // Redirect to the home page
-    // $goto("/");
+  });
+
+  tokens.subscribe((tokens) => {
+    console.log("Tokens: ", tokens);
+  });
+
+  user.subscribe((user) => {
+    console.log("User: ", user);
+  });
+
+  let dispatchBanner = {
+    showing: false,
+    message: "",
+  };
+
+  const handleLoginSuccess = async (res) => {
+    writeToLocalStorage("refreshToken", res.tokens.refresh);
+    writeToSessionStorage("accessToken", res.tokens.access);
+    writeToLocalStorage("user", JSON.stringify(res.user));
+    logLocalStorage();
+    tokens.set(res.tokens);
+    user.set(res.user);
+    console.log(
+      "Tokens: ",
+      readFromLocalStorage("refreshToken"),
+      readFromSessionStorage("accessToken")
+    );
+    console.log("User: ", JSON.parse(readFromLocalStorage("user")));
+    $goto("/home");
+  };
+
+  const submitLogin = async (e) => {
+    try {
+      let data = {
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value,
+      };
+      const response = await login(data.username, data.password);
+      console.log("Response: ", response);
+      if (response.error) {
+        console.log("Displaying error");
+        dispatchBanner = {
+          showing: true,
+          message: response.error,
+        };
+        return;
+      }
+      handleLoginSuccess({ user: response.user, tokens: response.tokens });
+    } catch (error) {
+      console.log("Error in submitLogin: ", error);
+    }
   };
 </script>
 
 <div class="login">
+  <AlertBanner
+    showing={dispatchBanner.showing}
+    message={dispatchBanner.message}
+    timeout={5000}
+  />
   <div class="login__modal">
     <h3 class="login__title">Login</h3>
     <form

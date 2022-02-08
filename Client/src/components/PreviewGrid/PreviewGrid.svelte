@@ -10,7 +10,7 @@
       title={project.name}
       edited={project.edited}
       framework={project.framework}
-      endpoint={project.id}
+      endpoint={project.project_id}
     />
   {/each}
 </div>

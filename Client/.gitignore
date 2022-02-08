@@ -1,3 +1,5 @@
 public/build
 
 .env
+
+/.routify/

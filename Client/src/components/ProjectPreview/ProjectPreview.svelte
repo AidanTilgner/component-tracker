@@ -5,6 +5,14 @@
   framework = framework.toLowerCase();
 
   // TODO: Add dropdown for settings
+  const formatDate = (d) => {
+    // Takes in an ISO timestamp and returns month/day/year
+    let date = new Date(d);
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
 </script>
 
 <div
@@ -19,25 +27,27 @@
     $goto(`/projects/:project`, { project: endpoint });
   }}
 >
-  <div class="preview__framework-icon">
-    <Icon
-      name={framework === "react"
-        ? "react-icon"
-        : framework === "svelte"
-        ? "svelte-icon"
-        : framework === "vue"
-        ? "vue-icon"
-        : framework === "angular"
-        ? "angular-icon"
-        : "unknown"}
-      width="100"
-      height="100"
-    />
-  </div>
+  {#if framework !== ""}
+    <div class="preview__framework-icon">
+      <Icon
+        name={framework === "react"
+          ? "react-icon"
+          : framework === "svelte"
+          ? "svelte-icon"
+          : framework === "vue"
+          ? "vue-icon"
+          : framework === "angular"
+          ? "angular-icon"
+          : "unknown"}
+        width="100"
+        height="100"
+      />
+    </div>
+  {/if}
   <div class="preview__banner">
     <p class="preview__title">{title}</p>
     <p class="preview__edited">
-      edited <span style="font-weight: 600;">{edited}</span>
+      edited <span style="font-weight: 600;">{formatDate(edited)}</span>
     </p>
     <div
       class="preview__options"
