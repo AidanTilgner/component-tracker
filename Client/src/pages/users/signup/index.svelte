@@ -28,6 +28,22 @@
     }
   });
 
+  const handleSignUpSuccess = async (res) => {
+    writeToLocalStorage("refreshToken", res.tokens.refresh);
+    writeToSessionStorage("accessToken", res.tokens.access);
+    writeToLocalStorage("user", JSON.stringify(res.user));
+    logLocalStorage();
+    tokens.set(res.tokens);
+    user.set(res.user);
+    console.log(
+      "Tokens: ",
+      readFromLocalStorage("refreshToken"),
+      readFromSessionStorage("accessToken")
+    );
+    console.log("User: ", JSON.parse(readFromLocalStorage("user")));
+    $goto("/home");
+  };
+
   const submitSignup = async (e) => {
     try {
       let data = {
@@ -35,17 +51,17 @@
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
       };
-
       const response = await signUp(data.username, data.email, data.password);
-      console.log(response);
-
-      writeToLocalStorage("refreshToken", response.tokens.refresh);
-      writeToSessionStorage("accessToken", response.tokens.access);
-      writeToLocalStorage("user", JSON.stringify(response.user));
-
-      tokens.set(response.tokens);
-      user.set(response.user);
-      $goto("/home");
+      console.log("Response: ", response);
+      if (response.error) {
+        console.log("Displaying error");
+        dispatchBanner = {
+          showing: true,
+          message: response.error,
+        };
+        return;
+      }
+      handleSignUpSuccess(response);
     } catch (error) {
       console.log("Error in submitSignup: ", error);
     }

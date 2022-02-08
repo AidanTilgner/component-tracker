@@ -34,7 +34,6 @@ class Organization {
       description: this.description,
       users: this.users,
       projects: this.projects,
-      message: "Organization added successfully",
     };
   }
 }

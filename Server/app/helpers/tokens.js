@@ -41,19 +41,17 @@ export const refreshUserToken = async (tkn) => {
       process.env.REFRESH_TOKEN_SECRET,
       (err, user) => {
         if (err) return 403;
-        return {
-          accessToken: generateAccessToken(
-            {
-              id: user.id,
-              username: user.username,
-              email: user.email,
-              role: user.role,
-              projects: user.projects,
-              organizations: user.organizations,
-            },
-            { expiresIn: "1hr" }
-          ),
-        };
+        return generateAccessToken(
+          {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role,
+            projects: user.projects,
+            organizations: user.organizations,
+          },
+          { expiresIn: "1hr" }
+        );
       }
     );
   } catch (err) {

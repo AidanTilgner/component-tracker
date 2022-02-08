@@ -4,3 +4,13 @@ export const wrapAsync = (fn) => {
     return Promise.resolve(fnReturn).catch(next);
   };
 };
+
+export const filterForMessages = (obj) => {
+  if (obj.message) {
+    return obj;
+  }
+  if (obj.error) {
+    return obj;
+  }
+  return false;
+};

@@ -37,17 +37,7 @@ class Project {
         error: "Invalid project",
       };
     }
-    return {
-      project_id: this.project_id,
-      owner: this.owner,
-      contributors: this.contributors,
-      name: this.name,
-      framework: this.framework,
-      description: this.description,
-      externalLink: this.externalLink,
-      components: this.components,
-      message: "Project added successfully",
-    };
+    return true;
   }
 }
 

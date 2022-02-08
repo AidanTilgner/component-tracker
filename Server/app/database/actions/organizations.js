@@ -7,6 +7,9 @@ import UserModel from "../models/user.js";
 export const saveOrganizationToDatabase = async (organization) => {
   try {
     const newOrganization = new OrganizationClass(organization);
+    if (!newOrganization.validate) {
+      return newOrganization.validate();
+    }
     const organizationModel = await OrganizationModel.create(newOrganization);
     await organizationModel.save();
     newOrganization.users.forEach(async (user) => {
@@ -26,7 +29,7 @@ export const saveOrganizationToDatabase = async (organization) => {
         { new: true }
       ).exec();
     });
-    return newOrganization.validate();
+    return newOrganization;
   } catch (error) {
     console.log("Error in saveOrganizationToDatabase: ", error);
     return {
@@ -54,7 +57,6 @@ export const updateOrganizationInDatabase = async (organization_id, update) => {
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
-      message: "Organization successfully updated",
     };
   } catch (error) {
     console.log("Error in updateOrganizationInDatabase: ", error);
@@ -92,7 +94,6 @@ export const deleteOrganizationFromDatabase = async (organization_id) => {
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
-      message: "Organization successfully deleted",
     };
   } catch (error) {
     console.log("Error in deleteOrganizationFromDatabase: ", error);
@@ -138,7 +139,6 @@ export const addUserToOrganizationInDatabase = async (
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
-      message: "User successfully added to organization",
     };
   } catch (error) {
     console.log("Error in addUserToOrganizationInDatabase: ", error);
@@ -160,13 +160,17 @@ export const updateUserInOrganizationInDatabase = async (
       { $push: { users: user } },
       { new: true }
     ).exec();
+    if (!organizationModel) {
+      return {
+        error: "Organization not found",
+      };
+    }
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
-      message: "User successfully updated",
     };
   } catch (error) {
     console.log("Error in updateUserInOrganizationInDatabase: ", error);
@@ -197,7 +201,6 @@ export const deleteUserFromOrganizationInDatabase = async (
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
-      message: "User successfully deleted",
     };
   } catch (error) {
     console.log("Error in deleteUserFromOrganizationInDatabase: ", error);
@@ -246,7 +249,6 @@ export const addProjectToOrganizationInDatabase = async (
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
-      message: "Project successfully added to organization",
     };
   } catch (error) {
     console.log("Error in addProjectToOrganizationInDatabase: ", error);
@@ -280,7 +282,6 @@ export const updateProjectInOrganizationInDatabase = async (
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
-      message: "Project successfully updated",
     };
   } catch (error) {
     console.log("Error in updateProjectInOrganizationInDatabase: ", error);
@@ -312,7 +313,6 @@ export const deleteProjectFromOrganizationInDatabase = async (
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
-      message: "Project successfully deleted",
     };
   } catch (error) {
     console.log("Error in deleteProjectFromOrganizationInDatabase: ", error);

@@ -42,7 +42,6 @@ export const saveUserToDatabase = async (user) => {
         created: userModel.created,
         edited: userModel.edited,
       },
-      message: "User saved to database",
     };
   } catch (error) {
     console.log("Error in saveUserToDatabase: ", error);
@@ -60,7 +59,7 @@ export const getUserFromDatabase = async (user_id) => {
         error: "User not found",
       };
     }
-    return { user: user, message: "User found" };
+    return user;
   } catch (error) {
     console.log("Error in getUserFromDatabase: ", error);
     return {
@@ -94,7 +93,7 @@ export const updateUserInDatabase = async (user_id, update) => {
         }
       ).exec();
     });
-    return { user: user, message: "User updated" };
+    return user;
   } catch (error) {
     console.log("Error in updateUserInDatabase: ", error);
     return {
@@ -111,7 +110,7 @@ export const deleteUserFromDatabase = async (user_id) => {
         error: "User not found",
       };
     }
-    return { user: user, message: "User deleted" };
+    return user;
   } catch (error) {
     console.log("Error in deleteUserFromDatabase: ", error);
     return {

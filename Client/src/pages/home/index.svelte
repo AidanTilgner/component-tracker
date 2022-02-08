@@ -37,8 +37,10 @@
         console.log("Redirecting to login");
         $goto("/users/login");
       }
-      projects = await getUserProjects(userData.user_id);
-      organizations = await getUserOrganizations(userData.user_id);
+      projects = (await getUserProjects(userData.user_id)).projects;
+      organizations = (await getUserOrganizations(userData.user_id))
+        .organizations;
+      console.log("Projects: ", projects, "Organizations: ", organizations);
     } catch (err) {
       console.log("Error in onMount: ", err);
     }

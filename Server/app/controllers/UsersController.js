@@ -8,10 +8,18 @@ import {
   getUserProjectsFromDatabase,
   getUserOrganizationsFromDatabase,
 } from "../database/queries/users.js";
+import { filterForMessages } from "../helpers/routing.js";
 
 export const getUser = async (user_id) => {
   try {
-    return await getUserFromDatabase(user_id);
+    const user = await getUserFromDatabase(user_id);
+    if (filterForMessages(user)) {
+      return filterForMessages(user);
+    }
+    return {
+      user,
+      message: "User successfully retrieved",
+    };
   } catch (error) {
     console.log("Error in getUser: ", error);
     return {
@@ -22,7 +30,14 @@ export const getUser = async (user_id) => {
 
 export const updateUser = async (user_id, update) => {
   try {
-    return await updateUserInDatabase(user_id, update);
+    const updatedUser = await updateUserInDatabase(user_id, update);
+    if (filterForMessages(updatedUser)) {
+      return filterForMessages(updatedUser);
+    }
+    return {
+      user: updatedUser,
+      message: "User successfully updated",
+    };
   } catch (error) {
     console.log("Error in updateUser: ", error);
     return {
@@ -33,7 +48,14 @@ export const updateUser = async (user_id, update) => {
 
 export const deleteUser = async (user_id) => {
   try {
-    return await deleteUserFromDatabase(user_id);
+    const deletedUser = await deleteUserFromDatabase(user_id);
+    if (filterForMessages(deletedUser)) {
+      return filterForMessages(deletedUser);
+    }
+    return {
+      user: deletedUser,
+      message: "User successfully deleted",
+    };
   } catch (error) {
     console.log("Error in deleteUser: ", error);
     return {
@@ -44,7 +66,14 @@ export const deleteUser = async (user_id) => {
 
 export const getProjects = async (user_id) => {
   try {
-    return await getUserProjectsFromDatabase(user_id);
+    const projects = await getUserProjectsFromDatabase(user_id);
+    if (filterForMessages(projects)) {
+      return filterForMessages(projects);
+    }
+    return {
+      projects,
+      message: "Projects successfully retrieved",
+    };
   } catch (error) {
     console.log("Error in getProjects: ", error);
     return {
@@ -55,7 +84,14 @@ export const getProjects = async (user_id) => {
 
 export const getOrganizations = async (user_id) => {
   try {
-    return await getUserOrganizationsFromDatabase(user_id);
+    const organizations = await getUserOrganizationsFromDatabase(user_id);
+    if (filterForMessages(organizations)) {
+      return filterForMessages(organizations);
+    }
+    return {
+      organizations,
+      message: "Organizations successfully retrieved",
+    };
   } catch (error) {
     console.log("Error in getOrganizations: ", error);
     return {

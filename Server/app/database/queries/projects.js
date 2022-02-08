@@ -14,7 +14,7 @@ export const getProjectFromDatabase = async (project_id) => {
         error: "Project not found",
       };
     }
-    return { project: project, message: "Project found" };
+    return project;
   } catch (error) {
     console.log("Error in getProjectFromDatabase: ", error);
     return {
@@ -33,12 +33,7 @@ export const getComponentFromProjectInDatabase = async (project_id, name) => {
         error: "Project not found",
       };
     }
-    return {
-      component: project.components.find(
-        (component) => component.name === name
-      ),
-      message: "Component found",
-    };
+    return project.components.find((component) => component.name === name);
   } catch (error) {
     console.log("Error in getComponentFromProjectInDatabase: ", error);
     return {

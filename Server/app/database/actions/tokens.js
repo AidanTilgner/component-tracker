@@ -9,9 +9,7 @@ export const saveRefreshTokenToDatabase = async (refreshToken) => {
     const refreshTokenModel = new Token({ token: refreshToken });
     await refreshTokenModel.save();
     console.log("Refresh Token Model: ", refreshTokenModel);
-    return {
-      message: "Refresh token saved to database",
-    };
+    return refreshTokenModel;
   } catch (error) {
     console.log("Error in saveRefreshTokenToDatabase: ", error);
     return {

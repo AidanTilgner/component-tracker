@@ -13,9 +13,18 @@ import {
   getComponentFromProjectInDatabase,
 } from "../database/queries/projects.js";
 
+import { filterForMessages } from "../helpers/routing.js";
+
 export const addProject = async (project) => {
   try {
-    return await saveProjectToDatabase(project);
+    const newProject = await saveProjectToDatabase(project);
+    if (filterForMessages(newProject)) {
+      return newProject;
+    }
+    return {
+      project: newProject,
+      message: "Project successfully created",
+    };
   } catch (error) {
     console.log("Error in addProject: ", error);
     return {
@@ -26,7 +35,14 @@ export const addProject = async (project) => {
 
 export const getProject = async (project_id) => {
   try {
-    return await getProjectFromDatabase(project_id);
+    const project = await getProjectFromDatabase(project_id);
+    if (filterForMessages(project)) {
+      return filterForMessages(project);
+    }
+    return {
+      project,
+      message: "Project successfully retrieved",
+    };
   } catch (error) {
     console.log("Error in getProject: ", error);
     return {
@@ -37,7 +53,14 @@ export const getProject = async (project_id) => {
 
 export const updateProject = async (project_id, update) => {
   try {
-    return await updateProjectInDatabase(project_id, update);
+    const updatedProject = await updateProjectInDatabase(project_id, update);
+    if (filterForMessages(updatedProject)) {
+      return filterForMessages(updatedProject);
+    }
+    return {
+      project: updatedProject,
+      message: "Project successfully updated",
+    };
   } catch (error) {
     console.log("Error in updateProject: ", error);
     return {
@@ -48,7 +71,14 @@ export const updateProject = async (project_id, update) => {
 
 export const deleteProject = async (project_id) => {
   try {
-    return await deleteProjectFromDatabase(project_id);
+    const deletedProject = await deleteProjectFromDatabase(project_id);
+    if (filterForMessages(deletedProject)) {
+      return filterForMessages(deletedProject);
+    }
+    return {
+      project: deletedProject,
+      message: "Project successfully deleted",
+    };
   } catch (error) {
     console.log("Error in deleteProject: ", error);
     return {
@@ -59,7 +89,17 @@ export const deleteProject = async (project_id) => {
 
 export const addComponent = async (project_id, component) => {
   try {
-    return await addComponentToProjectInDatabase(project_id, component);
+    const newComponent = await addComponentToProjectInDatabase(
+      project_id,
+      component
+    );
+    if (filterForMessages(newComponent)) {
+      return newComponent;
+    }
+    return {
+      component: newComponent,
+      message: "Component successfully added to project",
+    };
   } catch (error) {
     console.log("Error in addComponent: ", error);
     return {
@@ -70,7 +110,14 @@ export const addComponent = async (project_id, component) => {
 
 export const getComponent = async (project_id, name) => {
   try {
-    return await getComponentFromProjectInDatabase(project_id, name);
+    const component = await getComponentFromProjectInDatabase(project_id, name);
+    if (filterForMessages(component)) {
+      return filterForMessages(component);
+    }
+    return {
+      component,
+      message: "Component successfully retrieved",
+    };
   } catch (error) {
     console.log("Error in getComponent: ", error);
     return {
@@ -81,7 +128,18 @@ export const getComponent = async (project_id, name) => {
 
 export const updateComponent = async (project_id, name, update) => {
   try {
-    return await updateComponentInProjectInDatabase(project_id, name, update);
+    const updatedComponent = await updateComponentInProjectInDatabase(
+      project_id,
+      name,
+      update
+    );
+    if (filterForMessages(updatedComponent)) {
+      return filterForMessages(updatedComponent);
+    }
+    return {
+      component: updatedComponent,
+      message: "Component successfully updated",
+    };
   } catch (error) {
     console.log("Error in updateComponent: ", error);
     return {
@@ -92,7 +150,17 @@ export const updateComponent = async (project_id, name, update) => {
 
 export const deleteComponent = async (project_id, name) => {
   try {
-    return await deleteComponentFromProjectInDatabase(project_id, name);
+    const deletedComponent = await deleteComponentFromProjectInDatabase(
+      project_id,
+      name
+    );
+    if (filterForMessages(deletedComponent)) {
+      return filterForMessages(deletedComponent);
+    }
+    return {
+      component: deletedComponent,
+      message: "Component successfully deleted",
+    };
   } catch (error) {
     console.log("Error in deleteComponent: ", error);
     return {

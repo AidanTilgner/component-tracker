@@ -16,10 +16,19 @@ import {
   getProjectsFromOrganizationInDatabase,
 } from "../database/queries/organizations.js";
 
+import { filterForMessages } from "../helpers/routing.js";
+
 // * Organization
 export const createOrganization = async (organization) => {
   try {
-    return await saveOrganizationToDatabase(organization);
+    const newOrganization = await saveOrganizationToDatabase(organization);
+    if (filterForMessages(newOrganization)) {
+      return newOrganization;
+    }
+    return {
+      organization: newOrganization,
+      message: "Organization successfully created",
+    };
   } catch (error) {
     console.log("Error in createOrganization: ", error);
     return {
@@ -30,7 +39,14 @@ export const createOrganization = async (organization) => {
 
 export const getOrganization = async (organization_id) => {
   try {
-    return await getOrganizationFromDatabase(organization_id);
+    const organization = await getOrganizationFromDatabase(organization_id);
+    if (filterForMessages(organization)) {
+      return filterForMessages(organization);
+    }
+    return {
+      organization,
+      message: "Organization successfully retrieved",
+    };
   } catch (error) {
     console.log("Error in getOrganization: ", error);
     return {
@@ -41,7 +57,17 @@ export const getOrganization = async (organization_id) => {
 
 export const updateOrganization = async (organization_id, organization) => {
   try {
-    return await updateOrganizationInDatabase(organization_id, organization);
+    const updatedOrganization = await updateOrganizationInDatabase(
+      organization_id,
+      organization
+    );
+    if (filterForMessages(updatedOrganization)) {
+      return filterForMessages(updatedOrganization);
+    }
+    return {
+      organization: updatedOrganization,
+      message: "Organization successfully updated",
+    };
   } catch (error) {
     console.log("Error in updateOrganization: ", error);
     return {
@@ -52,7 +78,16 @@ export const updateOrganization = async (organization_id, organization) => {
 
 export const deleteOrganization = async (organization_id) => {
   try {
-    return await deleteOrganizationFromDatabase(organization_id);
+    const deletedOrganization = await deleteOrganizationFromDatabase(
+      organization_id
+    );
+    if (filterForMessages(deletedOrganization)) {
+      return filterForMessages(deletedOrganization);
+    }
+    return {
+      organization: deletedOrganization,
+      message: "Organization successfully deleted",
+    };
   } catch (error) {
     console.log("Error in deleteOrganization: ", error);
     return {
@@ -64,7 +99,17 @@ export const deleteOrganization = async (organization_id) => {
 // * User
 export const addUserToOrganization = async (organization_id, user) => {
   try {
-    return await addUserToOrganizationInDatabase(organization_id, user);
+    const addedUser = await addUserToOrganizationInDatabase(
+      organization_id,
+      user
+    );
+    if (filterForMessages(addedUser)) {
+      return filterForMessages(addedUser);
+    }
+    return {
+      user: addedUser,
+      message: "User successfully added to organization",
+    };
   } catch (error) {
     console.log("Error in addUserToOrganization: ", error);
     return {
@@ -75,7 +120,14 @@ export const addUserToOrganization = async (organization_id, user) => {
 
 export const getUsersFromOrganization = async (organization_id) => {
   try {
-    return await getUsersInOrganizationFromDatabase(organization_id);
+    const users = await getUsersInOrganizationFromDatabase(organization_id);
+    if (filterForMessages(users)) {
+      return filterForMessages(users);
+    }
+    return {
+      users,
+      message: "Users successfully retrieved from organization",
+    };
   } catch (error) {
     console.log("Error in getUsersFromOrganization: ", error);
   }
@@ -83,45 +135,106 @@ export const getUsersFromOrganization = async (organization_id) => {
 
 export const updateUserInOrganization = async (organization_id, user) => {
   try {
-    return await updateUserInOrganizationInDatabase(organization_id, user);
+    const updatedUser = await updateUserInOrganizationInDatabase(
+      organization_id,
+      user
+    );
+    if (filterForMessages(updatedUser)) {
+      return filterForMessages(updatedUser);
+    }
+    return {
+      user: updatedUser,
+      message: "User successfully updated in organization",
+    };
   } catch (error) {
     console.log("Error in updateUserInOrganization: ", error);
+    return {
+      error: "Internal error updating user in organization",
+    };
   }
 };
 
 export const removeUserFromOrganization = async (organization_id, user) => {
   try {
-    return await deleteUserFromOrganizationInDatabase(organization_id, user);
+    const removedUser = await deleteUserFromOrganizationInDatabase(
+      organization_id,
+      user
+    );
+    if (filterForMessages(removedUser)) {
+      return filterForMessages(removedUser);
+    }
+    return {
+      user: removedUser,
+      message: "User successfully removed from organization",
+    };
   } catch (error) {
     console.log("Error in removeUserFromOrganization: ", error);
+    return {
+      error: "Internal error removing user from organization",
+    };
   }
 };
 
 // * Projects
 export const addProjectToOrganization = async (organization_id, project) => {
   try {
-    return await addProjectToOrganizationInDatabase(organization_id, project);
+    const addedProject = await addProjectToOrganizationInDatabase(
+      organization_id,
+      project
+    );
+    if (filterForMessages(addedProject)) {
+      return filterForMessages(addedProject);
+    }
+    return {
+      project: addedProject,
+      message: "Project successfully added to organization",
+    };
   } catch (error) {
     console.log("Error in addProjectToOrganization: ", error);
+    return {
+      error: "Internal error adding project to organization",
+    };
   }
 };
 
 export const getProjectsFromOrganization = async (organization_id) => {
   try {
-    return await getProjectsFromOrganizationInDatabase(organization_id);
+    const projects = await getProjectsFromOrganizationInDatabase(
+      organization_id
+    );
+    if (filterForMessages(projects)) {
+      return filterForMessages(projects);
+    }
+    return {
+      projects,
+      message: "Projects successfully retrieved from organization",
+    };
   } catch (error) {
     console.log("Error in getProjectsFromOrganization: ", error);
+    return {
+      error: "Internal error getting projects from organization",
+    };
   }
 };
 
 export const updateProjectInOrganization = async (organization_id, project) => {
   try {
-    return await updateProjectInOrganizationInDatabase(
+    const updatedProject = await updateProjectInOrganizationInDatabase(
       organization_id,
       project
     );
+    if (filterForMessages(updatedProject)) {
+      return filterForMessages(updatedProject);
+    }
+    return {
+      project: updatedProject,
+      message: "Project successfully updated in organization",
+    };
   } catch (error) {
     console.log("Error in updateProjectInOrganization: ", error);
+    return {
+      error: "Internal error updating project in organization",
+    };
   }
 };
 
@@ -130,11 +243,21 @@ export const deleteProjectFromOrganization = async (
   project
 ) => {
   try {
-    return await deleteProjectFromOrganizationInDatabase(
+    const deletedProject = await deleteProjectFromOrganizationInDatabase(
       organization_id,
       project
     );
+    if (filterForMessages(deletedProject)) {
+      return filterForMessages(deletedProject);
+    }
+    return {
+      project: deletedProject,
+      message: "Project successfully deleted from organization",
+    };
   } catch (error) {
     console.log("Error in deleteProjectFromOrganization: ", error);
+    return {
+      error: "Internal error deleting project from organization",
+    };
   }
 };

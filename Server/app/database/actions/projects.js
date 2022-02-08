@@ -12,6 +12,9 @@ export const saveProjectToDatabase = async (project) => {
   try {
     console.log("Raw Project: ", project);
     const newProject = new ProjectClass(project);
+    if (!newProject.validate) {
+      return newProject.validate();
+    }
     console.log("New Project: ", newProject);
     const projectModel = await ProjectModel.create(newProject);
     await projectModel.save();
@@ -40,7 +43,13 @@ export const saveProjectToDatabase = async (project) => {
         { new: true }
       ).exec();
     });
-    return newProject.validate();
+    return {
+      project_id: newProject.project_id,
+      name: newProject.name,
+      framework: newProject.framework,
+      created: projectModel.created,
+      edited: projectModel.edited,
+    };
   } catch (error) {
     console.log("Error in saveProjectToDatabase: ", error);
   }
@@ -58,7 +67,7 @@ export const updateProjectInDatabase = async (project_id, update) => {
         error: "Project not found",
       };
     }
-    return { project: project, message: "Project successfully updated" };
+    return project;
   } catch (error) {
     console.log("Error in updateProjectInDatabase: ", error);
     return {
@@ -91,7 +100,7 @@ export const deleteProjectFromDatabase = async (project_id) => {
         { new: true }
       ).exec();
     });
-    return { project: project, message: "Project successfully deleted" };
+    return project;
   } catch (eror) {
     console.log("Error in deleteProjectFromDatabase: ", error);
     return {
@@ -115,7 +124,7 @@ export const addComponentToProjectInDatabase = async (
     }
     project.components.push(component);
     await project.save();
-    return { project: project, message: "Component successfully added" };
+    return project;
   } catch (error) {
     console.log("Error in addComponentToProjectInDatabase: ", error);
     return {
@@ -151,10 +160,7 @@ export const updateComponentInProjectInDatabase = async (
       update
     );
     await project.save();
-    return {
-      component: project.components[index],
-      message: "Component successfully updated",
-    };
+    return project.components[index];
   } catch (error) {
     console.log("Error in updateComponentInProjectInDatabase: ", error);
     return {
@@ -186,10 +192,7 @@ export const deleteComponentFromProjectInDatabase = async (
     }
     project.components.splice(index, 1);
     await project.save();
-    return {
-      components: project.components,
-      message: "Component successfully deleted",
-    };
+    return project.components;
   } catch (error) {
     console.log("Error in deleteComponentFromProjectInDatabase: ", error);
     return {

@@ -12,10 +12,7 @@ export const getProjectsFromOrganizationInDatabase = async (
         error: "Organization not found",
       };
     }
-    return {
-      projects: organizationModel.projects,
-      message: "Projects successfully retrieved",
-    };
+    return organizationModel.projects;
   } catch (error) {
     console.log("Error in getProjectsFromOrganizationInDatabase: ", error);
     return {
@@ -29,10 +26,12 @@ export const getUsersInOrganizationFromDatabase = async (organization_id) => {
     const organizationModel = await OrganizationModel.findOne({
       organization_id,
     }).exec();
-    return {
-      users: organizationModel.users,
-      message: "Users successfully retrieved",
-    };
+    if (!organizationModel) {
+      return {
+        error: "Organization not found",
+      };
+    }
+    return organizationModel.users;
   } catch (error) {
     console.log("Error in getUsersInOrganizationFromDatabase: ", error);
     return {
@@ -58,7 +57,6 @@ export const getOrganizationFromDatabase = async (organization_id) => {
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
-      message: "Organization successfully retrieved",
     };
   } catch (error) {
     console.log("Error in getOrganizationFromDatabase: ", error);
