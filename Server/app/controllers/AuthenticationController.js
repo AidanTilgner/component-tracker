@@ -1,5 +1,4 @@
 // Helpers
-import { getDataByFilepath, writeFileByFilepath } from "../helpers/files.js";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -19,6 +18,11 @@ import User from "../data/user/user.js";
 export const loginUser = async (username, password) => {
   try {
     const user = await getUserByLogin(username, password);
+    if (user.error) {
+      return {
+        error: user.error,
+      };
+    }
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
     saveRefreshTokenToDatabase(refreshToken);

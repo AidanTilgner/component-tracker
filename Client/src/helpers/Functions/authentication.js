@@ -17,6 +17,9 @@ tokens.subscribe((tokens) => {
 export const verifyLoginStatus = async () => {
   try {
     console.log("Body:", JSON.stringify({ refreshToken: refreshToken }));
+    if (refreshToken === "") {
+      return false;
+    }
     const response = await fetch(`${SERVER_URL}${EP.auth}/refresh`, {
       method: "POST",
       headers: {
@@ -26,7 +29,7 @@ export const verifyLoginStatus = async () => {
       body: JSON.stringify({ refreshToken: refreshToken }),
     }).then((res) => res.json());
     console.log("verifyLoginStatus: ", response.accessToken);
-    if (response.status === 403) {
+    if (response.status === 403 || response.error) {
       console.log("Forbidden");
       return false;
     }

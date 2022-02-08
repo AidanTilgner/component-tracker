@@ -1,6 +1,6 @@
 <script>
   import { url, goto } from "@roxi/routify";
-  import { get } from "svelte/store";
+  import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
   import { onMount } from "svelte";
   import { getUser, login } from "../../../helpers/Functions/backend.js";
   import { user, tokens } from "../../../data/user";
@@ -34,19 +34,18 @@
     console.log("User: ", user);
   });
 
-  const submitLogin = async (e) => {
-    let data = {
-      username: document.getElementById("username").value,
-      password: document.getElementById("password").value,
-    };
-    const response = await login(data.username, data.password);
-    console.log(response);
-    writeToLocalStorage("refreshToken", response.tokens.refresh);
-    writeToSessionStorage("accessToken", response.tokens.access);
-    writeToLocalStorage("user", JSON.stringify(response.user));
+  let dispatchBanner = {
+    showing: false,
+    message: "",
+  };
+
+  const handleLoginSuccess = async (res) => {
+    writeToLocalStorage("refreshToken", res.tokens.refresh);
+    writeToSessionStorage("accessToken", res.tokens.access);
+    writeToLocalStorage("user", JSON.stringify(res.user));
     logLocalStorage();
-    tokens.set(response.tokens);
-    user.set(response.user);
+    tokens.set(res.tokens);
+    user.set(res.user);
     console.log(
       "Tokens: ",
       readFromLocalStorage("refreshToken"),
@@ -55,9 +54,36 @@
     console.log("User: ", JSON.parse(readFromLocalStorage("user")));
     $goto("/home");
   };
+
+  const submitLogin = async (e) => {
+    try {
+      let data = {
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value,
+      };
+      const response = await login(data.username, data.password);
+      console.log("Response: ", response);
+      if (response.error) {
+        console.log("Displaying error");
+        dispatchBanner = {
+          showing: true,
+          message: response.error,
+        };
+        return;
+      }
+      handleLoginSuccess(response);
+    } catch (error) {
+      console.log("Error in submitLogin: ", error);
+    }
+  };
 </script>
 
 <div class="login">
+  <AlertBanner
+    showing={dispatchBanner.showing}
+    message={dispatchBanner.message}
+    timeout={5000}
+  />
   <div class="login__modal">
     <h3 class="login__title">Login</h3>
     <form

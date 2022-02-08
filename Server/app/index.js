@@ -30,6 +30,8 @@ app.use(
   })
 );
 
+// TODO: Add error messages to all routes
+
 // Auth
 app.use("/auth", AuthRouter);
 

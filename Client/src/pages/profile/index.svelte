@@ -53,8 +53,9 @@
       {
         text: "Logout",
         type: "secondary",
-        action: (e) => {
-          logout();
+        action: async (e) => {
+          const logoutData = await logout();
+          console.log("Logout:", logoutData);
           $goto("/users/login");
         },
       },

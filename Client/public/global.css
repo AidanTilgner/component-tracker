@@ -68,3 +68,11 @@ button:not(:disabled):active {
 button:focus {
   border-color: #666;
 }
+
+.alert {
+  position: fixed;
+  top: 56px;
+  right: 120px;
+  left: 120px;
+  z-index: 9999;
+}

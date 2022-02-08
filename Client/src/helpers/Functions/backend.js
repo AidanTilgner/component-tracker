@@ -2,6 +2,7 @@
 
 import { tokens } from "../../data/user";
 import { deleteFromLocalStorage, deleteFromSessionStorage } from "./local";
+import { goto } from "@roxi/routify";
 let accessToken, refreshToken;
 tokens.subscribe((tokens) => {
   accessToken = tokens.access;
@@ -60,9 +61,12 @@ export const logout = async () => {
       body: JSON.stringify({ refreshToken }),
     });
     const data = await response.json();
+    console.log("Loggin out: ", data);
     deleteFromLocalStorage("refreshToken");
     deleteFromLocalStorage("user");
+    console.log("Deleting Session Storage");
     deleteFromSessionStorage("accessToken");
+    tokens.set({ access: "", refresh: "" });
     return data;
   } catch (err) {
     console.log("Error in logout: ", err);
