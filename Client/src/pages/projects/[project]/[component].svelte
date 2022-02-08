@@ -64,10 +64,12 @@
         $goto("/users/login");
       }
       project = await getProject($params.project);
-      component = await getComponent(
-        $params.project,
-        $params.component.split("+").join("/")
-      );
+      component = (
+        await getComponent(
+          $params.project,
+          $params.component.split("+").join("/")
+        )
+      ).component;
     } catch (error) {
       console.log("Error in onMount: ", error);
     }

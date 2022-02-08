@@ -22,7 +22,7 @@
     if (!loggedIn) {
       $goto("/users/login");
     }
-    organization = await getOrganization($params.organization);
+    organization = (await getOrganization($params.organization)).organization;
     console.log("Organization:", organization);
   });
 </script>

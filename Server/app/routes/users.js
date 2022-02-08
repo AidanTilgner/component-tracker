@@ -24,7 +24,7 @@ Router.get(
   "/",
   authenticateUser,
   wrapAsync(async (req, res) => {
-    res.send(await getUser(req.query.id)).status(200);
+    res.send(await getUser(req.query.userID)).status(200);
   })
 );
 
@@ -32,7 +32,7 @@ Router.put(
   "/",
   authenticateUser,
   wrapAsync(async (req, res) => {
-    res.send(await updateUser(req.query.id, req.body)).status(200);
+    res.send(await updateUser(req.query.userID, req.body)).status(200);
   })
 );
 
@@ -40,7 +40,7 @@ Router.delete(
   "/",
   authenticateUser,
   wrapAsync(async (req, res) => {
-    res.send(await deleteUser(req.query.id)).status(200);
+    res.send(await deleteUser(req.query.userID)).status(200);
   })
 );
 
@@ -48,8 +48,8 @@ Router.get(
   "/projects",
   authenticateUser,
   wrapAsync(async (req, res) => {
-    console.log("req.query.id: ", req.query.id);
-    res.send(await getProjects(req.query.id)).status(200);
+    console.log("req.query.userID: ", req.query.userID);
+    res.send(await getProjects(req.query.userID)).status(200);
   })
 );
 
@@ -57,7 +57,7 @@ Router.get(
   "/organizations",
   authenticateUser,
   wrapAsync(async (req, res) => {
-    res.send(await getOrganizations(req.query.id)).status(200);
+    res.send(await getOrganizations(req.query.userID)).status(200);
   })
 );
 

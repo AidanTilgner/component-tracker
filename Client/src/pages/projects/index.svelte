@@ -33,7 +33,7 @@
         $goto("/users/login");
       }
       console.log("User Data: ", userData);
-      projects = await getUserProjects(userData.user_id);
+      projects = (await getUserProjects(userData.id)).projects;
     } catch (error) {
       console.log("Error in onMount: ", error);
     }

@@ -28,12 +28,12 @@ export const verifyLoginStatus = async () => {
       },
       body: JSON.stringify({ refreshToken: refreshToken }),
     }).then((res) => res.json());
-    console.log("verifyLoginStatus: ", response.accessToken);
+    console.log("verifyLoginStatus Response: ", response);
     if (response.status === 403 || response.error) {
       console.log("Forbidden");
       return false;
     }
-    writeToSessionStorage("accessToken", response.accessToken);
+    writeToSessionStorage("accessToken", response.token);
     return true;
   } catch (error) {
     console.error("Error in verifyLoginStatus: ", error);

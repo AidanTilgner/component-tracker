@@ -71,7 +71,7 @@
         };
         return;
       }
-      handleLoginSuccess(response);
+      handleLoginSuccess({ user: response.user, tokens: response.tokens });
     } catch (error) {
       console.log("Error in submitLogin: ", error);
     }

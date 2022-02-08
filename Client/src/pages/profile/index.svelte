@@ -2,6 +2,7 @@
   import Navbar from "../../components/Navbar/Navbar.svelte";
   import NonDynamic from "../../helpers/Form/NonDynamic.svelte";
   import Header from "../../helpers/Header/Header.svelte";
+  import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
   import { user } from "../../data/user";
   import {
     logout,
@@ -31,20 +32,40 @@
 
   let userUpdate = {};
 
+  let alertBanner = {
+    message: "",
+    type: "",
+    showing: false,
+    timeout: 5000,
+  };
+
+  const showAlertBanner = (message, type) => {
+    alertBanner.message = message;
+    alertBanner.type = type;
+    alertBanner.showing = true;
+  };
+
   const submitUserUpdate = async () => {
-    let newUser = await updateUser(userData.id, userUpdate);
-    if (!newUser) {
-      alert("Something went wrong");
+    let newUserResponse = await updateUser(userData.user_id, userUpdate);
+    console.log("Updated user: ", newUserResponse);
+    if (newUserResponse.error) {
+      showAlertBanner(newUserResponse.error, "error");
       return;
     }
-    user.set(newUser);
+    user.set(newUserResponse.user);
     console.log("User: ", userData);
     writeToLocalStorage("user", JSON.stringify(userData));
-    alert("User Updated");
+    showAlertBanner(newUserResponse.message, "success");
   };
 </script>
 
 <Navbar />
+<AlertBanner
+  message={alertBanner.message}
+  type={alertBanner.type}
+  showing={alertBanner.showing}
+  timeout={alertBanner.timeout}
+/>
 <div class="profile">
   <Header
     title="Profile"

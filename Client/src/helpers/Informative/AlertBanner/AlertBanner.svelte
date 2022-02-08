@@ -1,7 +1,8 @@
 <script>
   export let message = "Hello, world!",
     showing,
-    timeout = 5000;
+    timeout = 3000,
+    type = "error";
 
   $: if (showing) {
     console.log("Setting timeout");
@@ -10,10 +11,19 @@
       showing = false;
     }, timeout);
   }
+
+  const colors = {
+    error: "#f44336",
+    success: "#4caf50",
+    warning: "#ff9800",
+  };
 </script>
 
 {#if showing}
-  <div class="alert-banner">
+  <div
+    class="alert-banner"
+    style={`background-color: ${colors[type] ? colors[type] : "#f44336"};`}
+  >
     <p class="alert-banner__message">{message}</p>
   </div>
 {/if}
@@ -35,7 +45,6 @@
     left: 0;
     width: 100%;
     padding: 1rem;
-    background-color: #f44336;
     color: #fff;
     z-index: 9999;
     text-align: center;

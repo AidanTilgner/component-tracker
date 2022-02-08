@@ -20,16 +20,23 @@
     userData = data;
   });
 
+  let alertBanner = {
+    message: "",
+    type: "",
+    showing: false,
+  };
+
   onMount(async () => {
     const loggedIn = await verifyLoginStatus();
     if (!loggedIn) {
       $goto("/users/login");
     }
-    organizations = await getUserOrganizations(userData.user_id);
+    organizations = (await getUserOrganizations(userData.user_id))
+      .organizations;
     console.log(organizations);
   });
 
-  let newOrganizationModal = true;
+  let newOrganizationModal = false;
   let newOrganization = {
     owner: { user_id: userData.user_id, username: userData.username },
     users: [{ user_id: userData.user_id, username: userData.username }],
@@ -37,6 +44,11 @@
 </script>
 
 <Navbar />
+<AlertBanner
+  message={alertBanner.message}
+  type={alertBanner.type}
+  showing={alertBanner.showing}
+/>
 <Modal
   title="New Organization"
   open={newOrganizationModal}
@@ -52,11 +64,24 @@
       text: "Submit",
       type: "primary",
       action: async () => {
-        const response = await addOrganization(newOrganization);
-        if (response.status === 200) {
-          newOrganizationModal = false;
-          organizations = [...organizations, response.data];
+        if (!newOrganization.name || !newOrganization.name === "") {
+          alertBanner.message = "Please enter a name for your organization.";
+          alertBanner.type = "error";
+          alertBanner.showing = true;
+          return;
         }
+        const response = await addOrganization(newOrganization);
+        if (response.error) {
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+          alertBanner.showing = true;
+          return;
+        }
+        alertBanner.message = "Organization created successfully";
+        alertBanner.type = "success";
+        alertBanner.showing = true;
+        newOrganizationModal = false;
+        organizations = await getUserOrganizations(userData.user_id);
       },
     },
   ]}

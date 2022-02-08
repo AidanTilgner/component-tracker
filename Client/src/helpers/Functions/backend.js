@@ -133,9 +133,9 @@ export const addUserFromSignup = async (username, email, password) => {
   }
 };
 
-export const getUser = async (id) => {
+export const getUser = async (userID) => {
   try {
-    return await fetch(`${baseURL}${EP.users}/?id=${id}`, {
+    return await fetch(`${baseURL}${EP.users}/?userID=${userID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -147,10 +147,10 @@ export const getUser = async (id) => {
   }
 };
 
-export const getUserProjects = async (id) => {
+export const getUserProjects = async (userID) => {
   try {
-    console.log("ID: ", id);
-    return await fetch(`${baseURL}${EP.users}/projects?id=${id}`, {
+    console.log("userID: ", userID);
+    return await fetch(`${baseURL}${EP.users}/projects?userID=${userID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -164,9 +164,9 @@ export const getUserProjects = async (id) => {
   }
 };
 
-export const getUserOrganizations = async (id) => {
+export const getUserOrganizations = async (userID) => {
   try {
-    return await fetch(`${baseURL}${EP.users}/organizations?id=${id}`, {
+    return await fetch(`${baseURL}${EP.users}/organizations?userID=${userID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -178,9 +178,9 @@ export const getUserOrganizations = async (id) => {
   }
 };
 
-export const updateUser = async (id, update) => {
+export const updateUser = async (userID, update) => {
   try {
-    return await fetch(`${baseURL}${EP.users}/?id=${id}`, {
+    return await fetch(`${baseURL}${EP.users}/?userID=${userID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -193,9 +193,9 @@ export const updateUser = async (id, update) => {
   }
 };
 
-export const deleteUser = async (id) => {
+export const deleteUser = async (userID) => {
   try {
-    return await fetch(`${baseURL}${EP.users}/?id=${id}`, {
+    return await fetch(`${baseURL}${EP.users}/?userID=${userID}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
