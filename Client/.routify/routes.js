@@ -1,8 +1,6 @@
 
 /**
  * @roxi/routify 2.18.3
- * File generated Tue Feb 08 2022 12:38:07 GMT-0800 (Pacific Standard Time)
- */
 
 export const __version = "2.18.3"
 export const __timestamp = "2022-02-08T20:38:07.585Z"
