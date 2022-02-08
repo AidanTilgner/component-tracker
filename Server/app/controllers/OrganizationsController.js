@@ -1,17 +1,20 @@
 import {
   saveOrganizationToDatabase,
-  getOrganizationFromDatabase,
   updateOrganizationInDatabase,
   deleteOrganizationFromDatabase,
   addUserToOrganizationInDatabase,
-  getUsersInOrganizationFromDatabase,
   updateUserInOrganizationInDatabase,
   deleteUserFromOrganizationInDatabase,
   addProjectToOrganizationInDatabase,
-  getProjectsFromOrganizationInDatabase,
   updateProjectInOrganizationInDatabase,
   deleteProjectFromOrganizationInDatabase,
 } from "../database/actions/organizations.js";
+
+import {
+  getOrganizationFromDatabase,
+  getUsersInOrganizationFromDatabase,
+  getProjectsFromOrganizationInDatabase,
+} from "../database/queries/organizations.js";
 
 // * Organization
 export const createOrganization = async (organization) => {
@@ -19,6 +22,9 @@ export const createOrganization = async (organization) => {
     return await saveOrganizationToDatabase(organization);
   } catch (error) {
     console.log("Error in createOrganization: ", error);
+    return {
+      error: "Internal error creating organization",
+    };
   }
 };
 
@@ -27,6 +33,9 @@ export const getOrganization = async (organization_id) => {
     return await getOrganizationFromDatabase(organization_id);
   } catch (error) {
     console.log("Error in getOrganization: ", error);
+    return {
+      error: "Internal error getting organization",
+    };
   }
 };
 
@@ -35,6 +44,9 @@ export const updateOrganization = async (organization_id, organization) => {
     return await updateOrganizationInDatabase(organization_id, organization);
   } catch (error) {
     console.log("Error in updateOrganization: ", error);
+    return {
+      error: "Internal error updating organization",
+    };
   }
 };
 
@@ -43,6 +55,9 @@ export const deleteOrganization = async (organization_id) => {
     return await deleteOrganizationFromDatabase(organization_id);
   } catch (error) {
     console.log("Error in deleteOrganization: ", error);
+    return {
+      error: "Internal error deleting organization",
+    };
   }
 };
 
@@ -52,6 +67,9 @@ export const addUserToOrganization = async (organization_id, user) => {
     return await addUserToOrganizationInDatabase(organization_id, user);
   } catch (error) {
     console.log("Error in addUserToOrganization: ", error);
+    return {
+      error: "Internal error adding user to organization",
+    };
   }
 };
 

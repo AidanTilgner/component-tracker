@@ -14,9 +14,12 @@ export const getProjectFromDatabase = async (project_id) => {
         error: "Project not found",
       };
     }
-    return project;
+    return { project: project, message: "Project found" };
   } catch (error) {
     console.log("Error in getProjectFromDatabase: ", error);
+    return {
+      error: "Internal error getting project from database",
+    };
   }
 };
 
@@ -25,8 +28,21 @@ export const getComponentFromProjectInDatabase = async (project_id, name) => {
     const project = await ProjectModel.findOne({
       project_id: project_id,
     }).exec();
-    return project.components.find((component) => component.name === name);
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
+    return {
+      component: project.components.find(
+        (component) => component.name === name
+      ),
+      message: "Component found",
+    };
   } catch (error) {
     console.log("Error in getComponentFromProjectInDatabase: ", error);
+    return {
+      error: "Internal error getting component from project in database",
+    };
   }
 };

@@ -26,34 +26,12 @@ export const saveOrganizationToDatabase = async (organization) => {
         { new: true }
       ).exec();
     });
-    return {
-      organization_id: newOrganization.organization_id,
-      name: newOrganization.name,
-      projects: newOrganization.projects,
-      users: newOrganization.users,
-      created: newOrganization.created,
-      edited: newOrganization.edited,
-    };
+    return newOrganization.validate();
   } catch (error) {
     console.log("Error in saveOrganizationToDatabase: ", error);
-  }
-};
-
-export const getOrganizationFromDatabase = async (organization_id) => {
-  try {
-    const organizationModel = await OrganizationModel.findOne({
-      organization_id,
-    }).exec();
     return {
-      organization_id: organizationModel.organization_id,
-      name: organizationModel.name,
-      projects: organizationModel.projects,
-      users: organizationModel.users,
-      created: organizationModel.created,
-      edited: organizationModel.edited,
+      error: "Internal error saving organization to database",
     };
-  } catch (error) {
-    console.log("Error in getOrganizationFromDatabase: ", error);
   }
 };
 
@@ -64,6 +42,11 @@ export const updateOrganizationInDatabase = async (organization_id, update) => {
       update,
       { new: true }
     ).exec();
+    if (!organizationModel) {
+      return {
+        error: "Organization not found",
+      };
+    }
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
@@ -71,9 +54,13 @@ export const updateOrganizationInDatabase = async (organization_id, update) => {
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
+      message: "Organization successfully updated",
     };
   } catch (error) {
     console.log("Error in updateOrganizationInDatabase: ", error);
+    return {
+      error: "Internal error updating organization in database",
+    };
   }
 };
 
@@ -82,6 +69,11 @@ export const deleteOrganizationFromDatabase = async (organization_id) => {
     const organizationModel = await OrganizationModel.findOneAndDelete({
       organization_id,
     }).exec();
+    if (!organizationModel) {
+      return {
+        error: "Organization not found",
+      };
+    }
     UserModel.findOneAndUpdate(
       {},
       {
@@ -100,9 +92,13 @@ export const deleteOrganizationFromDatabase = async (organization_id) => {
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
+      message: "Organization successfully deleted",
     };
   } catch (error) {
     console.log("Error in deleteOrganizationFromDatabase: ", error);
+    return {
+      error: "Internal error deleting organization from database",
+    };
   }
 };
 
@@ -113,6 +109,11 @@ export const addUserToOrganizationInDatabase = async (
 ) => {
   try {
     const { username } = await UserModel.findOne({ user_id }).exec();
+    if (!username) {
+      return {
+        error: "User not found",
+      };
+    }
     const organizationModel = await OrganizationModel.findOneAndUpdate(
       { organization_id },
       {
@@ -125,6 +126,11 @@ export const addUserToOrganizationInDatabase = async (
       },
       { new: true }
     ).exec();
+    if (!organizationModel) {
+      return {
+        error: "Organization not found",
+      };
+    }
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
@@ -132,20 +138,13 @@ export const addUserToOrganizationInDatabase = async (
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
+      message: "User successfully added to organization",
     };
   } catch (error) {
     console.log("Error in addUserToOrganizationInDatabase: ", error);
-  }
-};
-
-export const getUsersInOrganizationFromDatabase = async (organization_id) => {
-  try {
-    const organizationModel = await OrganizationModel.findOne({
-      organization_id,
-    }).exec();
-    return organizationModel.users;
-  } catch (error) {
-    console.log("Error in getUsersInOrganizationFromDatabase: ", error);
+    return {
+      error: "Internal error adding user to organization in database",
+    };
   }
 };
 
@@ -165,9 +164,15 @@ export const updateUserInOrganizationInDatabase = async (
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
       users: organizationModel.users,
+      created: organizationModel.created,
+      edited: organizationModel.edited,
+      message: "User successfully updated",
     };
   } catch (error) {
     console.log("Error in updateUserInOrganizationInDatabase: ", error);
+    return {
+      error: "Internal error updating user in organization in database",
+    };
   }
 };
 
@@ -181,13 +186,24 @@ export const deleteUserFromOrganizationInDatabase = async (
       { $pull: { users: { user_id } } },
       { new: true }
     ).exec();
+    if (!organizationModel) {
+      return {
+        error: "Organization not found",
+      };
+    }
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
       users: organizationModel.users,
+      created: organizationModel.created,
+      edited: organizationModel.edited,
+      message: "User successfully deleted",
     };
   } catch (error) {
     console.log("Error in deleteUserFromOrganizationInDatabase: ", error);
+    return {
+      error: "Internal error deleting user from organization in database",
+    };
   }
 };
 
@@ -198,6 +214,11 @@ export const addProjectToOrganizationInDatabase = async (
 ) => {
   try {
     const project = await ProjectModel.findOne({ project_id }).exec();
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
     const organizationModel = await OrganizationModel.findOneAndUpdate(
       { organization_id },
       {
@@ -213,6 +234,11 @@ export const addProjectToOrganizationInDatabase = async (
       },
       { new: true }
     ).exec();
+    if (!organizationModel) {
+      return {
+        error: "Organization not found",
+      };
+    }
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
@@ -220,22 +246,13 @@ export const addProjectToOrganizationInDatabase = async (
       users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
+      message: "Project successfully added to organization",
     };
   } catch (error) {
     console.log("Error in addProjectToOrganizationInDatabase: ", error);
-  }
-};
-
-export const getProjectsFromOrganizationInDatabase = async (
-  organization_id
-) => {
-  try {
-    const organizationModel = await OrganizationModel.findOne({
-      organization_id,
-    }).exec();
-    return organizationModel.projects;
-  } catch (error) {
-    console.log("Error in getProjectsFromOrganizationInDatabase: ", error);
+    return {
+      error: "Internal error adding project to organization in database",
+    };
   }
 };
 
@@ -251,8 +268,25 @@ export const updateProjectInOrganizationInDatabase = async (
       { $push: { projects: project } },
       { new: true }
     ).exec();
+    if (!organizationModel) {
+      return {
+        error: "Organization not found",
+      };
+    }
+    return {
+      organization_id: organizationModel.organization_id,
+      name: organizationModel.name,
+      projects: organizationModel.projects,
+      users: organizationModel.users,
+      created: organizationModel.created,
+      edited: organizationModel.edited,
+      message: "Project successfully updated",
+    };
   } catch (error) {
     console.log("Error in updateProjectInOrganizationInDatabase: ", error);
+    return {
+      error: "Internal error updating project in organization in database",
+    };
   }
 };
 
@@ -266,13 +300,24 @@ export const deleteProjectFromOrganizationInDatabase = async (
       { $pull: { projects: { project_id: project.project_id } } },
       { new: true }
     ).exec();
+    if (!organizationModel) {
+      return {
+        error: "Organization not found",
+      };
+    }
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
+      projects: organizationModel.projects,
+      users: organizationModel.users,
       created: organizationModel.created,
       edited: organizationModel.edited,
+      message: "Project successfully deleted",
     };
   } catch (error) {
     console.log("Error in deleteProjectFromOrganizationInDatabase: ", error);
+    return {
+      error: "Internal error deleting project from organization in database",
+    };
   }
 };

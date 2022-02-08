@@ -2,11 +2,17 @@
   import Navbar from "../../components/Navbar/Navbar.svelte";
   import Header from "../../helpers/Header/Header.svelte";
   import MiniCard from "../../helpers/Informative/Cards/MiniCard.svelte";
+  import Modal from "../../helpers/Modal/Modal.svelte";
+  import NonDynamic from "../../helpers/Form/NonDynamic.svelte";
   import { user } from "../../data/user.js";
   import { onMount } from "svelte";
-  import { getUserOrganizations } from "../../helpers/Functions/backend.js";
+  import {
+    getUserOrganizations,
+    addOrganization,
+  } from "../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../helpers/Functions/authentication.js";
   import { goto } from "@roxi/routify";
+  import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
 
   let userData = {};
   let organizations = [];
@@ -22,13 +28,57 @@
     organizations = await getUserOrganizations(userData.user_id);
     console.log(organizations);
   });
+
+  let newOrganizationModal = true;
+  let newOrganization = {
+    owner: { user_id: userData.user_id, username: userData.username },
+    users: [{ user_id: userData.user_id, username: userData.username }],
+  };
 </script>
 
 <Navbar />
+<Modal
+  title="New Organization"
+  open={newOrganizationModal}
+  buttons={[
+    {
+      text: "Cancel",
+      type: "secondary",
+      action: () => {
+        newOrganizationModal = false;
+      },
+    },
+    {
+      text: "Submit",
+      type: "primary",
+      action: async () => {
+        const response = await addOrganization(newOrganization);
+        if (response.status === 200) {
+          newOrganizationModal = false;
+          organizations = [...organizations, response.data];
+        }
+      },
+    },
+  ]}
+>
+  <NonDynamic
+    fields={[
+      {
+        name: "Name",
+        type: "text",
+        value: "",
+        required: true,
+      },
+    ]}
+    onChange={(e, data) => {
+      newOrganization.name = data.name;
+    }}
+  />
+</Modal>
 
 <div class="organizations">
   <Header
-    title="Your Organizations"
+    title="Organizations"
     type="subtitle"
     buttons={[
       {
@@ -36,6 +86,7 @@
         type: "primary",
         action: () => {
           console.log("Add Organization");
+          newOrganizationModal = true;
         },
       },
     ]}

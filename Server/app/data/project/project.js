@@ -23,26 +23,31 @@ class Project {
     return Math.random().toString(36).substr(2, length);
   }
 
-  addComponent(component) {
-    this.components.push(component);
-  }
-
-  getComponent(name) {
-    return this.components.find((component) => component.name === name);
-  }
-
-  updateComponent(name, update) {
-    let component = this.components.find(
-      (component) => component.name === name
-    );
-    component = Object.assign(component, update);
-    return component;
-  }
-
-  deleteComponent(component) {
-    this.components = this.components.filter(
-      (comp) => comp.name !== component.name
-    );
+  validate() {
+    if (
+      !this.project_id ||
+      !this.owner ||
+      !this.name ||
+      !this.framework ||
+      !this.description ||
+      !this.externalLink ||
+      !this.components
+    ) {
+      return {
+        error: "Invalid project",
+      };
+    }
+    return {
+      project_id: this.project_id,
+      owner: this.owner,
+      contributors: this.contributors,
+      name: this.name,
+      framework: this.framework,
+      description: this.description,
+      externalLink: this.externalLink,
+      components: this.components,
+      message: "Project added successfully",
+    };
   }
 }
 

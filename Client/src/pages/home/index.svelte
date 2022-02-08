@@ -126,14 +126,11 @@
     type="subtitle"
     buttons={[
       {
-        text: "Join Team",
+        text: "All Teams",
         type: "secondary",
-        action: "",
-      },
-      {
-        text: "Create Team",
-        type: "primary",
-        action: "",
+        action: () => {
+          $goto("/organizations");
+        },
       },
     ]}
   />
@@ -155,7 +152,7 @@
       You have no teams, would you like to <span
         style="color: #2256f2;text-decoration: underline;cursor: pointer;font-weight: 600;"
         on:click={() => {
-          newProjectModal = true;
+          $goto("/organizations");
         }}>create a new one</span
       >?
     </p>

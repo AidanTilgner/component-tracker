@@ -17,7 +17,8 @@
   {/if}
   {#each fields as field}
     <Input
-      field={{ name: field.name, value: field.value, required: field.required }}
+      field={{ name: field.name, value: field.value }}
+      required={field.required}
       type={field.type}
       onChange={(e, data) => {
         inputs[field.name.toLowerCase()] = data;

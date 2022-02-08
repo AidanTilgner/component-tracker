@@ -35,12 +35,20 @@ export const loginUser = async (username, password) => {
     };
   } catch (error) {
     console.log("Error in loginUser: ", error);
+    return {
+      error: "Internal error logging in user",
+    };
   }
 };
 
 export const registerUser = async (user) => {
   try {
     user = await saveUserToDatabase(user);
+    if (user.error) {
+      return {
+        error: user.error,
+      };
+    }
     const accessToken = generateAccessToken(user, { expiresIn: "1h" });
     const refreshToken = generateRefreshToken(user, { expiresIn: "1d" });
     addRefreshTokenToDatabase(refreshToken);
@@ -53,6 +61,9 @@ export const registerUser = async (user) => {
     };
   } catch (error) {
     console.log("Error in registerUser: ", error);
+    return {
+      error: "Internal error registering user",
+    };
   }
 };
 
@@ -61,6 +72,9 @@ export const refreshUser = async (refreshToken) => {
     return await refreshUserToken(refreshToken);
   } catch (error) {
     console.log("Error in refreshUser: ", error);
+    return {
+      error: "Internal error refreshing user",
+    };
   }
 };
 
@@ -69,5 +83,8 @@ export const logoutUser = async (refreshToken) => {
     return await deleteRefreshTokenFromDatabase(refreshToken);
   } catch (error) {
     console.log("Error in logoutUser: ", error);
+    return {
+      error: "Internal error logging out user",
+    };
   }
 };

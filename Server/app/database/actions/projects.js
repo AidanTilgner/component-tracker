@@ -40,12 +40,7 @@ export const saveProjectToDatabase = async (project) => {
         { new: true }
       ).exec();
     });
-    return {
-      id: newProject.project_id,
-      name: newProject.name,
-      edited: newProject.edited,
-      framework: newProject.framework,
-    };
+    return newProject.validate();
   } catch (error) {
     console.log("Error in saveProjectToDatabase: ", error);
   }
@@ -58,9 +53,17 @@ export const updateProjectInDatabase = async (project_id, update) => {
       update,
       { new: true }
     ).exec();
-    return project;
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
+    return { project: project, message: "Project successfully updated" };
   } catch (error) {
     console.log("Error in updateProjectInDatabase: ", error);
+    return {
+      error: "Internal error updating project in database",
+    };
   }
 };
 
@@ -69,6 +72,11 @@ export const deleteProjectFromDatabase = async (project_id) => {
     const project = await ProjectModel.findOneAndDelete({
       project_id: project_id,
     }).exec();
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
     // For each project contributor, find the project and delete it
     project.contributors.forEach(async (contributor) => {
       await UserModel.findOneAndUpdate(
@@ -83,9 +91,12 @@ export const deleteProjectFromDatabase = async (project_id) => {
         { new: true }
       ).exec();
     });
-    return project;
+    return { project: project, message: "Project successfully deleted" };
   } catch (eror) {
     console.log("Error in deleteProjectFromDatabase: ", error);
+    return {
+      error: "Internal error deleting project from database",
+    };
   }
 };
 
@@ -97,11 +108,19 @@ export const addComponentToProjectInDatabase = async (
     const project = await ProjectModel.findOne({
       project_id: project_id,
     }).exec();
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
     project.components.push(component);
     await project.save();
-    return project;
+    return { project: project, message: "Component successfully added" };
   } catch (error) {
     console.log("Error in addComponentToProjectInDatabase: ", error);
+    return {
+      error: "Internal error adding component to project in database",
+    };
   }
 };
 
@@ -114,17 +133,33 @@ export const updateComponentInProjectInDatabase = async (
     const project = await ProjectModel.findOne({
       project_id: project_id,
     }).exec();
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
     const index = project.components.findIndex(
       (component) => component.name === name
     );
+    if (index === -1) {
+      return {
+        error: "Component not found",
+      };
+    }
     project.components[index] = Object.assign(
       project.components[index],
       update
     );
     await project.save();
-    return project.components[index];
+    return {
+      component: project.components[index],
+      message: "Component successfully updated",
+    };
   } catch (error) {
     console.log("Error in updateComponentInProjectInDatabase: ", error);
+    return {
+      error: "Internal error updating component in project in database",
+    };
   }
 };
 
@@ -136,13 +171,29 @@ export const deleteComponentFromProjectInDatabase = async (
     const project = await ProjectModel.findOne({
       project_id: project_id,
     }).exec();
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
     const index = project.components.findIndex(
       (component) => component.name === name
     );
+    if (index === -1) {
+      return {
+        error: "Component not found",
+      };
+    }
     project.components.splice(index, 1);
     await project.save();
-    return project.components;
+    return {
+      components: project.components,
+      message: "Component successfully deleted",
+    };
   } catch (error) {
     console.log("Error in deleteComponentFromProjectInDatabase: ", error);
+    return {
+      error: "Internal error deleting component from project in database",
+    };
   }
 };

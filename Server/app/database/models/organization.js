@@ -11,6 +11,7 @@ const OrganizationSchema = new Schema(
       type: String,
       required: true,
     },
+    description: String,
     owner: { type: { user_id: String, username: String }, required: true },
     users: { type: [{ user_id: String, username: String }], required: true },
     projects: [

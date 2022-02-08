@@ -32,8 +32,10 @@ export const addRefreshTokenToDatabase = async (tkn) => {
 // Verifies a refresh token and then sends back a new one
 export const refreshUserToken = async (tkn) => {
   try {
-    if (tkn === null) return 401;
-    if (!checkRefreshTokenInDatabase(tkn)) return 403;
+    if (tkn === null)
+      return { error: "No refresh token provided", status: 401 };
+    if (!checkRefreshTokenInDatabase(tkn))
+      return { error: "Invalid token", status: 403 };
     return await JWT.verify(
       tkn,
       process.env.REFRESH_TOKEN_SECRET,
