@@ -5,14 +5,12 @@
   import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
 
   let inputs = {};
-  fields.forEach((field) => {
-    console.log("Field: ", field);
+  $: fields.forEach((field) => {
     inputs[field.name.toLowerCase()] = field.value;
   });
-  $: console.log("Inputs: ", inputs);
 
   // Make a list of required values and if they are empty, show an error
-  let requiredFields = fields.filter((field) => field.required);
+  $: requiredFields = fields.filter((field) => field.required);
 </script>
 
 <form class="form">
@@ -37,6 +35,7 @@
             allRequiredFieldsFilled = false;
           }
         });
+        console.log("allRequiredFieldsFilled", allRequiredFieldsFilled);
         onChange(e, inputs, allRequiredFieldsFilled);
       }}
     />

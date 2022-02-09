@@ -96,22 +96,24 @@ export const newComponentSchema = [
 ];
 
 export const editableProjectSchema = (currentProject) => {
-  console.log("currentProject", currentProject);
   return [
     {
       name: "name",
       type: "text",
       value: currentProject.name,
+      required: true,
     },
     {
       name: "description",
       type: "text",
       value: currentProject.description,
+      required: true,
     },
     {
       name: "framework",
       type: "select",
       value: currentProject.framework,
+      required: true,
       settings: {
         options: [
           {

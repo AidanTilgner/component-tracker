@@ -78,11 +78,13 @@
       tags: [{ name: "", type: "" }],
     },
   };
-  let editableProject = {
+  $: editableProject = {
     name: project.name,
     description: project.description,
     framework: project.framework,
   };
+  let componentSubmittable = false;
+  let projectSubmittable = false;
 </script>
 
 <!-- Extra Stuff -->
@@ -105,16 +107,29 @@
     {
       text: "Add",
       type: "primary",
-      action: () => {
+      action: async () => {
+        if (!componentSubmittable) {
+          alertBanner.showing = true;
+          alertBanner.message = "Please fill out all required fields";
+          alertBanner.type = "error";
+          return;
+        }
         newComponent.creator = {
-          id: userData.id,
+          id: userData.user_id,
           username: userData.username,
         };
-        addComponent(project.id, newComponent);
         Modal1Open = false;
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        const response = await addComponent(project.project_id, newComponent);
+        if (response.error) {
+          alertBanner.showing = true;
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+          return;
+        }
+        alertBanner.showing = true;
+        alertBanner.message = response.message;
+        alertBanner.type = "success";
+        project = response.project;
       },
     },
   ]}
@@ -138,19 +153,37 @@
     {
       text: "Submit",
       type: "primary",
-      action: () => {
+      action: async () => {
+        if (!projectSubmittable) {
+          alertBanner.showing = true;
+          alertBanner.message = "Please fill out all required fields";
+          alertBanner.type = "error";
+          return;
+        }
         Modal2Open = false;
-        updateProject(project.id, editableProject);
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        const response = await updateProject(
+          project.project_id,
+          editableProject
+        );
+        if (response.error) {
+          alertBanner.showing = true;
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+          return;
+        }
+        alertBanner.showing = true;
+        alertBanner.message = response.message;
+        alertBanner.type = "success";
+        project = response.project;
       },
     },
   ]}
 >
   <NonDynamic
     fields={editableProjectSchema(project)}
-    onChange={(e, data) => {
+    onChange={(e, data, submittable) => {
+      projectSubmittable = submittable;
+      console.log("data: ", data);
       editableProject = data;
     }}
   />
@@ -204,7 +237,7 @@
 </div>
 <Footer />
 
-<style type="text/scss">
+<style lang="scss">
   @import "../../../styles/partials/variables";
   @import "../../../styles/partials/typography";
   @import "../../../styles/partials/mixins";
