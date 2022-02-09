@@ -12,6 +12,7 @@ export const getProjectsFromOrganizationInDatabase = async (
         error: "Organization not found",
       };
     }
+    console.log("organizationModel.projects: ", organizationModel.projects);
     return organizationModel.projects;
   } catch (error) {
     console.log("Error in getProjectsFromOrganizationInDatabase: ", error);

@@ -229,7 +229,7 @@ export const addProjectToOrganizationInDatabase = async (
       {
         $push: {
           projects: {
-            project: project_id,
+            project_id: project_id,
             name: project.name,
             framework: project.framework,
             created: project.created,
