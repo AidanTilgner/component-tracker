@@ -1,7 +1,8 @@
 <script>
+  export let title, endpoint, edited, framework;
   import { url, goto } from "@roxi/routify";
   import Icon from "../../Helpers/Icon/Icon.svelte";
-  export let title, endpoint, edited, framework;
+  import Dropdown from "../../helpers/Dropdown/Dropdown.svelte";
   framework = framework.toLowerCase();
 
   // TODO: Add dropdown for settings
@@ -13,6 +14,8 @@
     let year = date.getFullYear();
     return `${month}/${day}/${year}`;
   };
+
+  let showDropdown = true;
 </script>
 
 <div
@@ -55,9 +58,23 @@
       class="preview__options"
       on:click={(e) => {
         e.stopPropagation();
+        showDropdown = !showDropdown;
       }}
     >
       <Icon name="three-dots" height="9" width="21" />
+      <Dropdown
+        showing={showDropdown}
+        options={[
+          {
+            label: "Go To Project",
+            action: "",
+          },
+        ]}
+        position={{
+          top: "9px",
+          left: "21px",
+        }}
+      />
     </div>
   </div>
 </div>
@@ -72,7 +89,6 @@
     width: 250px;
     position: relative;
     border-radius: 15px;
-    overflow: hidden;
     box-shadow: 0.2px 0.2px 10px 0 rgba($color: #000000, $alpha: 0.25);
     font-family: $font-primary;
     cursor: pointer;
@@ -108,6 +124,7 @@
       width: 100%;
       bottom: 0;
       box-shadow: 0.2px 0.2px 10px 0 rgba($color: #000000, $alpha: 0.25);
+      border-radius: 0 0 15px 15px;
       //pointer should be default
       cursor: initial;
     }
