@@ -34,11 +34,6 @@
     console.log("User: ", user);
   });
 
-  let dispatchBanner = {
-    showing: false,
-    message: "",
-  };
-
   const handleLoginSuccess = async (res) => {
     writeToLocalStorage("refreshToken", res.tokens.refresh);
     writeToSessionStorage("accessToken", res.tokens.access);
@@ -55,6 +50,13 @@
     $goto("/home");
   };
 
+  let dispatchBanner = {
+    showing: false,
+    message: "",
+    type: "error",
+    timeout: 3000,
+  };
+
   const submitLogin = async (e) => {
     try {
       let data = {
@@ -65,10 +67,9 @@
       console.log("Response: ", response);
       if (response.error) {
         console.log("Displaying error");
-        dispatchBanner = {
-          showing: true,
-          message: response.error,
-        };
+        dispatchBanner.showing = true;
+        dispatchBanner.message = response.error;
+        dispatchBanner.type = "error";
         return;
       }
       handleLoginSuccess({ user: response.user, tokens: response.tokens });

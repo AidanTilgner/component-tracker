@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 import { getDataByFilepath, writeFileByFilepath } from "../helpers/files.js";
 import { checkRefreshTokenInDatabase } from "../database/queries/tokens.js";
+import { getUserFromDatabase } from "../database/queries/users.js";
+import { wrapAsync } from "./routing.js";
 
 // Generates a JWT token
 export const generateAccessToken = (payload, opts) => {
@@ -39,20 +41,26 @@ export const refreshUserToken = async (tkn) => {
     return await JWT.verify(
       tkn,
       process.env.REFRESH_TOKEN_SECRET,
-      (err, user) => {
+      wrapAsync(async (err, user) => {
         if (err) return 403;
-        return generateAccessToken(
+        const updatedUser = await getUserFromDatabase(user.user_id);
+        if (updatedUser.error) {
+          return updatedUser;
+        }
+        const newToken = await generateAccessToken(
           {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: user.role,
-            projects: user.projects,
-            organizations: user.organizations,
+            user_id: updatedUser.user_id,
+            username: updatedUser.username,
+            role: updatedUser.role,
+            organizations: updatedUser.organizations,
+            projects: updatedUser.projects,
           },
-          { expiresIn: "1hr" }
+          {
+            expiresIn: "1hr",
+          }
         );
-      }
+        return newToken;
+      })
     );
   } catch (err) {
     console.log(err);

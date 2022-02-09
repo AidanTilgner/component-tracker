@@ -5,10 +5,8 @@ import Token from "../models/token.js";
 
 export const saveRefreshTokenToDatabase = async (refreshToken) => {
   try {
-    console.log("Refresh Token: ", refreshToken);
     const refreshTokenModel = new Token({ token: refreshToken });
     await refreshTokenModel.save();
-    console.log("Refresh Token Model: ", refreshTokenModel);
     return refreshTokenModel;
   } catch (error) {
     console.log("Error in saveRefreshTokenToDatabase: ", error);

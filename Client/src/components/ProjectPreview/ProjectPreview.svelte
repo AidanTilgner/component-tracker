@@ -45,7 +45,9 @@
     </div>
   {/if}
   <div class="preview__banner">
-    <p class="preview__title">{title}</p>
+    <p class="preview__title">
+      {title.length < 12 ? title : title.slice(0, 12) + "..."}
+    </p>
     <p class="preview__edited">
       edited <span style="font-weight: 600;">{formatDate(edited)}</span>
     </p>

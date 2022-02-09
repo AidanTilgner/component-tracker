@@ -16,6 +16,7 @@
     readFromLocalStorage,
     readFromSessionStorage,
   } from "../../../helpers/Functions/local.js";
+  import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
 
   onMount(async () => {
     try {
@@ -44,6 +45,13 @@
     $goto("/home");
   };
 
+  let dispatchBanner = {
+    showing: "",
+    type: "",
+    message: "",
+    timeout: 3000,
+  };
+
   const submitSignup = async (e) => {
     try {
       let data = {
@@ -55,19 +63,24 @@
       console.log("Response: ", response);
       if (response.error) {
         console.log("Displaying error");
-        dispatchBanner = {
-          showing: true,
-          message: response.error,
-        };
+        dispatchBanner.showing = true;
+        dispatchBanner.type = "error";
+        dispatchBanner.message = response.error;
         return;
       }
-      handleSignUpSuccess(response);
+      handleSignUpSuccess({ user: response.user, tokens: response.tokens });
     } catch (error) {
       console.log("Error in submitSignup: ", error);
     }
   };
 </script>
 
+<AlertBanner
+  showing={dispatchBanner.showing}
+  message={dispatchBanner.message}
+  type={dispatchBanner.type}
+  timeout={dispatchBanner.timeout}
+/>
 <div class="signup">
   <div class="signup__modal">
     <h3 class="signup__title">New User</h3>

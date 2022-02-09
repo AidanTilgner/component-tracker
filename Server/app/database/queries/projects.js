@@ -1,14 +1,13 @@
 import mongoose from "mongoose";
 
 import UserModel from "../models/user.js";
+import ProjectModel from "../models/project.js";
 
 export const getProjectFromDatabase = async (project_id) => {
   try {
-    console.log("Getting project from database: ", project_id);
     const project = await ProjectModel.findOne({
       project_id: project_id,
     }).exec();
-    console.log("Project: ", project);
     if (!project) {
       return {
         error: "Project not found",

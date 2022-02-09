@@ -8,25 +8,27 @@ import UserClass from "../../data/user/user.js";
 import ProjectModel from "../models/project.js";
 import ProjectClass from "../../data/project/project.js";
 
+// * Helpers
+import { addProjectToOrganizationInDatabase } from "./organizations.js";
+
 export const saveProjectToDatabase = async (project) => {
   try {
-    console.log("Raw Project: ", project);
     const newProject = new ProjectClass(project);
     if (!newProject.validate) {
       return newProject.validate();
     }
-    console.log("New Project: ", newProject);
     const projectModel = await ProjectModel.create(newProject);
-    await projectModel.save();
-    console.log("Project Model: ", projectModel);
+    //await projectModel.save();
+    if (project.organization && project.organization !== "") {
+      const res = await addProjectToOrganizationInDatabase(
+        project.organization,
+        newProject.project_id
+      );
+      if (res.error) {
+        return res;
+      }
+    }
     newProject.contributors.forEach(async (contributor) => {
-      console.log("Adding project to contributor: ", {
-        project_id: newProject.project_id,
-        name: newProject.name,
-        framework: newProject.framework,
-        created: projectModel.created,
-        edited: projectModel.edited,
-      });
       UserModel.findOneAndUpdate(
         { user_id: contributor.user_id },
         {

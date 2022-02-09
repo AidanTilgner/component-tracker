@@ -12,11 +12,14 @@
 
   // Components
   import Navbar from "../../components/Navbar/Navbar.svelte";
+  import Footer from "../../components/Footer/Footer.svelte";
   import Header from "../../helpers/Header/Header.svelte";
   import PreviewGrid from "../../components/PreviewGrid/PreviewGrid.svelte";
   import Modal from "../../helpers/Modal/Modal.svelte";
   import Form from "../../helpers/Form/Form.svelte";
+  import NonDynamic from "../../helpers/Form/NonDynamic.svelte";
   import MiniCard from "../../helpers/Informative/Cards/MiniCard.svelte";
+  import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
 
   // Stores
   import { user } from "../../data/user";
@@ -37,10 +40,14 @@
         console.log("Redirecting to login");
         $goto("/users/login");
       }
-      projects = (await getUserProjects(userData.user_id)).projects;
+      projects = (await getUserProjects(userData.user_id)).projects.slice(0, 3);
       organizations = (await getUserOrganizations(userData.user_id))
         .organizations;
-      console.log("Projects: ", projects, "Organizations: ", organizations);
+      user.update((user) => {
+        user.projects = projects;
+        user.organizations = organizations;
+        return user;
+      });
     } catch (err) {
       console.log("Error in onMount: ", err);
     }
@@ -49,49 +56,16 @@
   let newProjectModal = false;
 
   let projectData = {};
+
+  let alertBanner = {
+    showing: false,
+    message: "",
+    type: "",
+    timeout: 3000,
+  };
 </script>
 
-<Navbar /><Modal
-  title="New Project"
-  open={newProjectModal}
-  buttons={[
-    {
-      text: "Close",
-      type: "secondary",
-      action: () => (newProjectModal = false),
-    },
-    {
-      text: "Add",
-      type: "primary",
-      action: () => {
-        newProjectModal = false;
-        addProject({
-          owner: {
-            user_id: userData.user_id,
-            username: userData.username,
-          },
-          contributors: [
-            { user_id: userData.user_id, username: userData.username },
-          ],
-          ...projectData,
-        });
-      },
-    },
-  ]}
->
-  <Form
-    data={{
-      name: "",
-      framework: "",
-      description: "",
-      externalLink: "",
-    }}
-    onChange={(e, inputs) => {
-      projectData = inputs;
-    }}
-    prefilled={projectData}
-  />
-</Modal>
+<Navbar />
 <div class="home" data-testid="home">
   <Header
     title="Recent Projects"
@@ -101,11 +75,6 @@
         text: "All Projects",
         type: "secondary",
         action: () => $goto("/projects"),
-      },
-      {
-        text: "New Project",
-        type: "primary",
-        action: () => (newProjectModal = true),
       },
     ]}
   />
@@ -118,7 +87,7 @@
       You have no projects, would you like to <span
         style="color: #2256f2;text-decoration: underline;cursor: pointer;font-weight: 600;"
         on:click={() => {
-          newProjectModal = true;
+          $goto("/projects");
         }}>create a new one</span
       >?
     </p>
@@ -160,6 +129,7 @@
     </p>
   {/if}
 </div>
+<Footer />
 
 <style type="text/scss">
   @import "../../styles/partials/variables.scss";
@@ -171,6 +141,9 @@
   }
 
   .organizations {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     &__item {
       margin-bottom: 36px;
       width: 48%;

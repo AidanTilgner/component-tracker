@@ -48,7 +48,6 @@ Router.get(
   "/projects",
   authenticateUser,
   wrapAsync(async (req, res) => {
-    console.log("req.query.userID: ", req.query.userID);
     res.send(await getProjects(req.query.userID)).status(200);
   })
 );

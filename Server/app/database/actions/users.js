@@ -22,7 +22,6 @@ export const saveUserToDatabase = async (user) => {
     if (!newUser.validate) {
       return newUser.validate();
     }
-    console.log("New User: ", newUser);
     const userModel = await UserModel.create(newUser);
     await userModel.save();
     if (!userModel) {
@@ -30,18 +29,13 @@ export const saveUserToDatabase = async (user) => {
         error: "Error saving user to database",
       };
     }
-    console.log("User Model: ", userModel);
     return {
-      user: {
-        user_id: newUser.user_id,
-        username: newUser.username,
-        email: newUser.email,
-        role: newUser.role,
-        projects: newUser.projects,
-        organizations: newUser.organizations,
-        created: userModel.created,
-        edited: userModel.edited,
-      },
+      user_id: userModel.user_id,
+      username: userModel.username,
+      email: userModel.email,
+      role: userModel.role,
+      projects: userModel.projects,
+      organizations: userModel.organizations,
     };
   } catch (error) {
     console.log("Error in saveUserToDatabase: ", error);
