@@ -157,6 +157,7 @@ export const getUserProjects = async (userID) => {
         Authorization: `Bearer ${accessToken}`,
       },
     }).then((res) => {
+      console.log("res: ", res);
       return res.json();
     });
   } catch (error) {
@@ -231,7 +232,10 @@ export const getProject = async (projectID) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-    }).then((res) => res.json());
+    }).then((res) => {
+      console.log("res: ", res);
+      return res.json();
+    });
   } catch (error) {
     console.error("Error in getProject: ", error);
   }

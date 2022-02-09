@@ -60,123 +60,6 @@
 </script>
 
 <Navbar />
-<AlertBanner
-  showing={alertBanner.showing}
-  message={alertBanner.message}
-  type={alertBanner.type}
-  timeout={alertBanner.timeout}
-/>
-<Modal
-  title="New Project"
-  open={newProjectModal}
-  buttons={[
-    {
-      text: "Close",
-      type: "secondary",
-      action: () => (newProjectModal = false),
-    },
-    {
-      text: "Add",
-      type: "primary",
-      action: () => {
-        newProjectModal = false;
-        console.log("Project data: ", {
-          owner: {
-            user_id: userData.user_id,
-            username: userData.username,
-          },
-          contributors: [
-            { user_id: userData.user_id, username: userData.username },
-          ],
-          ...projectData,
-        });
-        // addProject({
-        //   owner: {
-        //     user_id: userData.user_id,
-        //     username: userData.username,
-        //   },
-        //   contributors: [
-        //     { user_id: userData.user_id, username: userData.username },
-        //   ],
-        //   ...projectData,
-        // });
-      },
-    },
-  ]}
->
-  <NonDynamic
-    fields={[
-      {
-        name: "name",
-        value: "",
-        type: "text",
-        required: true,
-      },
-      {
-        name: "description",
-        value: "",
-        type: "text",
-        required: true,
-      },
-      {
-        name: "framework",
-        value: "",
-        settings: {
-          options: [
-            {
-              value: "svelte",
-              label: "Svelte",
-            },
-            {
-              value: "react",
-              label: "React",
-            },
-            {
-              value: "vue",
-              label: "Vue",
-            },
-            {
-              value: "angular",
-              label: "Angular",
-            },
-            {
-              value: "",
-              label: "Other",
-            },
-          ],
-        },
-        type: "select",
-        required: false,
-      },
-      {
-        name: "Organization",
-        value: "",
-        settings: {
-          options: [
-            { value: "", label: "none" },
-            ...organizations.map((org) => ({
-              value: org.organization_id,
-              label: org.name,
-            })),
-          ],
-        },
-        type: "select",
-        required: false,
-      },
-    ]}
-    onChange={(e, inputs, submitable) => {
-      console.log("Inputs: ", inputs);
-      if (!submitable) {
-        alertBanner.showing = true;
-        alertBanner.message = "Please fill out all required fields";
-        alertBanner.type = "error";
-        alertBanner.timeout = 3000;
-        return;
-      }
-      projectData = inputs;
-    }}
-  />
-</Modal>
 <div class="home" data-testid="home">
   <Header
     title="Recent Projects"
@@ -186,11 +69,6 @@
         text: "All Projects",
         type: "secondary",
         action: () => $goto("/projects"),
-      },
-      {
-        text: "New Project",
-        type: "primary",
-        action: () => (newProjectModal = true),
       },
     ]}
   />

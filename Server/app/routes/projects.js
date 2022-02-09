@@ -36,6 +36,7 @@ Router.get(
   "/",
   confirmUserProjectRights,
   wrapAsync(async (req, res) => {
+    console.log("Getting project");
     res.send(await getProject(req.query.projectID)).status(200);
   })
 );

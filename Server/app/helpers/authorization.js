@@ -36,20 +36,18 @@ export const confirmUserOrganizationRights = (req, res, next) => {
 };
 
 export const confirmUserProjectRights = wrapAsync(async (req, res, next) => {
-  console.log("Req: ", req);
+  // Deserialize the token, if the token is valid, and the user projects include the project_id, then the user has rights to the project
+  console.log("Authorizing user for project");
   const token = req.headers.authorization?.split(" ")[1];
-  const user = JWT.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  console.log("Token: ", token);
+  console.log("AccessTokenSecret: ", process.env.ACCESS_TOKEN_SECRET);
+  const user = JWT.decode(token);
+  console.log("User: ", user);
   if (user.role === "admin") return next();
   if (user.role === "user") {
     console.log("User: ", user);
     console.log("Project ID: ", req.query.projectID);
-    // If one of the contributors to the project is the user, then the user has rights to the project
-    const project = await getProjectFromDatabase(req.query.projectID);
-    if (
-      project.contributors.some(
-        (contributor) => contributor.user_id === user.user_id
-      )
-    ) {
+    if (user.projects.some((pr) => pr.project_id === req.query.projectID)) {
       console.log("User has rights to this project");
       return next();
     }
@@ -60,9 +58,4 @@ export const confirmUserProjectRights = wrapAsync(async (req, res, next) => {
       })
       .status(403);
   }
-  return res
-    .send({
-      error: "Error 403, User does not have rights to this project",
-    })
-    .status(403);
 });

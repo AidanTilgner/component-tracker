@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import UserModel from "../models/user.js";
+import ProjectModel from "../models/project.js";
 
 export const getProjectFromDatabase = async (project_id) => {
   try {

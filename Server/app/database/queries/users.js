@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import User from "../models/user.js";
+import UserModel from "../models/user.js";
 import { comparePassword } from "../../helpers/crypto.js";
 
 export const getUserByLogin = async (username, password) => {
   try {
-    let user = await User.findOne({ username: username });
+    let user = await UserModel.findOne({ username: username });
     if (user) {
       const matches = comparePassword(password, user.password);
       if (matches) {
@@ -48,7 +48,7 @@ export const getUserFromDatabase = async (user_id) => {
 
 export const getUserProjectsFromDatabase = async (user_id) => {
   try {
-    let user = await User.findOne({ user_id: user_id }).exec();
+    let user = await UserModel.findOne({ user_id: user_id }).exec();
     if (!user) {
       return {
         error: "User not found",
@@ -65,7 +65,7 @@ export const getUserProjectsFromDatabase = async (user_id) => {
 
 export const getUserOrganizationsFromDatabase = async (user_id) => {
   try {
-    let user = await User.findOne({ user_id: user_id }).exec();
+    let user = await UserModel.findOne({ user_id: user_id }).exec();
     if (user) {
       console.log("Returning user organizations, ", user.organizations);
       return user.organizations;

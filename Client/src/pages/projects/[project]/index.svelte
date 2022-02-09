@@ -7,6 +7,7 @@
   import Modal from "../../../helpers/Modal/Modal.svelte";
   import Form from "../../../helpers/Form/Form.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
+  import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
 
   // * Helpers
   import { goto, params } from "@roxi/routify";
@@ -31,13 +32,28 @@
 
   let project = {};
 
+  let alertBanner = {
+    showing: false,
+    message: "",
+    type: "",
+    timeout: 5000,
+  };
+
   onMount(async () => {
     try {
       const isLoggedIn = await verifyLoginStatus();
       if (!isLoggedIn) {
         $goto("/users/login");
       }
-      project = (await getProject($params.project)).project;
+      const response = await getProject($params.project);
+      console.log("Response Project", response);
+      if (response.error) {
+        alertBanner.showing = true;
+        alertBanner.message = response.error;
+        alertBanner.type = "error";
+        return;
+      }
+      project = response.project;
     } catch (error) {
       console.log("Error in onMount: ", error);
     }
@@ -67,6 +83,12 @@
 </script>
 
 <Navbar />
+<AlertBanner
+  showing={alertBanner.showing}
+  message={alertBanner.message}
+  type={alertBanner.type}
+  timeout={alertBanner.timeout}
+/>
 <div class="project" data-testid="project">
   <Header
     title={`
