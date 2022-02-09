@@ -67,10 +67,9 @@ export const getUserOrganizationsFromDatabase = async (user_id) => {
   try {
     let user = await UserModel.findOne({ user_id: user_id }).exec();
     if (user) {
-      console.log("Returning user organizations, ", user.organizations);
       return user.organizations;
     }
-    console.log("Did not find user with id: ", user_id);
+    console.log("Error finding user with id: ", user_id);
     return {
       error: "User not found",
     };

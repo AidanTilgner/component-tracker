@@ -8,22 +8,17 @@ export const getUserRoleFromToken = (token) => {
 };
 
 export const confirmUserOrganizationRights = (req, res, next) => {
-  console.log("Req: ", req);
   const token = req.headers.authorization?.split(" ")[1];
   const user = JWT.verify(token, process.env.ACCESS_TOKEN_SECRET);
   if (user.role === "admin") return next();
   if (user.role === "user") {
-    console.log("User: ", user);
-    console.log("Organization ID: ", req.query.organizationID);
     if (
       user.organizations.some(
         (or) => or.organization_id === req.query.organizationID
       )
     ) {
-      console.log("User has rights to this organization");
       return next();
     }
-    console.log("User does not have rights to this organization");
     return res
       .send({
         error: "Error 403, User does not have rights to this organization",
@@ -37,16 +32,10 @@ export const confirmUserOrganizationRights = (req, res, next) => {
 
 export const confirmUserProjectRights = wrapAsync(async (req, res, next) => {
   // Deserialize the token, if the token is valid, and the user projects include the project_id, then the user has rights to the project
-  console.log("Authorizing user for project");
   const token = req.headers.authorization?.split(" ")[1];
-  console.log("Token: ", token);
-  console.log("AccessTokenSecret: ", process.env.ACCESS_TOKEN_SECRET);
   const user = JWT.decode(token);
-  console.log("User: ", user);
   if (user.role === "admin") return next();
   if (user.role === "user") {
-    console.log("User: ", user);
-    console.log("Project ID: ", req.query.projectID);
     if (user.projects.some((pr) => pr.project_id === req.query.projectID)) {
       console.log("User has rights to this project");
       return next();

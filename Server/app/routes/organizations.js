@@ -26,7 +26,6 @@ Router.use(authenticateUser);
 Router.post(
   "/",
   wrapAsync(async (req, res) => {
-    console.log("New Organization:", req.body);
     res.send(await createOrganization(req.body)).status(200);
   })
 );

@@ -13,29 +13,26 @@ import { addProjectToOrganizationInDatabase } from "./organizations.js";
 
 export const saveProjectToDatabase = async (project) => {
   try {
-    console.log("Raw Project: ", project);
     const newProject = new ProjectClass(project);
     if (!newProject.validate) {
       return newProject.validate();
     }
-    console.log("New Project: ", newProject);
     const projectModel = await ProjectModel.create(newProject);
-    await projectModel.save();
+    //await projectModel.save();
     if (project.organization && project.organization !== "") {
-      addProjectToOrganizationInDatabase(
+      const res = await addProjectToOrganizationInDatabase(
         project.organization,
-        project.project_id
+        newProject.project_id
       );
+      console.log("Add project to organization", res);
+      if (res.error) {
+        console.log("Error in addProjectToOrganization: ", res.error);
+        return res;
+      }
     }
+    console.log("Project model: ", projectModel);
     console.log("Project Model: ", projectModel);
     newProject.contributors.forEach(async (contributor) => {
-      console.log("Adding project to contributor: ", {
-        project_id: newProject.project_id,
-        name: newProject.name,
-        framework: newProject.framework,
-        created: projectModel.created,
-        edited: projectModel.edited,
-      });
       UserModel.findOneAndUpdate(
         { user_id: contributor.user_id },
         {

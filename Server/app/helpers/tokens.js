@@ -47,7 +47,6 @@ export const refreshUserToken = async (tkn) => {
         if (updatedUser.error) {
           return updatedUser;
         }
-        console.log("Updated user: ", updatedUser);
         const newToken = await generateAccessToken(
           {
             user_id: updatedUser.user_id,
@@ -60,8 +59,6 @@ export const refreshUserToken = async (tkn) => {
             expiresIn: "1hr",
           }
         );
-        console.log("New token: ", newToken);
-        console.log("Decoded token: ", JWT.decode(newToken));
         return newToken;
       })
     );

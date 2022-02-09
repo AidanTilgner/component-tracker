@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import OrganizationClass from "../../data/organization/organization.js";
 import OrganizationModel from "../models/organization.js";
 import UserModel from "../models/user.js";
+import ProjectModel from "../models/project.js";
 
 // * Organization
 export const saveOrganizationToDatabase = async (organization) => {
@@ -13,7 +14,6 @@ export const saveOrganizationToDatabase = async (organization) => {
     const organizationModel = await OrganizationModel.create(newOrganization);
     await organizationModel.save();
     newOrganization.users.forEach(async (user) => {
-      console.log("Adding organization to user: ", user.user_id);
       UserModel.findOneAndUpdate(
         { user_id: user.user_id },
         {
@@ -216,10 +216,12 @@ export const addProjectToOrganizationInDatabase = async (
   project_id
 ) => {
   try {
-    const project = await ProjectModel.findOne({ project_id }).exec();
+    const project = await ProjectModel.findOne({
+      project_id: project_id,
+    }).exec();
     if (!project) {
       return {
-        error: "Project not found",
+        error: "Project not found with id: " + project_id,
       };
     }
     const organizationModel = await OrganizationModel.findOneAndUpdate(
