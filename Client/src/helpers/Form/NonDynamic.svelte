@@ -2,6 +2,7 @@
   export let title, fields, onChange;
   import Input from "../Input/Input.svelte";
   import Header from "../../helpers/Header/Header.svelte";
+  import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
 
   let inputs = {};
   fields.forEach((field) => {
@@ -9,6 +10,9 @@
     inputs[field.name.toLowerCase()] = field.value;
   });
   console.log("Inputs: ", inputs);
+
+  // Make a list of required values and if they are empty, show an error
+  let requiredFields = fields.filter((field) => field.required);
 </script>
 
 <form class="form">
@@ -20,9 +24,20 @@
       field={{ name: field.name, value: field.value }}
       required={field.required}
       type={field.type}
+      settings={field.settings}
       onChange={(e, data) => {
         inputs[field.name.toLowerCase()] = data;
-        onChange(e, inputs);
+        // Check that all required fields are not "" or falsey
+        let allRequiredFieldsFilled = true;
+        requiredFields.forEach((requiredField) => {
+          if (
+            !inputs[requiredField.name.toLowerCase()] ||
+            inputs[requiredField.name.toLowerCase()] === ""
+          ) {
+            allRequiredFieldsFilled = false;
+          }
+        });
+        onChange(e, inputs, allRequiredFieldsFilled);
       }}
     />
   {/each}

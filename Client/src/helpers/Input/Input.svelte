@@ -1,5 +1,5 @@
 <script>
-  export let type, field, required, onChange;
+  export let type, field, required, settings, onChange;
 
   // Types will be Text, Textarea, Select, MultiSelect, Radio, Object List, String List
   import TextInput from "./components/TextInput.svelte";
@@ -11,6 +11,7 @@
   import SwitchInput from "./components/SwitchInput.svelte";
   import ArrayListInput from "./components/ArrayListInput.svelte";
   import { inferInputTypeFromValueType } from "../Functions/inference.js";
+  import { formatKey } from "../../helpers/Functions/formatting.js";
 
   !type && (type = inferInputTypeFromValueType(field.value));
 
@@ -19,7 +20,7 @@
 
 <div class="field">
   <label for={field.id} class="field__label">
-    {field.name}
+    {formatKey(field.name)}
     {#if required}<span style="color:red">*</span>{/if}
   </label>
 
@@ -30,37 +31,37 @@
 
   <!-- Textarea -->
   {#if type == "textarea"}
-    <TextareaInput {field} {onChange} {required} />
+    <TextareaInput {field} {onChange} {required} {settings} />
   {/if}
 
   <!-- Select -->
   {#if type == "select"}
-    <SelectInput {field} {onChange} {required} />
+    <SelectInput {field} {onChange} {required} {settings} />
   {/if}
 
   <!-- MultiSelect -->
   {#if type == "checkbox"}
-    <CheckboxInput {field} {onChange} {required} />
+    <CheckboxInput {field} {onChange} {required} {settings} />
   {/if}
 
   <!-- Radio -->
   {#if type == "radio"}
-    <RadioInput {field} {onChange} {required} />
+    <RadioInput {field} {onChange} {required} {settings} />
   {/if}
 
   <!-- Switch -->
   {#if type == "switch"}
-    <SwitchInput {field} {onChange} {required} />
+    <SwitchInput {field} {onChange} {required} {settings} />
   {/if}
 
   <!-- Object List -->
   {#if type == "object-list"}
-    <ObjectListInput {field} {onChange} {required} />
+    <ObjectListInput {field} {onChange} {required} {settings} />
   {/if}
 
   <!-- Array List -->
   {#if type == "array-list"}
-    <ArrayListInput {field} {onChange} {required} />
+    <ArrayListInput {field} {onChange} {required} {settings} />
   {/if}
 </div>
 

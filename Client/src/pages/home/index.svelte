@@ -16,7 +16,9 @@
   import PreviewGrid from "../../components/PreviewGrid/PreviewGrid.svelte";
   import Modal from "../../helpers/Modal/Modal.svelte";
   import Form from "../../helpers/Form/Form.svelte";
+  import NonDynamic from "../../helpers/Form/NonDynamic.svelte";
   import MiniCard from "../../helpers/Informative/Cards/MiniCard.svelte";
+  import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
 
   // Stores
   import { user } from "../../data/user";
@@ -40,7 +42,6 @@
       projects = (await getUserProjects(userData.user_id)).projects;
       organizations = (await getUserOrganizations(userData.user_id))
         .organizations;
-      console.log("Projects: ", projects, "Organizations: ", organizations);
     } catch (err) {
       console.log("Error in onMount: ", err);
     }
@@ -49,9 +50,23 @@
   let newProjectModal = false;
 
   let projectData = {};
+
+  let alertBanner = {
+    showing: false,
+    message: "",
+    type: "",
+    timeout: 3000,
+  };
 </script>
 
-<Navbar /><Modal
+<Navbar />
+<AlertBanner
+  showing={alertBanner.showing}
+  message={alertBanner.message}
+  type={alertBanner.type}
+  timeout={alertBanner.timeout}
+/>
+<Modal
   title="New Project"
   open={newProjectModal}
   buttons={[
@@ -65,7 +80,7 @@
       type: "primary",
       action: () => {
         newProjectModal = false;
-        addProject({
+        console.log("Project data: ", {
           owner: {
             user_id: userData.user_id,
             username: userData.username,
@@ -75,21 +90,91 @@
           ],
           ...projectData,
         });
+        // addProject({
+        //   owner: {
+        //     user_id: userData.user_id,
+        //     username: userData.username,
+        //   },
+        //   contributors: [
+        //     { user_id: userData.user_id, username: userData.username },
+        //   ],
+        //   ...projectData,
+        // });
       },
     },
   ]}
 >
-  <Form
-    data={{
-      name: "",
-      framework: "",
-      description: "",
-      externalLink: "",
-    }}
-    onChange={(e, inputs) => {
+  <NonDynamic
+    fields={[
+      {
+        name: "name",
+        value: "",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "description",
+        value: "",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "framework",
+        value: "",
+        settings: {
+          options: [
+            {
+              value: "svelte",
+              label: "Svelte",
+            },
+            {
+              value: "react",
+              label: "React",
+            },
+            {
+              value: "vue",
+              label: "Vue",
+            },
+            {
+              value: "angular",
+              label: "Angular",
+            },
+            {
+              value: "",
+              label: "Other",
+            },
+          ],
+        },
+        type: "select",
+        required: false,
+      },
+      {
+        name: "Organization",
+        value: "",
+        settings: {
+          options: [
+            { value: "", label: "none" },
+            ...organizations.map((org) => ({
+              value: org.organization_id,
+              label: org.name,
+            })),
+          ],
+        },
+        type: "select",
+        required: false,
+      },
+    ]}
+    onChange={(e, inputs, submitable) => {
+      console.log("Inputs: ", inputs);
+      if (!submitable) {
+        alertBanner.showing = true;
+        alertBanner.message = "Please fill out all required fields";
+        alertBanner.type = "error";
+        alertBanner.timeout = 3000;
+        return;
+      }
       projectData = inputs;
     }}
-    prefilled={projectData}
   />
 </Modal>
 <div class="home" data-testid="home">

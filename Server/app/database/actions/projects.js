@@ -8,6 +8,9 @@ import UserClass from "../../data/user/user.js";
 import ProjectModel from "../models/project.js";
 import ProjectClass from "../../data/project/project.js";
 
+// * Helpers
+import { addProjectToOrganizationInDatabase } from "./organizations.js";
+
 export const saveProjectToDatabase = async (project) => {
   try {
     console.log("Raw Project: ", project);
@@ -18,6 +21,12 @@ export const saveProjectToDatabase = async (project) => {
     console.log("New Project: ", newProject);
     const projectModel = await ProjectModel.create(newProject);
     await projectModel.save();
+    if (project.organization && project.organization !== "") {
+      addProjectToOrganizationInDatabase(
+        project.organization,
+        project.project_id
+      );
+    }
     console.log("Project Model: ", projectModel);
     newProject.contributors.forEach(async (contributor) => {
       console.log("Adding project to contributor: ", {

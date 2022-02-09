@@ -1,5 +1,8 @@
 <script>
-  export let field, onChange;
+  export let field, settings, onChange;
+  console.log("Settings: ", settings);
+  console.log("Field: ", field);
+  console.log("OnChange: ", onChange);
 </script>
 
 <div class="select-input">
@@ -7,10 +10,8 @@
     class="select-input__input"
     on:change={(e) => onChange(e, e.target.value)}
   >
-    {#each field.value.options as option}
-      <option
-        value={option.value}
-        selected={option.value == field.value ? true : false}
+    {#each settings.options as option}
+      <option value={option.value} selected={option.value === field.value}
         >{option.label}</option
       >
     {/each}
