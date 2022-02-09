@@ -17,7 +17,7 @@
 
   .footer {
     @include default-padding;
-    margin-top: 82px;
+    margin-top: 36px;
     display: flex;
     justify-content: center;
     color: white;
