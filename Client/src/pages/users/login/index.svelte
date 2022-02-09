@@ -26,14 +26,6 @@
     }
   });
 
-  tokens.subscribe((tokens) => {
-    console.log("Tokens: ", tokens);
-  });
-
-  user.subscribe((user) => {
-    console.log("User: ", user);
-  });
-
   const handleLoginSuccess = async (res) => {
     writeToLocalStorage("refreshToken", res.tokens.refresh);
     writeToSessionStorage("accessToken", res.tokens.access);
@@ -41,12 +33,6 @@
     logLocalStorage();
     tokens.set(res.tokens);
     user.set(res.user);
-    console.log(
-      "Tokens: ",
-      readFromLocalStorage("refreshToken"),
-      readFromSessionStorage("accessToken")
-    );
-    console.log("User: ", JSON.parse(readFromLocalStorage("user")));
     $goto("/home");
   };
 
@@ -64,9 +50,7 @@
         password: document.getElementById("password").value,
       };
       const response = await login(data.username, data.password);
-      console.log("Response: ", response);
       if (response.error) {
-        console.log("Displaying error");
         dispatchBanner.showing = true;
         dispatchBanner.message = response.error;
         dispatchBanner.type = "error";

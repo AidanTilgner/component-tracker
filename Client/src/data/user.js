@@ -4,14 +4,6 @@ import {
   readFromSessionStorage,
 } from "../helpers/Functions/local";
 
-console.log(
-  "Tokens",
-  readFromLocalStorage("refreshToken"),
-  readFromSessionStorage("accessToken")
-);
-
-console.log("User", readFromLocalStorage("user"));
-
 export const tokens = writable({
   access: readFromSessionStorage("accessToken") || "",
   refresh: readFromLocalStorage("refreshToken") || "",

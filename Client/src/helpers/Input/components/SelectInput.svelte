@@ -1,8 +1,5 @@
 <script>
   export let field, settings, onChange;
-  console.log("Settings: ", settings);
-  console.log("Field: ", field);
-  console.log("OnChange: ", onChange);
 </script>
 
 <div class="select-input">

@@ -8,6 +8,8 @@
   import Form from "../../../helpers/Form/Form.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
+  import NonDynamic from "../../../helpers/Form/NonDynamic.svelte";
+  import Footer from "../../../components/Footer/Footer.svelte";
 
   // * Helpers
   import { goto, params } from "@roxi/routify";
@@ -24,7 +26,10 @@
 
   // * State
   import { user } from "../../../data/user.js";
-  import Footer from "../../../components/Footer/Footer.svelte";
+  import {
+    editableProjectSchema,
+    newComponentSchema,
+  } from "../../../helpers/Functions/formSchemas.js";
 
   let userData = {};
   user.subscribe((data) => {
@@ -47,7 +52,6 @@
         $goto("/users/login");
       }
       const response = await getProject($params.project);
-      console.log("Response Project", response);
       if (response.error) {
         alertBanner.showing = true;
         alertBanner.message = response.error;
@@ -62,7 +66,7 @@
 
   let SideBarOpen = false;
   let Modal1Open = false;
-  let Modal2Open = false;
+  let Modal2Open = true;
   let newComponent = {
     metaData: {
       category: "",
@@ -74,15 +78,14 @@
       tags: [{ name: "", type: "" }],
     },
   };
-  $: editableProject = {
-    owner: project.owner,
+  let editableProject = {
     name: project.name,
-    framework: project.framework,
     description: project.description,
-    externalLinks: project.externalLinks,
+    framework: project.framework,
   };
 </script>
 
+<!-- Extra Stuff -->
 <Navbar />
 <AlertBanner
   showing={alertBanner.showing}
@@ -90,6 +93,89 @@
   type={alertBanner.type}
   timeout={alertBanner.timeout}
 />
+<Modal
+  open={Modal1Open}
+  title="New Component"
+  buttons={[
+    {
+      text: "Close",
+      type: "secondary",
+      action: () => (Modal1Open = false),
+    },
+    {
+      text: "Add",
+      type: "primary",
+      action: () => {
+        newComponent.creator = {
+          id: userData.id,
+          username: userData.username,
+        };
+        addComponent(project.id, newComponent);
+        Modal1Open = false;
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      },
+    },
+  ]}
+>
+  <NonDynamic
+    fields={newComponentSchema}
+    onChange={(e, data, submittable) => {
+      newComponent.metaData = { ...newComponent.metaData, ...data };
+    }}
+  />
+</Modal>
+<Modal
+  open={Modal2Open}
+  title="Edit Project"
+  buttons={[
+    {
+      text: "Close",
+      type: "secondary",
+      action: () => (Modal2Open = false),
+    },
+    {
+      text: "Submit",
+      type: "primary",
+      action: () => {
+        Modal2Open = false;
+        updateProject(project.id, editableProject);
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      },
+    },
+  ]}
+>
+  <NonDynamic
+    fields={editableProjectSchema(project)}
+    onChange={(e, data) => {
+      editableProject = data;
+    }}
+  />
+</Modal>
+<SideBar open={SideBarOpen} close={() => (SideBarOpen = false)}>
+  <Header title="Project Information" type="subtitle" />
+  <div class="project-info">
+    {#each Object.keys(project).filter((key) => key !== "components") as key}
+      <div class="project-info__section">
+        <InfoItem title={formatKey(key)} value={project[key]} />
+      </div>
+    {/each}
+  </div>
+  <div class="project-info__buttons">
+    <button class="project-info__buttons__settings"> Settings </button>
+    <button
+      class="project-info__buttons__edit"
+      on:click={(e) => {
+        Modal2Open = true;
+      }}>Edit</button
+    >
+  </div>
+</SideBar>
+
+<!-- Page -->
 <div class="project" data-testid="project">
   <Header
     title={`
@@ -115,107 +201,6 @@
     <FileTree {project} />
   {/if}
   <FileTree {project} />
-  <SideBar open={SideBarOpen} close={() => (SideBarOpen = false)}>
-    <Header title="Project Information" type="subtitle" />
-    <div class="project-info">
-      {#each Object.keys(project).filter((key) => key !== "components") as key}
-        <div class="project-info__section">
-          <InfoItem title={formatKey(key)} value={project[key]} />
-        </div>
-      {/each}
-    </div>
-    <div class="project-info__buttons">
-      <button class="project-info__buttons__settings"> Settings </button>
-      <button
-        class="project-info__buttons__edit"
-        on:click={(e) => {
-          Modal2Open = true;
-        }}>Edit</button
-      >
-    </div>
-  </SideBar>
-  <Modal
-    open={Modal1Open}
-    title="New Component"
-    buttons={[
-      {
-        text: "Close",
-        type: "secondary",
-        action: () => (Modal1Open = false),
-      },
-      {
-        text: "Add",
-        type: "primary",
-        action: () => {
-          newComponent.creator = {
-            id: userData.id,
-            username: userData.username,
-          };
-          addComponent(project.id, newComponent);
-          Modal1Open = false;
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
-        },
-      },
-    ]}
-  >
-    <Form
-      data={{
-        category: "",
-        path: "",
-        example: "",
-        description: "",
-        props: [
-          {
-            name: "",
-            description: "",
-            type: "",
-          },
-        ],
-        state: [
-          {
-            name: "",
-            description: "",
-            type: "",
-          },
-        ],
-        tags: [{ name: "", type: "" }],
-      }}
-      onChange={(e, data) => {
-        newComponent.metaData = { ...newComponent.metaData, ...data };
-      }}
-    />
-  </Modal>
-  <Modal
-    open={Modal2Open}
-    title="Edit Project"
-    buttons={[
-      {
-        text: "Close",
-        type: "secondary",
-        action: () => (Modal2Open = false),
-      },
-      {
-        text: "Submit",
-        type: "primary",
-        action: () => {
-          Modal2Open = false;
-          updateProject(project.id, editableProject);
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
-        },
-      },
-    ]}
-  >
-    <Form
-      data={editableProject}
-      onChange={(e, data) => {
-        editableProject = data;
-      }}
-    />
-  </Modal>
 </div>
 <Footer />
 

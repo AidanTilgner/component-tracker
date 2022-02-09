@@ -9,7 +9,7 @@
     console.log("Field: ", field);
     inputs[field.name.toLowerCase()] = field.value;
   });
-  console.log("Inputs: ", inputs);
+  $: console.log("Inputs: ", inputs);
 
   // Make a list of required values and if they are empty, show an error
   let requiredFields = fields.filter((field) => field.required);

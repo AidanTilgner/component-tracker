@@ -66,10 +66,8 @@ export const logout = async () => {
       body: JSON.stringify({ refreshToken }),
     });
     const data = await response.json();
-    console.log("Loggin out: ", data);
     deleteFromLocalStorage("refreshToken");
     deleteFromLocalStorage("user");
-    console.log("Deleting Session Storage");
     deleteFromSessionStorage("accessToken");
     tokens.set({ access: "", refresh: "" });
     return data;
@@ -149,7 +147,6 @@ export const getUser = async (userID) => {
 
 export const getUserProjects = async (userID) => {
   try {
-    console.log("userID: ", userID);
     return await fetch(`${baseURL}${EP.users}/projects?userID=${userID}`, {
       method: "GET",
       headers: {
@@ -157,7 +154,6 @@ export const getUserProjects = async (userID) => {
         Authorization: `Bearer ${accessToken}`,
       },
     }).then((res) => {
-      console.log("res: ", res);
       return res.json();
     });
   } catch (error) {
@@ -233,7 +229,6 @@ export const getProject = async (projectID) => {
         Authorization: `Bearer ${accessToken}`,
       },
     }).then((res) => {
-      console.log("res: ", res);
       return res.json();
     });
   } catch (error) {

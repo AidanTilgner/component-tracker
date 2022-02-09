@@ -15,7 +15,7 @@
     return `${month}/${day}/${year}`;
   };
 
-  let showDropdown = true;
+  let showDropdown = false;
 </script>
 
 <div
@@ -67,7 +67,10 @@
         options={[
           {
             label: "Go To Project",
-            action: "",
+            action: (e) => {
+              e.stopPropagation();
+              $goto(`/projects/:project`, { project: endpoint });
+            },
           },
         ]}
         position={{

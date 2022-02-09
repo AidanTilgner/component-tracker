@@ -18,7 +18,6 @@
   user.subscribe((data) => {
     userData = data;
   });
-  console.log("User:", userData);
 
   onMount(async () => {
     try {
@@ -48,13 +47,11 @@
 
   const submitUserUpdate = async () => {
     let newUserResponse = await updateUser(userData.user_id, userUpdate);
-    console.log("Updated user: ", newUserResponse);
     if (newUserResponse.error) {
       showAlertBanner(newUserResponse.error, "error");
       return;
     }
     user.set(newUserResponse.user);
-    console.log("User: ", userData);
     writeToLocalStorage("user", JSON.stringify(userData));
     showAlertBanner(newUserResponse.message, "success");
   };
@@ -108,7 +105,6 @@
       },
     ]}
     onChange={(e, inputs) => {
-      console.log("Inputs: ", inputs);
       userUpdate = inputs;
     }}
   />

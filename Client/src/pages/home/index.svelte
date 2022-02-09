@@ -29,7 +29,6 @@
   let projects = [];
   let organizations = [];
   user.subscribe((user) => {
-    console.log("User: ", user);
     userData = user;
   });
 
@@ -37,7 +36,6 @@
     try {
       const isLoggedIn = await verifyLoginStatus();
       if (!isLoggedIn) {
-        console.log("Redirecting to login");
         $goto("/users/login");
       }
       projects = (await getUserProjects(userData.user_id)).projects.slice(0, 3);

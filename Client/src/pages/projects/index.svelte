@@ -45,10 +45,8 @@
       if (!isLoggedIn) {
         $goto("/users/login");
       }
-      console.log("User Data: ", userData);
       const response = await getUserProjects(userData.user_id);
       if (response.error) {
-        console.log("Error: ", response.error);
         alertBanner.showing = true;
         alertBanner.message = response.error;
         alertBanner.type = "error";
@@ -114,16 +112,6 @@
             alertBanner.type = "error";
             return;
           }
-          console.log("Project data: ", {
-            owner: {
-              user_id: userData.user_id,
-              username: userData.username,
-            },
-            contributors: [
-              { user_id: userData.user_id, username: userData.username },
-            ],
-            ...projectData,
-          });
           newProjectModal = false;
           const response = await addProject({
             owner: {
@@ -211,7 +199,6 @@
         },
       ]}
       onChange={(e, inputs, submitable) => {
-        console.log("Inputs: ", inputs);
         newProjectSubmittable = submitable;
         projectData = inputs;
       }}
