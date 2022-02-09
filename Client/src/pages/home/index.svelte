@@ -12,6 +12,7 @@
 
   // Components
   import Navbar from "../../components/Navbar/Navbar.svelte";
+  import Footer from "../../components/Footer/Footer.svelte";
   import Header from "../../helpers/Header/Header.svelte";
   import PreviewGrid from "../../components/PreviewGrid/PreviewGrid.svelte";
   import Modal from "../../helpers/Modal/Modal.svelte";
@@ -39,9 +40,14 @@
         console.log("Redirecting to login");
         $goto("/users/login");
       }
-      projects = (await getUserProjects(userData.user_id)).projects;
+      projects = (await getUserProjects(userData.user_id)).projects.slice(0, 3);
       organizations = (await getUserOrganizations(userData.user_id))
         .organizations;
+      user.update((user) => {
+        user.projects = projects;
+        user.organizations = organizations;
+        return user;
+      });
     } catch (err) {
       console.log("Error in onMount: ", err);
     }
@@ -81,7 +87,7 @@
       You have no projects, would you like to <span
         style="color: #2256f2;text-decoration: underline;cursor: pointer;font-weight: 600;"
         on:click={() => {
-          newProjectModal = true;
+          $goto("/projects");
         }}>create a new one</span
       >?
     </p>
@@ -123,6 +129,7 @@
     </p>
   {/if}
 </div>
+<Footer />
 
 <style type="text/scss">
   @import "../../styles/partials/variables.scss";
@@ -134,6 +141,9 @@
   }
 
   .organizations {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     &__item {
       margin-bottom: 36px;
       width: 48%;

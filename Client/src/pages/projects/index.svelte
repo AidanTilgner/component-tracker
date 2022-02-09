@@ -16,6 +16,7 @@
   import { verifyLoginStatus } from "../../helpers/Functions/authentication.js";
   import { onMount } from "svelte";
   import { goto } from "@roxi/routify";
+  import Footer from "../../components/Footer/Footer.svelte";
 
   if (!verifyLoginStatus()) {
     $goto("/login");
@@ -217,6 +218,7 @@
     />
   </Modal>
 </div>
+<Footer />
 
 <style type="text/scss">
   @import "../../styles/partials/variables";

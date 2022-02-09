@@ -13,6 +13,7 @@
   import { verifyLoginStatus } from "../../helpers/Functions/authentication";
   import { goto } from "@roxi/routify";
   import { onMount } from "svelte";
+  import Footer from "../../components/Footer/Footer.svelte";
   let userData;
   user.subscribe((data) => {
     userData = data;
@@ -117,6 +118,7 @@
     >
   {/if}
 </div>
+<Footer />
 
 <style type="scss">
   @import "../../styles/partials/variables";

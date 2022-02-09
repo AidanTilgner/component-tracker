@@ -13,6 +13,7 @@
   import { verifyLoginStatus } from "../../helpers/Functions/authentication.js";
   import { goto } from "@roxi/routify";
   import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
+  import Footer from "../../components/Footer/Footer.svelte";
 
   let userData = {};
   let organizations = [];
@@ -33,6 +34,9 @@
     }
     organizations = (await getUserOrganizations(userData.user_id))
       .organizations;
+    user.update((data) => {
+      data.organizations = organizations;
+    });
     console.log(organizations);
   });
 
@@ -81,7 +85,11 @@
         alertBanner.type = "success";
         alertBanner.showing = true;
         newOrganizationModal = false;
-        organizations = await getUserOrganizations(userData.user_id);
+        organizations = (await getUserOrganizations(userData.user_id))
+          .organizations;
+        user.update((data) => {
+          data.organizations = organizations;
+        });
       },
     },
   ]}
@@ -116,17 +124,31 @@
       },
     ]}
   />
-  <div class="organizations__list">
-    {#each organizations as organization}
-      <div class="organizations__item">
-        <MiniCard
-          title={organization.name}
-          endpoint={`/organizations/${organization.organization_id}`}
-        />
-      </div>
-    {/each}
-  </div>
+  {#if organizations.length > 0}
+    <div class="organizations__list">
+      {#each organizations as organization}
+        <div class="organizations__item">
+          <MiniCard
+            title={organization.name}
+            endpoint={`/organizations/${organization.organization_id}`}
+          />
+        </div>
+      {/each}
+    </div>
+  {:else}
+    <p
+      style="text-align: center;color: rgba(0, 0, 0, .65);margin: 14px 0;font-family: 'Quicksand', sans-serif;font-weight: 500;"
+    >
+      You have no teams, would you like to <span
+        style="color: #2256f2;text-decoration: underline;cursor: pointer;font-weight: 600;"
+        on:click={() => {
+          newOrganizationModal = true;
+        }}>create a new one</span
+      >?
+    </p>
+  {/if}
 </div>
+<Footer />
 
 <style lang="scss">
   @import "../../styles/partials/variables";

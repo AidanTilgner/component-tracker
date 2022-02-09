@@ -34,6 +34,7 @@ export const confirmUserProjectRights = wrapAsync(async (req, res, next) => {
   // Deserialize the token, if the token is valid, and the user projects include the project_id, then the user has rights to the project
   const token = req.headers.authorization?.split(" ")[1];
   const user = JWT.decode(token);
+  console.log("User: ", user);
   if (user.role === "admin") return next();
   if (user.role === "user") {
     if (user.projects.some((pr) => pr.project_id === req.query.projectID)) {

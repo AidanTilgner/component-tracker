@@ -24,6 +24,7 @@
 
   // * State
   import { user } from "../../../data/user.js";
+  import Footer from "../../../components/Footer/Footer.svelte";
 
   let userData = {};
   user.subscribe((data) => {
@@ -216,6 +217,7 @@
     />
   </Modal>
 </div>
+<Footer />
 
 <style type="text/scss">
   @import "../../../styles/partials/variables";

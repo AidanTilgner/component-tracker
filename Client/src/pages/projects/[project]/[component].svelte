@@ -18,6 +18,7 @@
     deleteComponent,
   } from "../../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
+  import Footer from "../../../components/Footer/Footer.svelte";
 
   let userData = {};
   user.subscribe((data) => {
@@ -223,6 +224,7 @@
     </div>
   {/if}
 </div>
+<Footer />
 
 <style type="text/scss">
   @import "../../../styles/partials/variables";

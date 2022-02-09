@@ -24,14 +24,10 @@ export const saveProjectToDatabase = async (project) => {
         project.organization,
         newProject.project_id
       );
-      console.log("Add project to organization", res);
       if (res.error) {
-        console.log("Error in addProjectToOrganization: ", res.error);
         return res;
       }
     }
-    console.log("Project model: ", projectModel);
-    console.log("Project Model: ", projectModel);
     newProject.contributors.forEach(async (contributor) => {
       UserModel.findOneAndUpdate(
         { user_id: contributor.user_id },
