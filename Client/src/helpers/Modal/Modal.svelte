@@ -16,6 +16,8 @@
               ? 'btn-primary'
               : button.type === 'secondary'
               ? 'btn-secondary'
+              : button.type === 'tertiary'
+              ? 'btn-tertiary'
               : ''}"
             on:click={button.action}>{button.text}</button
           >
@@ -91,5 +93,9 @@
 
   .btn-secondary {
     @include button-secondary;
+  }
+
+  .btn-tertiary {
+    @include button-tertiary;
   }
 </style>

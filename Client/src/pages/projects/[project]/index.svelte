@@ -20,6 +20,7 @@
     getUserFromLogin,
     addComponent,
     updateProject,
+    deleteProject,
   } from "../../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
   import { onMount } from "svelte";
@@ -64,9 +65,10 @@
     }
   });
 
-  let SideBarOpen = true;
+  let SideBarOpen = false;
   let Modal1Open = false;
   let Modal2Open = false;
+  let Modal3Open = false;
   let newComponent = {
     metaData: {
       category: "",
@@ -188,11 +190,46 @@
     }}
   />
 </Modal>
+<Modal
+  open={Modal3Open}
+  title="Are you sure?"
+  buttons={[
+    {
+      text: "No, go back",
+      type: "secondary",
+      action: () => (Modal3Open = false),
+    },
+    {
+      text: "Yes, Delete",
+      type: "tertiary",
+      action: async () => {
+        Modal3Open = false;
+        const response = await deleteProject(project.project_id);
+        if (response.error) {
+          alertBanner.showing = true;
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+          return;
+        }
+        alertBanner.showing = true;
+        alertBanner.message = response.message;
+        alertBanner.type = "success";
+        $goto("/projects");
+      },
+    },
+  ]}
+>
+  <p style="font-size:36px;text-align:center;">
+    Are you sure you want to delete "<span style="color: #2256f2;"
+      >{project.name}</span
+    >"?
+  </p>
+</Modal>
 <SideBar
   open={SideBarOpen}
   close={() => (SideBarOpen = false)}
   buttons={[
-    { text: "Delete", type: "tertiary", action: "" },
+    { text: "Delete", type: "tertiary", action: () => (Modal3Open = true) },
     {
       text: "Edit",
       type: "secondary",
@@ -202,7 +239,7 @@
 >
   <Header title="Project Information" type="subtitle" />
   <div class="project-info">
-    {#each Object.keys(project).filter((key) => key !== "components") as key}
+    {#each Object.keys(project).filter((key) => key !== "components" && key !== "_id" && key !== "__v") as key}
       <div class="project-info__section">
         <InfoItem title={formatKey(key)} value={project[key]} />
       </div>
