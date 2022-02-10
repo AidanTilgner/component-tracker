@@ -1,24 +1,24 @@
 import mongoose from "mongoose";
 const { Schema, model, SchemaTypes } = mongoose;
 
-const ComponentSchema = new Schema({
-  creator: { username: String, id: String },
+export const ComponentSchema = new Schema({
+  id: SchemaTypes.ObjectId,
+  creator: { username: String, user_id: String },
   description: String,
-  type: String,
   metaData: {
     category: String,
     path: String,
     example: String,
     description: String,
-    props: [{ name: String, description: String, type: String }],
-    state: [{ name: String, description: String, type: String }],
-    tags: [{ name: String, type: String }],
+    props: [{ name: String, description: String, pill_type: String }],
+    state: [{ name: String, description: String, pill_type: String }],
+    tags: [{ name: String, description: String, pill_type: String }],
   },
   imports: [
     {
       name: String,
       from: String,
-      type: String,
+      data_type: String,
       description: String,
       notes: String,
     },
@@ -27,7 +27,7 @@ const ComponentSchema = new Schema({
     {
       name: String,
       from: String,
-      type: String,
+      data_type: String,
       description: String,
       notes: String,
     },
@@ -48,24 +48,24 @@ const ComponentSchema = new Schema({
       {
         name: String,
         path: String,
-        type: String,
+        file_type: String,
       },
     ],
     children: [
       {
         name: String,
         path: String,
-        type: String,
+        file_type: String,
       },
     ],
     helpers: [
       {
         name: String,
         path: String,
-        type: String,
+        file_type: String,
       },
     ],
   },
 });
 
-export default ComponentSchema;
+export default model("Component", ComponentSchema);

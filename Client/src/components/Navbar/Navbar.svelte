@@ -16,7 +16,7 @@
   <p
     class="navbar__title"
     on:click={(e) => {
-      $goto($url("/"));
+      $goto("/home");
     }}
     data-testid="navbar-title"
   >

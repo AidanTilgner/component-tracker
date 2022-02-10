@@ -52,7 +52,6 @@
 class Component {
   constructor({
     creator,
-    name,
     metaData,
     imports,
     exports,
@@ -60,8 +59,15 @@ class Component {
     connectedFiles,
   }) {
     this.creator = creator;
-    this.name = name;
-    this.metaData = metaData;
+    this.metaData = {
+      category: metaData.category,
+      path: metaData.path,
+      example: metaData.example,
+      description: metaData.description,
+      props: metaData.props,
+      state: metaData.state,
+      tags: metaData.tags,
+    };
     this.imports = imports ? imports : [];
     this.exports = exports ? exports : [];
     this.functions = functions ? functions : [];

@@ -23,7 +23,7 @@ export const newComponentSchema = [
   {
     name: "Props",
     type: "array-list",
-    value: [{ name: "", type: "", description: "" }],
+    value: [{ name: "", pill_type: "", description: "" }],
     settings: {
       inputs: [
         {
@@ -32,7 +32,7 @@ export const newComponentSchema = [
           value: "",
         },
         {
-          name: "Type",
+          name: "pill_type",
           type: "text",
           value: "",
         },
@@ -62,7 +62,7 @@ export const newComponentSchema = [
           value: "",
         },
         {
-          name: "Type",
+          name: "pill_type",
           type: "text",
           value: "",
         },
@@ -77,7 +77,7 @@ export const newComponentSchema = [
   {
     name: "Tags",
     type: "array-list",
-    value: [{ name: "", type: "" }],
+    value: [{ name: "", pill_type: "", description: "" }],
     settings: {
       inputs: [
         {
@@ -86,7 +86,12 @@ export const newComponentSchema = [
           value: "",
         },
         {
-          name: "Type",
+          name: "pill_type",
+          type: "text",
+          value: "",
+        },
+        {
+          name: "Description",
           type: "text",
           value: "",
         },
@@ -139,6 +144,124 @@ export const editableProjectSchema = (currentProject) => {
           {
             label: "Other",
             value: "other",
+          },
+        ],
+      },
+    },
+  ];
+};
+
+export const editableComponentMetaDataSchema = (currentComponentMetaData) => {
+  return [
+    {
+      name: "Category",
+      type: "text",
+      value: currentComponentMetaData.category,
+    },
+    {
+      name: "Path",
+      type: "text",
+      value: currentComponentMetaData.path,
+      required: true,
+    },
+    {
+      name: "Example",
+      type: "text",
+      value: currentComponentMetaData.example,
+    },
+    {
+      name: "Description",
+      type: "text",
+      value: currentComponentMetaData.description,
+    },
+    {
+      name: "Props",
+      type: "array-list",
+      value: currentComponentMetaData.props,
+      settings: {
+        currentValue: currentComponentMetaData.props.map((prop) => {
+          return [
+            {
+              name: "Name",
+              type: "text",
+              value: prop.name,
+            },
+            {
+              name: "Type",
+              type: "text",
+              value: prop.type,
+            },
+            {
+              name: "Description",
+              type: "text",
+              value: prop.description,
+            },
+          ];
+        }),
+        inputs: [
+          {
+            name: "Name",
+            type: "text",
+            value: "",
+          },
+          {
+            name: "Type",
+            type: "text",
+            value: "",
+          },
+          {
+            name: "Description",
+            type: "text",
+            value: "",
+          },
+        ],
+      },
+    },
+    {
+      name: "State",
+      value: [
+        {
+          name: "",
+          type: "",
+          description: "",
+        },
+      ],
+      type: "array-list",
+      settings: {
+        inputs: [
+          {
+            name: "Name",
+            type: "text",
+            value: "",
+          },
+          {
+            name: "Type",
+            type: "text",
+            value: "",
+          },
+          {
+            name: "Description",
+            type: "text",
+            value: "",
+          },
+        ],
+      },
+    },
+    {
+      name: "Tags",
+      type: "array-list",
+      value: [{ name: "", type: "" }],
+      settings: {
+        inputs: [
+          {
+            name: "Name",
+            type: "text",
+            value: "",
+          },
+          {
+            name: "Type",
+            type: "text",
+            value: "",
           },
         ],
       },

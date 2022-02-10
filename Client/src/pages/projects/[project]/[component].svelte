@@ -3,6 +3,7 @@
   import Header from "../../../helpers/Header/Header.svelte";
   import Modal from "../../../helpers/Modal/Modal.svelte";
   import Form from "../../../helpers/Form/Form.svelte";
+  import NonDynamic from "../../../helpers/Form/NonDynamic.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import Description from "../../../helpers/Informative/Description.svelte";
   import { url, params, meta, goto } from "@roxi/routify";
@@ -18,6 +19,7 @@
     deleteComponent,
   } from "../../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
+  import { editableComponentMetaDataSchema } from "../../../helpers/Functions/formSchemas.js";
   import Footer from "../../../components/Footer/Footer.svelte";
 
   let userData = {};
@@ -48,7 +50,7 @@
           type: "",
         },
       ],
-      tags: [{ name: "", type: "" }],
+      tags: [{ name: "", type: "", description: "" }],
     },
     imports: [],
     exports: [],
@@ -149,8 +151,8 @@
         },
       ]}
     >
-      <Form
-        data={component.metaData}
+      <NonDynamic
+        fields={editableComponentMetaDataSchema(component.metaData)}
         onChange={(e, inputs) => {
           e.preventDefault();
           component.metaData = inputs;

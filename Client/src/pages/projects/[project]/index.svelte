@@ -69,17 +69,7 @@
   let Modal1Open = false;
   let Modal2Open = false;
   let Modal3Open = false;
-  let newComponent = {
-    metaData: {
-      category: "",
-      path: "",
-      example: "",
-      description: "",
-      props: [{ name: "", type: "", description: "" }],
-      state: [{ name: "", type: "", description: "" }],
-      tags: [{ name: "", type: "" }],
-    },
-  };
+  let newComponent = {};
   $: editableProject = {
     name: project.name,
     description: project.description,
@@ -87,6 +77,7 @@
   };
   let componentSubmittable = false;
   let projectSubmittable = false;
+  console.log("New Componetn Schema: ", newComponentSchema);
 </script>
 
 <!-- Extra Stuff -->
@@ -117,11 +108,13 @@
           return;
         }
         newComponent.creator = {
-          id: userData.user_id,
+          user_id: userData.user_id,
           username: userData.username,
         };
+        console.log("New Component: ", newComponent);
         Modal1Open = false;
         const response = await addComponent(project.project_id, newComponent);
+        console.log("New component response: ", response);
         if (response.error) {
           alertBanner.showing = true;
           alertBanner.message = response.error;
@@ -139,7 +132,8 @@
   <NonDynamic
     fields={newComponentSchema}
     onChange={(e, data, submittable) => {
-      newComponent.metaData = { ...newComponent.metaData, ...data };
+      componentSubmittable = submittable;
+      newComponent.metaData = data;
     }}
   />
 </Modal>
