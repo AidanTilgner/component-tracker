@@ -112,3 +112,104 @@ export const deleteUserFromDatabase = async (user_id) => {
     };
   }
 };
+
+export const addProjectToUserInDatabase = async (user_id, project_id) => {
+  try {
+    console.log("User_id: ", user_id);
+    console.log("Project_id: ", project_id);
+    const project = await ProjectModel.findOne({
+      project_id: project_id,
+    }).exec();
+    const user = await UserModel.findOneAndUpdate(
+      { user_id: user_id },
+      {
+        $push: {
+          projects: {
+            project_id: project_id,
+            name: project.name,
+            framework: project.framework,
+            created: project.created,
+            edited: project.edited,
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    ).exec();
+    if (!user) {
+      return {
+        error: "User not found",
+      };
+    }
+    return user;
+  } catch (error) {
+    console.log("Error in addProjectToUserInDatabase: ", error);
+    return {
+      error: "Internal error adding project to user in database",
+    };
+  }
+};
+
+export const updateProjectInUserInDatabase = async (user_id, project_id) => {
+  try {
+    console.log("Updating project in user in database");
+    const project = await ProjectModel.findOne({
+      project_id: project_id,
+    }).exec();
+    const user = await UserModel.findOneAndUpdate(
+      { user_id: user_id, "projects.project_id": project_id },
+      {
+        $set: {
+          "projects.$.name": project.name,
+          "projects.$.framework": project.framework,
+          "projects.$.created": project.created,
+          "projects.$.edited": project.edited,
+        },
+      },
+      {
+        new: true,
+      }
+    ).exec();
+    if (!user) {
+      return {
+        error: "User not found",
+      };
+    }
+    return user;
+  } catch (error) {
+    console.log("Error in updateProjectInUserInDatabase: ", error);
+    return {
+      error: "Internal error updating project in user in database",
+    };
+  }
+};
+
+export const deleteProjectFromUserInDatabase = async (user_id, project_id) => {
+  try {
+    const user = await UserModel.findOneAndUpdate(
+      { user_id: user_id },
+      {
+        $pull: {
+          projects: {
+            project_id: project_id,
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    ).exec();
+    if (!user) {
+      return {
+        error: "User not found",
+      };
+    }
+    return user;
+  } catch (error) {
+    console.log("Error in deleteProjectFromUserInDatabase: ", error);
+    return {
+      error: "Internal error deleting project from user in database",
+    };
+  }
+};

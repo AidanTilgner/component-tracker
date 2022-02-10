@@ -8,6 +8,7 @@ export const ProjectSchema = new Schema(
     project_id: String,
     owner: { user_id: String, username: String },
     contributors: [{ user_id: String, username: String }],
+    organization_id: String,
     name: String,
     framework: String,
     description: String,

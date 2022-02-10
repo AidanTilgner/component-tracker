@@ -12,11 +12,16 @@
     getUserFromLogin,
     addProject,
     getUserProjects,
+    getUserOrganizations,
   } from "../../helpers/Functions/backend";
   import { verifyLoginStatus } from "../../helpers/Functions/authentication.js";
   import { onMount } from "svelte";
   import { goto } from "@roxi/routify";
   import Footer from "../../components/Footer/Footer.svelte";
+
+  user.subscribe((user) => {
+    console.log("User Organizations: ", user.organizations);
+  });
 
   if (!verifyLoginStatus()) {
     $goto("/login");
@@ -24,6 +29,7 @@
 
   let projects = [];
   let userData = {};
+  let userOrganizations = [];
   user.subscribe((user) => {
     userData = user;
     projects = user.projects;
@@ -54,6 +60,8 @@
         return;
       }
       projects !== response.projects && (projects = response.projects);
+      userOrganizations = (await getUserOrganizations(userData.user_id))
+        .organizations;
     } catch (error) {
       console.log("Error in onMount: ", error);
     }
@@ -113,7 +121,7 @@
             return;
           }
           newProjectModal = false;
-          const response = await addProject({
+          projectData = {
             owner: {
               user_id: userData.user_id,
               username: userData.username,
@@ -121,8 +129,13 @@
             contributors: [
               { user_id: userData.user_id, username: userData.username },
             ],
-            ...projectData,
-          });
+            organization_id: projectData.organization,
+            name: projectData.name,
+            description: projectData.description,
+            framework: projectData.framework,
+          };
+          console.log("New Project: ", projectData);
+          const response = await addProject(projectData);
           if (response.error) {
             console.log("Error: ", response.error);
             alertBanner.showing = true;
@@ -133,7 +146,7 @@
           alertBanner.showing = true;
           alertBanner.message = "Project added successfully";
           alertBanner.type = "success";
-          projects = await getUserProjects(userData.user_id);
+          projects = (await getUserProjects(userData.user_id)).projects;
         },
       },
     ]}
@@ -188,7 +201,7 @@
           settings: {
             options: [
               { value: "", label: "none" },
-              ...userData.organizations.map((org) => ({
+              ...userOrganizations.map((org) => ({
                 value: org.organization_id,
                 label: org.name,
               })),

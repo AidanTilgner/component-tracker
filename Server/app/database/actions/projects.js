@@ -9,7 +9,16 @@ import ProjectModel from "../models/project.js";
 import ProjectClass from "../../data/project/project.js";
 
 // * Helpers
-import { addProjectToOrganizationInDatabase } from "./organizations.js";
+import {
+  addProjectToOrganizationInDatabase,
+  deleteProjectFromOrganizationInDatabase,
+  updateProjectInOrganizationInDatabase,
+} from "./organizations.js";
+import {
+  addProjectToUserInDatabase,
+  updateProjectInUserInDatabase,
+  deleteProjectFromUserInDatabase,
+} from "./users.js";
 
 export const saveProjectToDatabase = async (project) => {
   try {
@@ -19,9 +28,9 @@ export const saveProjectToDatabase = async (project) => {
     }
     const projectModel = await ProjectModel.create(newProject);
     //await projectModel.save();
-    if (project.organization && project.organization !== "") {
+    if (project.organization_id && project.organization_id !== "") {
       const res = await addProjectToOrganizationInDatabase(
-        project.organization,
+        project.organization_id,
         newProject.project_id
       );
       if (res.error) {
@@ -29,21 +38,10 @@ export const saveProjectToDatabase = async (project) => {
       }
     }
     newProject.contributors.forEach(async (contributor) => {
-      UserModel.findOneAndUpdate(
-        { user_id: contributor.user_id },
-        {
-          $push: {
-            projects: {
-              project_id: newProject.project_id,
-              name: newProject.name,
-              framework: newProject.framework,
-              created: projectModel.created,
-              edited: projectModel.edited,
-            },
-          },
-        },
-        { new: true }
-      ).exec();
+      await addProjectToUserInDatabase(
+        contributor.user_id,
+        newProject.project_id
+      );
     });
     return {
       project_id: newProject.project_id,
@@ -68,6 +66,27 @@ export const updateProjectInDatabase = async (project_id, update) => {
       return {
         error: "Project not found",
       };
+    }
+    console.log("Updated Project: ", project);
+    // For each project contributor, update the project in the project list
+    project.contributors.forEach(async (contributor) => {
+      const res = await updateProjectInUserInDatabase(
+        contributor.user_id,
+        project_id
+      );
+      if (res.error) {
+        return res;
+      }
+    });
+    // If there is an organization, update the project in the organization's project list
+    if (project.organization_id && project.organization_id !== "") {
+      const res = await updateProjectInOrganizationInDatabase(
+        project.organization_id,
+        project_id
+      );
+      if (res.error) {
+        return res;
+      }
     }
     return project;
   } catch (error) {
@@ -102,6 +121,16 @@ export const deleteProjectFromDatabase = async (project_id) => {
         { new: true }
       ).exec();
     });
+    // If there is an organization, find the project and delete it
+    if (project.organization && project.organization !== "") {
+      const res = await deleteProjectFromOrganizationInDatabase(
+        project.organization_id,
+        project.project_id
+      );
+      if (res.error) {
+        return res;
+      }
+    }
     return project;
   } catch (eror) {
     console.log("Error in deleteProjectFromDatabase: ", error);
