@@ -89,15 +89,15 @@ export const deleteProject = async (project_id) => {
 
 export const addComponent = async (project_id, component) => {
   try {
-    const newComponent = await addComponentToProjectInDatabase(
+    const project = await addComponentToProjectInDatabase(
       project_id,
       component
     );
-    if (filterForMessages(newComponent)) {
-      return newComponent;
+    if (filterForMessages(project)) {
+      return project;
     }
     return {
-      component: newComponent,
+      project: project,
       message: "Component successfully added to project",
     };
   } catch (error) {

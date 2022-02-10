@@ -17,7 +17,6 @@
   user.subscribe((data) => {
     userData = data;
   });
-  console.log("Getting organization data:", $params.organization);
 
   onMount(async () => {
     const loggedIn = await verifyLoginStatus();
@@ -25,7 +24,6 @@
       $goto("/users/login");
     }
     organization = (await getOrganization($params.organization)).organization;
-    console.log("Organization:", organization);
   });
 </script>
 

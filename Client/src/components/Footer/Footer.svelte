@@ -3,9 +3,8 @@
 
 <div class="footer">
   <p>
-    For support, email <a
-      style="color: white;"
-      href="mailto:atilgner@digital-strata.com">atilgner@digital-strata.com</a
+    For support, email <a href="mailto:atilgner@digital-strata.com"
+      >atilgner@digital-strata.com</a
     >
   </p>
 </div>
@@ -17,10 +16,10 @@
 
   .footer {
     @include default-padding;
-    margin-top: 36px;
+    margin-top: 82px;
     display: flex;
     justify-content: center;
-    color: white;
-    background-color: $color-black;
+    color: $color-black;
+    // background-color: $color-black;
   }
 </style>

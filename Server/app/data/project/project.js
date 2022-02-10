@@ -6,12 +6,14 @@ class Project {
     framework,
     description,
     externalLink,
+    organization_id,
   }) {
     this.project_id = `${this.randomString(5)}-${this.randomString(
       5
     )}-${this.randomString(5)}-${this.randomString(5)}`;
     this.owner = owner;
     this.contributors = contributors;
+    this.organization_id = organization_id;
     this.name = name;
     this.framework = framework.toLowerCase();
     this.description = description;

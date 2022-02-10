@@ -37,7 +37,6 @@
     user.update((data) => {
       data.organizations = organizations;
     });
-    console.log(organizations);
   });
 
   let newOrganizationModal = false;

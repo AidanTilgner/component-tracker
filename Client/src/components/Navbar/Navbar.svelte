@@ -6,7 +6,6 @@
 
   let initials;
   user.subscribe((u) => {
-    console.log("User in navbar:  ", u);
     initials = u.username[0] + u.username[1];
   });
 

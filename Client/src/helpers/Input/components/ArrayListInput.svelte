@@ -1,38 +1,41 @@
 <script>
-  export let field, onChange;
+  export let field, settings, onChange;
   import Input from "../Input.svelte";
   import { inferInputTypeFromValueType } from "../../Functions/inference.js";
   import { formatKey } from "../../Functions/formatting";
   import { copyObj } from "../../Functions/typeManipulation.js";
 
-  let inputs = [...field.value];
+  let inputs = [...settings.inputs];
   let adding = false;
-  let newInput = {};
+  let newInput = settings.inputs[0];
 </script>
 
 <div class="input">
-  {#each inputs as input, idx}
-    <div class="input__section">
-      <Input
-        type="object-list"
-        field={{
-          value: input,
-          name: "",
-        }}
-        onChange={(e, data) => {
-          inputs[idx] = data;
-          onChange(e, inputs);
-        }}
-      />
-    </div>
-  {/each}
+  <div class="input__inputs">
+    {#each settings.inputs as input, idx}
+      <div class="input__section">
+        <Input
+          type={input.type}
+          field={{
+            value: input.value,
+            name: input.name,
+            settings: input.settings,
+          }}
+          onChange={(e, data) => {
+            inputs[idx] = data;
+            onChange(e, inputs);
+          }}
+        />
+      </div>
+    {/each}
+  </div>
   {#if adding}
     <div class="input__section">
       <Input
-        type="object-list"
+        type={newInput.type}
         field={{
-          value: inputs[0] ? copyObj(inputs[0]) : "",
-          name: "",
+          value: newInput.value,
+          name: newInput.name,
         }}
         onChange={(e, value) => {
           newInput = value;
@@ -52,6 +55,7 @@
           on:click={(e) => {
             e.preventDefault();
             inputs.push(newInput);
+            inputs = inputs;
             adding = false;
           }}>Done</button
         >
@@ -61,6 +65,7 @@
   <button
     class="input__button"
     on:click={(e) => {
+      e.preventDefault();
       adding = true;
     }}>Add {field.name}</button
   >
@@ -72,8 +77,11 @@
   @import "../../../styles/partials/mixins";
 
   .input {
-    &__section {
+    &__inputs {
       border-left: 2px solid $color-orange;
+      padding-inline-start: 24px;
+    }
+    &__section {
     }
 
     &__button {

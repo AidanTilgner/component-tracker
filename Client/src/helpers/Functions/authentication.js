@@ -16,7 +16,6 @@ tokens.subscribe((tokens) => {
 
 export const verifyLoginStatus = async () => {
   try {
-    console.log("Body:", JSON.stringify({ refreshToken: refreshToken }));
     if (refreshToken === "") {
       return false;
     }
@@ -28,7 +27,6 @@ export const verifyLoginStatus = async () => {
       },
       body: JSON.stringify({ refreshToken: refreshToken }),
     }).then((res) => res.json());
-    console.log("verifyLoginStatus Response: ", response);
     if (response.status === 403 || response.error) {
       console.log("Forbidden");
       return false;

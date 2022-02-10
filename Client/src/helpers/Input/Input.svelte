@@ -14,8 +14,6 @@
   import { formatKey } from "../../helpers/Functions/formatting.js";
 
   !type && (type = inferInputTypeFromValueType(field.value));
-
-  console.log("Required field, ", required);
 </script>
 
 <div class="field">

@@ -36,12 +36,6 @@
     logLocalStorage();
     tokens.set(res.tokens);
     user.set(res.user);
-    console.log(
-      "Tokens: ",
-      readFromLocalStorage("refreshToken"),
-      readFromSessionStorage("accessToken")
-    );
-    console.log("User: ", JSON.parse(readFromLocalStorage("user")));
     $goto("/home");
   };
 
@@ -62,7 +56,6 @@
       const response = await signUp(data.username, data.email, data.password);
       console.log("Response: ", response);
       if (response.error) {
-        console.log("Displaying error");
         dispatchBanner.showing = true;
         dispatchBanner.type = "error";
         dispatchBanner.message = response.error;

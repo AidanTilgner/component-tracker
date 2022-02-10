@@ -262,16 +262,32 @@ export const addProjectToOrganizationInDatabase = async (
 
 export const updateProjectInOrganizationInDatabase = async (
   organization_id,
-  project
+  project_id
 ) => {
   try {
+    console.log("Updating project in organization");
     // Find a project in the organization with the smae project_id and update it
+    const project = await ProjectModel.findOne({
+      project_id: project_id,
+    }).exec();
     const organizationModel = await OrganizationModel.findOneAndUpdate(
-      { organization_id },
-      { $pull: { projects: { project_id: project.project_id } } },
-      { $push: { projects: project } },
+      {
+        organization_id: organization_id,
+        "projects.project_id": project.project_id,
+      },
+      {
+        $set: {
+          "projects.$.project_id": project.project_id,
+          "projects.$.name": project.name,
+          "projects.$.framework": project.framework,
+          "projects.$.created": project.created,
+          "projects.$.edited": project.edited,
+        },
+      },
       { new: true }
     ).exec();
+
+    await organizationModel.save();
     if (!organizationModel) {
       return {
         error: "Organization not found",
@@ -295,12 +311,12 @@ export const updateProjectInOrganizationInDatabase = async (
 
 export const deleteProjectFromOrganizationInDatabase = async (
   organization_id,
-  project
+  project_id
 ) => {
   try {
     const organizationModel = await OrganizationModel.findOneAndUpdate(
       { organization_id },
-      { $pull: { projects: { project_id: project.project_id } } },
+      { $pull: { projects: { project_id: project_id } } },
       { new: true }
     ).exec();
     if (!organizationModel) {

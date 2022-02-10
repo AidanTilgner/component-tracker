@@ -29,7 +29,6 @@
   let projects = [];
   let organizations = [];
   user.subscribe((user) => {
-    console.log("User: ", user);
     userData = user;
   });
 
@@ -37,25 +36,35 @@
     try {
       const isLoggedIn = await verifyLoginStatus();
       if (!isLoggedIn) {
-        console.log("Redirecting to login");
         $goto("/users/login");
       }
       projects = (await getUserProjects(userData.user_id)).projects.slice(0, 3);
       organizations = (await getUserOrganizations(userData.user_id))
         .organizations;
+      console.log("Updating user data", userData);
       user.update((user) => {
-        user.projects = projects;
-        user.organizations = organizations;
+        user.projects = projects.map((project) => {
+          return {
+            project_id: project.project_id,
+            name: project.project_name,
+            framework: project.framework,
+            description: project.description,
+          };
+        });
+        user.organizations = organizations.map((organization) => {
+          return {
+            organization_id: organization.organization_id,
+            name: organization.organization_name,
+          };
+        });
+        console.log("Updated user data", user);
         return user;
       });
+      console.log("Updated user data", userData);
     } catch (err) {
       console.log("Error in onMount: ", err);
     }
   });
-
-  let newProjectModal = false;
-
-  let projectData = {};
 
   let alertBanner = {
     showing: false,
@@ -66,6 +75,12 @@
 </script>
 
 <Navbar />
+<AlertBanner
+  showing={alertBanner.showing}
+  message={alertBanner.message}
+  type={alertBanner.type}
+  timeout={alertBanner.timeout}
+/>
 <div class="home" data-testid="home">
   <Header
     title="Recent Projects"

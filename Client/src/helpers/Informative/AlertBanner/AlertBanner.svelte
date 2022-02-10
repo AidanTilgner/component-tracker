@@ -5,9 +5,7 @@
     type = "error";
 
   $: if (showing) {
-    console.log("Setting timeout");
     setTimeout(() => {
-      console.log("Removing alert");
       showing = false;
     }, timeout);
   }

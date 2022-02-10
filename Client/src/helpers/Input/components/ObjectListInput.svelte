@@ -1,23 +1,26 @@
 <script>
-  export let field, onChange;
+  export let field, settings, onChange;
   import Input from "../Input.svelte";
   import { inferInputTypeFromValueType } from "../../Functions/inference.js";
   import { formatKey } from "../../Functions/formatting.js";
 
-  let inputs = field.value;
+  let inputs = {};
+  settings.inputs.forEach((input) => {
+    inputs[input.name.toLowerCase()] = input.value;
+  });
 </script>
 
-{#each Object.keys(field.value) as key}
+{#each settings.inputs as input}
   <div class="input">
     <Input
-      type={inferInputTypeFromValueType(field.value[key])}
+      type={input.type}
       field={{
-        value: field.value[key],
-        name: formatKey(key),
+        value: input.value,
+        name: formatKey(input.name),
       }}
       onChange={(e, data) => {
-        inputs[key] = data;
-        onChange(e, inputs);
+        inputs[input.name.toLowerCase()] = data;
+        onChange(e, settings.inputs);
       }}
     />
   </div>
@@ -30,5 +33,6 @@
 
   .input {
     padding-inline-start: 24px;
+    border-left: 2px solid rgba($color: $color-black, $alpha: 0.25);
   }
 </style>
