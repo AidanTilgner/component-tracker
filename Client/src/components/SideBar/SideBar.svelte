@@ -1,5 +1,5 @@
 <script>
-  export let open, close;
+  export let open, close, buttons;
   import Icon from "../../helpers/Icon/Icon.svelte";
 </script>
 
@@ -11,6 +11,16 @@
         <p>back</p>
       </div>
       <slot />
+      {#if buttons}
+        <div class="sidebar__buttons">
+          {#each buttons as button}
+            <button
+              class="sidebar__button btn-{button.type}"
+              on:click={button.action}>{button.text}</button
+            >
+          {/each}
+        </div>
+      {/if}
     </div>
   </div>
 {/if}
@@ -57,6 +67,40 @@
         margin-left: 6px;
         padding: 0;
       }
+    }
+
+    &__buttons {
+      display: flex;
+      margin: 0;
+      justify-content: flex-end;
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: calc(50vw - 48px);
+      padding: 24px;
+      background-color: white;
+    }
+
+    &__button {
+      @include button;
+    }
+  }
+
+  .btn {
+    &-primary {
+      @include button-primary;
+    }
+
+    &-secondary {
+      @include button-secondary;
+    }
+
+    &-tertiary {
+      @include button-tertiary;
+    }
+
+    &-text {
+      @include button-text;
     }
   }
 </style>

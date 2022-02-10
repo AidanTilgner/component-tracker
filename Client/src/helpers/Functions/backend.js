@@ -147,6 +147,11 @@ export const getUser = async (userID) => {
 
 export const getUserProjects = async (userID) => {
   try {
+    console.log("Getting user projects: ", userID);
+    console.log("Access Token: ", accessToken);
+    if (accessToken === "") {
+      accessToken = sessionStorage.getItem("accessToken");
+    }
     return await fetch(`${baseURL}${EP.users}/projects?userID=${userID}`, {
       method: "GET",
       headers: {
@@ -163,6 +168,10 @@ export const getUserProjects = async (userID) => {
 
 export const getUserOrganizations = async (userID) => {
   try {
+    console.log("Getting user organizations: ", userID);
+    if (accessToken === "") {
+      accessToken = sessionStorage.getItem("accessToken");
+    }
     return await fetch(`${baseURL}${EP.users}/organizations?userID=${userID}`, {
       method: "GET",
       headers: {

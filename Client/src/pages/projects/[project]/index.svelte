@@ -64,9 +64,9 @@
     }
   });
 
-  let SideBarOpen = false;
+  let SideBarOpen = true;
   let Modal1Open = false;
-  let Modal2Open = true;
+  let Modal2Open = false;
   let newComponent = {
     metaData: {
       category: "",
@@ -188,7 +188,18 @@
     }}
   />
 </Modal>
-<SideBar open={SideBarOpen} close={() => (SideBarOpen = false)}>
+<SideBar
+  open={SideBarOpen}
+  close={() => (SideBarOpen = false)}
+  buttons={[
+    { text: "Delete", type: "tertiary", action: "" },
+    {
+      text: "Edit",
+      type: "secondary",
+      action: () => (Modal2Open = true),
+    },
+  ]}
+>
   <Header title="Project Information" type="subtitle" />
   <div class="project-info">
     {#each Object.keys(project).filter((key) => key !== "components") as key}
@@ -196,15 +207,6 @@
         <InfoItem title={formatKey(key)} value={project[key]} />
       </div>
     {/each}
-  </div>
-  <div class="project-info__buttons">
-    <button class="project-info__buttons__settings"> Settings </button>
-    <button
-      class="project-info__buttons__edit"
-      on:click={(e) => {
-        Modal2Open = true;
-      }}>Edit</button
-    >
   </div>
 </SideBar>
 

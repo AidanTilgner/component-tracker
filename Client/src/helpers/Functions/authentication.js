@@ -27,6 +27,7 @@ export const verifyLoginStatus = async () => {
       },
       body: JSON.stringify({ refreshToken: refreshToken }),
     }).then((res) => res.json());
+    console.log("verifyLoginStatus: ", response);
     if (response.status === 403 || response.error) {
       console.log("Forbidden");
       return false;
