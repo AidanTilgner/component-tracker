@@ -41,7 +41,6 @@
       projects = (await getUserProjects(userData.user_id)).projects.slice(0, 3);
       organizations = (await getUserOrganizations(userData.user_id))
         .organizations;
-      console.log("Updating user data", userData);
       user.update((user) => {
         user.projects = projects.map((project) => {
           return {
@@ -57,10 +56,8 @@
             name: organization.organization_name,
           };
         });
-        console.log("Updated user data", user);
         return user;
       });
-      console.log("Updated user data", userData);
     } catch (err) {
       console.log("Error in onMount: ", err);
     }

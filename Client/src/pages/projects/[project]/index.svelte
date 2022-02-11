@@ -268,7 +268,6 @@
   {/if}
   <FileTree {project} />
 </div>
-<Footer />
 
 <style lang="scss">
   @import "../../../styles/partials/variables";

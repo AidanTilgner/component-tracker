@@ -147,8 +147,6 @@ export const getUser = async (userID) => {
 
 export const getUserProjects = async (userID) => {
   try {
-    console.log("Getting user projects: ", userID);
-    console.log("Access Token: ", accessToken);
     if (accessToken === "") {
       accessToken = sessionStorage.getItem("accessToken");
     }
@@ -287,7 +285,7 @@ export const addComponent = async (projectID, component) => {
         },
         body: JSON.stringify(component),
       }
-    ).then((res) => console.log("Response: ", res.json()));
+    ).then((res) => res.json());
   } catch (error) {
     console.error("Error in addComponent: ", error);
     alert("Error in addComponent: ", error);

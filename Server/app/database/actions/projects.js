@@ -157,6 +157,7 @@ export const addComponentToProjectInDatabase = async (
         error: "Project not found",
       };
     }
+    console.log("Updated Project: ", project);
     return project;
   } catch (error) {
     console.log("Error in addComponentToProjectInDatabase: ", error);

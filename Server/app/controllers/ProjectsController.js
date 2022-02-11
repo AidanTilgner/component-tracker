@@ -96,6 +96,10 @@ export const addComponent = async (project_id, component) => {
     if (filterForMessages(project)) {
       return project;
     }
+    console.log("Returning: ", {
+      project,
+      message: "Component successfully added",
+    });
     return {
       project: project,
       message: "Component successfully added to project",
