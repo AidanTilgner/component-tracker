@@ -4,6 +4,7 @@
   import Header from "../../helpers/Header/Header.svelte";
   import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
 
+  console.log("Fields: ", fields);
   let inputs = {};
   $: fields.forEach((field) => {
     inputs[field.name.toLowerCase()] = field.value;
@@ -20,7 +21,7 @@
   {#each fields as field}
     <Input
       field={{ name: field.name, value: field.value }}
-      required={field.required}
+      required={field.required ? true : false}
       type={field.type}
       settings={field.settings}
       onChange={(e, data) => {

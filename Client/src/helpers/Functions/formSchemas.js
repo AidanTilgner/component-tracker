@@ -1,14 +1,14 @@
 export const newComponentSchema = [
   {
-    name: "Category",
-    type: "text",
-    value: "",
-  },
-  {
     name: "Path",
     type: "text",
     value: "",
     required: true,
+  },
+  {
+    name: "Category",
+    type: "text",
+    value: "",
   },
   {
     name: "Example",
@@ -152,17 +152,18 @@ export const editableProjectSchema = (currentProject) => {
 };
 
 export const editableComponentMetaDataSchema = (currentComponentMetaData) => {
+  console.log("currentComponentMetaData", currentComponentMetaData);
   return [
-    {
-      name: "Category",
-      type: "text",
-      value: currentComponentMetaData.category,
-    },
     {
       name: "Path",
       type: "text",
       value: currentComponentMetaData.path,
       required: true,
+    },
+    {
+      name: "Category",
+      type: "text",
+      value: currentComponentMetaData.category,
     },
     {
       name: "Example",
@@ -174,97 +175,60 @@ export const editableComponentMetaDataSchema = (currentComponentMetaData) => {
       type: "text",
       value: currentComponentMetaData.description,
     },
+  ];
+};
+
+export const newComponentFileSchema = [
+  {
+    name: "Name",
+    type: "text",
+    value: "",
+    required: true,
+  },
+  {
+    name: "From",
+    type: "text",
+    value: "",
+    required: true,
+  },
+  {
+    name: "Data_Type",
+    type: "text",
+    value: "",
+  },
+  {
+    name: "notes",
+    type: "textarea",
+    value: "",
+  },
+];
+
+export const editableComponentFileSchema = (file) => {
+  return [
     {
-      name: "Props",
-      type: "array-list",
-      value: currentComponentMetaData.props,
-      settings: {
-        currentValue: currentComponentMetaData.props.map((prop) => {
-          return [
-            {
-              name: "Name",
-              type: "text",
-              value: prop.name,
-            },
-            {
-              name: "Type",
-              type: "text",
-              value: prop.type,
-            },
-            {
-              name: "Description",
-              type: "text",
-              value: prop.description,
-            },
-          ];
-        }),
-        inputs: [
-          {
-            name: "Name",
-            type: "text",
-            value: "",
-          },
-          {
-            name: "Type",
-            type: "text",
-            value: "",
-          },
-          {
-            name: "Description",
-            type: "text",
-            value: "",
-          },
-        ],
-      },
+      name: "Name",
+      text: file.name,
+      type: "text",
     },
     {
-      name: "State",
-      value: [
-        {
-          name: "",
-          type: "",
-          description: "",
-        },
-      ],
-      type: "array-list",
-      settings: {
-        inputs: [
-          {
-            name: "Name",
-            type: "text",
-            value: "",
-          },
-          {
-            name: "Type",
-            type: "text",
-            value: "",
-          },
-          {
-            name: "Description",
-            type: "text",
-            value: "",
-          },
-        ],
-      },
+      name: "From",
+      text: file.from,
+      type: "breadcrumbs",
     },
     {
-      name: "Tags",
-      type: "array-list",
-      value: [{ name: "", type: "" }],
-      settings: {
-        inputs: [
-          {
-            name: "Name",
-            type: "text",
-            value: "",
-          },
-          {
-            name: "Type",
-            type: "text",
-            value: "",
-          },
-        ],
-      },
+      name: "data_type",
+      text: file.description,
+      type: "text",
+    },
+    {
+      name: "description",
+      text: file.description,
+      type: "text",
+    },
+    {
+      name: "notes",
+      value: file.notes,
+      type: "textarea",
     },
   ];
 };

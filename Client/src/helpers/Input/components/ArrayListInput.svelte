@@ -8,29 +8,10 @@
   let inputs = [...settings.inputs];
   let adding = false;
   let newInput = settings.inputs[0];
+  console.log("Array List Field Value: ", field.value);
 </script>
 
 <div class="input">
-  <div class="input__current-values">
-    <!--Takes in settings.currentValue as an array of objects that represent the current state of the array-->
-    {#if settings.currentValue}
-      {#each settings.currentValue as value}
-        <div class="input__section">
-          {#each value as field}
-            <div class="input__field">
-              <Input
-                type={field.type}
-                value={field.value}
-                onChange={(e) => {
-                  onChange(e, value, field);
-                }}
-              />
-            </div>
-          {/each}
-        </div>
-      {/each}
-    {/if}
-  </div>
   <div class="input__inputs">
     {#each settings.inputs as input, idx}
       <div class="input__section">

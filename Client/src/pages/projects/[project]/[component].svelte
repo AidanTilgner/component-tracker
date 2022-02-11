@@ -20,7 +20,10 @@
     deleteComponent,
   } from "../../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
-  import { editableComponentMetaDataSchema } from "../../../helpers/Functions/formSchemas.js";
+  import {
+    editableComponentMetaDataSchema,
+    newComponentFileSchema,
+  } from "../../../helpers/Functions/formSchemas.js";
 
   let userData = {};
   user.subscribe((data) => {
@@ -77,7 +80,6 @@
         $params.project,
         $params.component.split("+").join("/")
       );
-      console.log("New Component Response: ", response);
       if (response.error) {
         alertBanner.showing = true;
         alertBanner.message = response.error;
@@ -92,9 +94,10 @@
     }
   });
 
-  $: console.log("Project: ", project);
-
   let EditingMetaData = false;
+  let metaDataSubmittable = false;
+  let sectionModal = false;
+  let sectionModalData = {};
 </script>
 
 <Navbar />
@@ -103,6 +106,98 @@
   message={alertBanner.message}
   type={alertBanner.type}
 />
+<Modal
+  open={EditingMetaData}
+  title="Editing Info"
+  buttons={[
+    {
+      text: "Close",
+      type: "secondary",
+      action: () => (EditingMetaData = false),
+    },
+    // TODO: Create a new way of submitting the form
+    {
+      text: "Submit",
+      type: "primary",
+      action: async () => {
+        if (!metaDataSubmittable) {
+          alertBanner.showing = true;
+          alertBanner.message = "Please fill out all required fields";
+          alertBanner.type = "error";
+          return;
+        }
+        EditingMetaData = false;
+        const response = await updateComponent(
+          $params.project,
+          $params.component.split("+").join("/"),
+          { metaData: component.metaData }
+        );
+        console.log("response: ", response);
+        if (response.error) {
+          alertBanner.showing = true;
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+        }
+        alertBanner.showing = true;
+        alertBanner.message = response.message;
+        alertBanner.type = "success";
+        component = response.component;
+      },
+    },
+  ]}
+>
+  <NonDynamic
+    fields={editableComponentMetaDataSchema(component.metaData)}
+    onChange={(e, inputs, submittable) => {
+      e.preventDefault();
+      metaDataSubmittable = submittable;
+      component.metaData = inputs;
+    }}
+  />
+</Modal>
+<Modal
+  open={sectionModal}
+  title={sectionModal.title}
+  buttons={[
+    {
+      text: "Close",
+      type: "secondary",
+      action: () => (sectionModal = false),
+    },
+    {
+      text: "Submit",
+      type: "primary",
+      action: async () => {
+        if (!sectionModalData.submittable) {
+          alertBanner.showing = true;
+          alertBanner.message = "Please fill out all required fields";
+          alertBanner.type = "error";
+          return;
+        }
+        const response = await sectionModalData.action(sectionModalData.inputs);
+        if (response.error) {
+          alertBanner.showing = true;
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+        }
+        alertBanner.showing = true;
+        alertBanner.message = response.message;
+        alertBanner.type = "success";
+        component = response.component;
+        sectionModal = false;
+      },
+    },
+  ]}
+>
+  <NonDynamic
+    fields={sectionModalData.fields}
+    onChange={(e, inputs, submittable) => {
+      e.preventDefault();
+      sectionModalData.submittable = submittable;
+      sectionModalData.inputs = inputs;
+    }}
+  />
+</Modal>
 <div class="component" data-testid="component">
   <Header
     title={`
@@ -147,76 +242,123 @@
     ]}
   />
   <div class="component__meta-info">
-    {#each metaData as key}
-      <InfoItem title={formatKey(key)} value={component.metaData[key]} />
-    {/each}
-    <Modal
-      open={EditingMetaData}
-      title="Editing Info"
+    <Header title="Meta Data" type="small-title" margin={[56, 0, 24, 0]} />
+    {#if component.metaData.category && component.metaData.category !== ""}
+      <InfoItem
+        type="text"
+        title="Category"
+        value={component.metaData.category}
+      />
+    {/if}
+    {#if component.metaData.path && component.metaData.path !== ""}
+      <InfoItem
+        type="breadcrumbs"
+        title="Path"
+        value={component.metaData.path}
+      />
+    {/if}
+    {#if component.metaData.example && component.metaData.example !== ""}
+      <InfoItem
+        type="link"
+        title="Example"
+        value={component.metaData.example}
+      />
+    {/if}
+    {#if component.metaData.description && component.metaData.description !== ""}
+      <InfoItem
+        type="text"
+        title="Description"
+        value={component.metaData.description}
+      />
+    {/if}
+  </div>
+  <div class="component__section">
+    <Header
+      title="Imports"
+      type="small-title"
       buttons={[
         {
-          text: "Close",
+          text: "New Import",
           type: "secondary",
-          action: () => (EditingMetaData = false),
-        },
-        // TODO: Create a new way of submitting the form
-        {
-          text: "Submit",
-          type: "primary",
           action: () => {
-            EditingMetaData = false;
-            updateComponent(
-              $params.project,
-              $params.component.split("+").join("/"),
-              { metaData: component.metaData }
-            );
+            sectionModal = true;
+            sectionModalData = {
+              title: "New Import",
+              fields: newComponentFileSchema,
+              action: async (inputs) => {
+                const response = await updateComponent(
+                  $params.project,
+                  $params.component.split("+").join("/"),
+                  {
+                    imports: [
+                      ...component.imports,
+                      {
+                        path: inputs.path,
+                        name: inputs.name,
+                        description: inputs.description,
+                      },
+                    ],
+                  }
+                );
+                return response;
+              },
+            };
           },
         },
       ]}
-    >
-      <NonDynamic
-        fields={editableComponentMetaDataSchema(component.metaData)}
-        onChange={(e, inputs) => {
+    />
+    {#each component.imports as imp}
+      <Description
+        title={imp.name}
+        values={Object.keys(imp).map((key) => {
+          return {
+            title: formatKey(key),
+            text: imp[key],
+            type: inferInfoItemTypeFromValueType(imp[key]),
+          };
+        })}
+        onChange={(e, values) => {
+          // TODO: Fix bug where the description title is not updated
           e.preventDefault();
-          component.metaData = inputs;
+          imp = values;
         }}
       />
-    </Modal>
+    {/each}
   </div>
-  {#if component.imports[0]}
-    <div class="component__section">
-      <Header title="Imports" type="subtitle" />
-      {#each component.imports as imp}
-        <Description
-          title={imp.name}
-          values={Object.keys(imp).map((key) => {
-            return {
-              title: formatKey(key),
-              text: imp[key],
-              type: inferInfoItemTypeFromValueType(imp[key]),
-            };
-          })}
-          onChange={(e, values) => {
-            // TODO: Fix bug where the description title is not updated
-            e.preventDefault();
-            imp = values;
-          }}
-        />
-      {/each}
-    </div>
-  {/if}
   {#if component.exports[0]}
     <div class="component__section">
       <Header title="Exports" type="subtitle" />
       {#each component.exports as exp}
         <Description
           title={exp.name}
-          values={Object.keys(exp).map((key) => {
-            return {
-              title: formatKey(key),
-              text: exp[key],
-              type: inferInfoItemTypeFromValueType(exp[key]),
-            };
+          values={component.imports.map((imp) => {
+            return (
+              {
+                name: "Name",
+                text: imp.name,
+                type: "text",
+              },
+              {
+                name: "From",
+                text: imp.from,
+                type: "breadcrumbs",
+              },
+              {
+                name: "data_type",
+                text: imp.description,
+                type: "text",
+              },
+              {
+                name: "description",
+                text: imp.description,
+                type: "text",
+              },
+              {
+                name: "notes",
+                value: imp.notes,
+                type: "textarea",
+              }
+            );
           })}
           onChange={(e, values) => {
             // TODO: Fix bug where the description title is not updated

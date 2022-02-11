@@ -143,13 +143,9 @@ export const addComponentToProjectInDatabase = async (
 ) => {
   try {
     const newComponent = new ComponentClass(component);
-    console.log("Component Class: ", newComponent);
-    console.log("Metadata: ", newComponent.metaData);
-    const componentModel = await ComponentModel.create(newComponent);
-    console.log("New Component: ", component);
     const project = await ProjectModel.findOneAndUpdate(
       { project_id: project_id },
-      { $push: { components: componentModel } },
+      { $push: { components: newComponent } },
       { new: true }
     ).exec();
     if (!project) {
@@ -157,7 +153,6 @@ export const addComponentToProjectInDatabase = async (
         error: "Project not found",
       };
     }
-    console.log("Updated Project: ", project);
     return project;
   } catch (error) {
     console.log("Error in addComponentToProjectInDatabase: ", error);
@@ -181,8 +176,9 @@ export const updateComponentInProjectInDatabase = async (
         error: "Project not found",
       };
     }
+    console.log("Project: ", project);
     const index = project.components.findIndex(
-      (component) => component.name === name
+      (component) => component.metaData.path === name
     );
     if (index === -1) {
       return {
@@ -217,7 +213,7 @@ export const deleteComponentFromProjectInDatabase = async (
       };
     }
     const index = project.components.findIndex(
-      (component) => component.name === name
+      (component) => component.metaData.path === name
     );
     if (index === -1) {
       return {

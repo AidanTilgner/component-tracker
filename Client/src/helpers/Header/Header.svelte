@@ -20,7 +20,9 @@
 >
   <p
     class="header__title"
-    style={type === "subtitle"
+    style={type === "small-title"
+      ? "font-size: 36px; font-weight: 500;"
+      : type === "subtitle"
       ? "font-size: 48px;"
       : type === "title"
       ? "font-size: 64px;"

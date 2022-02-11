@@ -4,11 +4,8 @@
   import Header from "../../helpers/Header/Header.svelte";
   import Modal from "../../helpers/Modal/Modal.svelte";
   import Form from "../../helpers/Form/Form.svelte";
+  import NonDynamic from "../Form/NonDynamic.svelte";
 
-  let editableValues = {};
-  values.forEach((value) => {
-    editableValues[value.title] = value.text;
-  });
   let editing = false;
 </script>
 
@@ -27,7 +24,7 @@
   />
   <div class="description__border" />
   {#each values as value}
-    <InfoItem title={value.title} value={value.text} type={value.type} />
+    <InfoItem title={value.name} value={value.text} type={value.type} />
   {/each}
   <Modal
     open={editing}
@@ -41,13 +38,11 @@
       { text: "Submit", type: "primary", action: () => (editing = false) },
     ]}
   >
-    <Form
-      data={editableValues}
-      onChange={(e, inputs) => {
-        e.preventDefault();
-        onChange(e, inputs);
+    <NonDynamic
+      fields={values}
+      onChange={(e, values) => {
+        onChange(e, values);
       }}
-      prefilled={true}
     />
   </Modal>
 </div>
