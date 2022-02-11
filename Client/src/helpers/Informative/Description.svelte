@@ -5,6 +5,7 @@
   import Modal from "../../helpers/Modal/Modal.svelte";
   import Form from "../../helpers/Form/Form.svelte";
   import NonDynamic from "../Form/NonDynamic.svelte";
+  import { formatKey } from "../../helpers/Functions/formatting.js";
 
   let editing = false;
 </script>
@@ -24,7 +25,11 @@
   />
   <div class="description__border" />
   {#each values as value}
-    <InfoItem title={value.name} value={value.text} type={value.type} />
+    <InfoItem
+      title={formatKey(value.name)}
+      value={value.value}
+      type={value.type}
+    />
   {/each}
   <Modal
     open={editing}

@@ -189,6 +189,7 @@ export const updateComponentInProjectInDatabase = async (
       project.components[index],
       update
     );
+    console.log("Updated Component: ", project.components[index]);
     await project.save();
     return project.components[index];
   } catch (error) {

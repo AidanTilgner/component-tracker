@@ -8,6 +8,9 @@ export const formatKey = (key) => {
 };
 
 export const formatBreadcrumbs = (breadcrumbs) => {
+  if (!breadcrumbs || breadcrumbs.length === 0) {
+    return "";
+  }
   breadcrumbs = breadcrumbs
     .split("/")
     .map((item, index) => {

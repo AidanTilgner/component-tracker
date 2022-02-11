@@ -21,6 +21,7 @@
   } from "../../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
   import {
+    editableComponentFileSchema,
     editableComponentMetaDataSchema,
     newComponentFileSchema,
   } from "../../../helpers/Functions/formSchemas.js";
@@ -60,8 +61,6 @@
     functions: [],
     connectedFiles: { parents: [], children: [], helpers: [] },
   };
-
-  $: metaData = Object.keys(component.metaData);
 
   let alertBanner = {
     showing: false,
@@ -194,6 +193,7 @@
     onChange={(e, inputs, submittable) => {
       e.preventDefault();
       sectionModalData.submittable = submittable;
+      console.log("Inputs in [component.js]", inputs);
       sectionModalData.inputs = inputs;
     }}
   />
@@ -286,6 +286,17 @@
               title: "New Import",
               fields: newComponentFileSchema,
               action: async (inputs) => {
+                console.log("New Imports: ", {
+                  imports: [
+                    ...component.imports,
+                    {
+                      name: inputs.name,
+                      from: inputs.from,
+                      description: inputs.description,
+                      notes: inputs.notes,
+                    },
+                  ],
+                });
                 const response = await updateComponent(
                   $params.project,
                   $params.component.split("+").join("/"),
@@ -293,13 +304,15 @@
                     imports: [
                       ...component.imports,
                       {
-                        path: inputs.path,
                         name: inputs.name,
+                        from: inputs.from,
                         description: inputs.description,
+                        notes: inputs.notes,
                       },
                     ],
                   }
                 );
+                console.log("response: ", response);
                 return response;
               },
             };
@@ -310,13 +323,7 @@
     {#each component.imports as imp}
       <Description
         title={imp.name}
-        values={Object.keys(imp).map((key) => {
-          return {
-            title: formatKey(key),
-            text: imp[key],
-            type: inferInfoItemTypeFromValueType(imp[key]),
-          };
-        })}
+        values={editableComponentFileSchema(imp)}
         onChange={(e, values) => {
           // TODO: Fix bug where the description title is not updated
           e.preventDefault();

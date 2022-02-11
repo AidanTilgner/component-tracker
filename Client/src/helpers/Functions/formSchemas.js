@@ -197,6 +197,11 @@ export const newComponentFileSchema = [
     value: "",
   },
   {
+    name: "Description",
+    type: "text",
+    value: "",
+  },
+  {
     name: "notes",
     type: "textarea",
     value: "",
@@ -207,27 +212,29 @@ export const editableComponentFileSchema = (file) => {
   return [
     {
       name: "Name",
-      text: file.name,
+      value: file.name?.length > 0 ? file.name : "",
       type: "text",
+      required: true,
     },
     {
       name: "From",
-      text: file.from,
+      value: file.from?.length > 0 ? file.from : "",
       type: "breadcrumbs",
+      required: true,
     },
     {
       name: "data_type",
-      text: file.description,
+      value: file.data_type?.length > 0 ? file.data_type : "",
       type: "text",
     },
     {
       name: "description",
-      text: file.description,
+      value: file.description?.length > 0 ? file.description : "",
       type: "text",
     },
     {
       name: "notes",
-      value: file.notes,
+      value: file.notes?.length > 0 ? file.notes : "",
       type: "textarea",
     },
   ];

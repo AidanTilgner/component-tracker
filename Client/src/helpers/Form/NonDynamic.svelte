@@ -9,6 +9,7 @@
   $: fields.forEach((field) => {
     inputs[field.name.toLowerCase()] = field.value;
   });
+  $: console.log("Fields: ", fields);
 
   $: console.log("Inputs changing: ", inputs);
 
@@ -24,10 +25,9 @@
     <Input
       field={{ name: field.name, value: field.value }}
       required={field.required ? true : false}
-      type={field.type}
+      type={field.type !== "breadcrumbs" ? field.type : "text"}
       settings={field.settings}
       onChange={(e, data) => {
-        console.log("Inputs before: ", inputs);
         inputs[field.name.toLowerCase()] = data;
         fields[fields.indexOf(field)].value = data;
         // Check that all required fields are not "" or falsey
@@ -40,8 +40,6 @@
             allRequiredFieldsFilled = false;
           }
         });
-        console.log("allRequiredFieldsFilled", allRequiredFieldsFilled);
-        console.log("Inputs at end: ", inputs);
         onChange(e, inputs, allRequiredFieldsFilled);
       }}
     />
