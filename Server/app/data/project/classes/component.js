@@ -68,12 +68,28 @@ class Component {
       state: metaData.state,
       tags: metaData.tags,
     };
+    this.component_id = this.randomID(metaData.path);
     this.imports = imports ? imports : [];
     this.exports = exports ? exports : [];
     this.functions = functions ? functions : [];
     this.connectedFiles = connectedFiles
       ? connectedFiles
       : { parents: [], children: [], helpers: [] };
+  }
+
+  randomID(path) {
+    return path
+      .split("/")
+      .map((x) => {
+        return x + this.randomString(5);
+      })
+      .join("-");
+  }
+
+  randomString(length) {
+    return Math.random()
+      .toString(36)
+      .substring(2, length + 2);
   }
 }
 

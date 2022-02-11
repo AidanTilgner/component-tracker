@@ -3,6 +3,7 @@ const { Schema, model, SchemaTypes } = mongoose;
 
 export const ComponentSchema = new Schema({
   id: SchemaTypes.ObjectId,
+  component_id: String,
   creator: { username: String, user_id: String },
   description: String,
   metaData: {

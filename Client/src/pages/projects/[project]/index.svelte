@@ -77,7 +77,6 @@
   };
   let componentSubmittable = false;
   let projectSubmittable = false;
-  console.log("New Componetn Schema: ", newComponentSchema);
 </script>
 
 <!-- Extra Stuff -->
@@ -111,10 +110,8 @@
           user_id: userData.user_id,
           username: userData.username,
         };
-        console.log("New Component: ", newComponent);
         Modal1Open = false;
         const response = await addComponent(project.project_id, newComponent);
-        console.log("New component response: ", response);
         if (response.error) {
           alertBanner.showing = true;
           alertBanner.message = response.error;
@@ -179,7 +176,6 @@
     fields={editableProjectSchema(project)}
     onChange={(e, data, submittable) => {
       projectSubmittable = submittable;
-      console.log("data: ", data);
       editableProject = data;
     }}
   />

@@ -6,6 +6,7 @@
   import NonDynamic from "../../../helpers/Form/NonDynamic.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import Description from "../../../helpers/Informative/Description.svelte";
+  import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
   import { url, params, meta, goto } from "@roxi/routify";
   import { inferInfoItemTypeFromValueType } from "../../../helpers/Functions/inference.js";
   import { formatKey } from "../../../helpers/Functions/formatting.js";
@@ -20,7 +21,6 @@
   } from "../../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
   import { editableComponentMetaDataSchema } from "../../../helpers/Functions/formSchemas.js";
-  import Footer from "../../../components/Footer/Footer.svelte";
 
   let userData = {};
   user.subscribe((data) => {
@@ -60,38 +60,61 @@
 
   $: metaData = Object.keys(component.metaData);
 
+  let alertBanner = {
+    showing: false,
+    message: "",
+    type: "error",
+  };
+
   onMount(async () => {
     try {
       const isLoggedIn = await verifyLoginStatus();
       if (!isLoggedIn) {
         $goto("/users/login");
       }
-      project = await getProject($params.project);
-      component = (
-        await getComponent(
-          $params.project,
-          $params.component.split("+").join("/")
-        )
-      ).component;
+      project = (await getProject($params.project)).project;
+      const response = await getComponent(
+        $params.project,
+        $params.component.split("+").join("/")
+      );
+      console.log("New Component Response: ", response);
+      if (response.error) {
+        alertBanner.showing = true;
+        alertBanner.message = response.error;
+        alertBanner.type = "error";
+      }
+      alertBanner.showing = false;
+      alertBanner.message = response.message;
+      alertBanner.type = "success";
+      component = response.component;
     } catch (error) {
       console.log("Error in onMount: ", error);
     }
   });
 
+  $: console.log("Project: ", project);
+
   let EditingMetaData = false;
 </script>
 
 <Navbar />
+<AlertBanner
+  showing={alertBanner.showing}
+  message={alertBanner.message}
+  type={alertBanner.type}
+/>
 <div class="component" data-testid="component">
   <Header
     title={`
-      <a href="/projects" style="color:#2256f2;text-decoration:none;">
+      <a href="${$url(
+        "/projects"
+      )}" style="color:#2256f2;text-decoration:none;">
         ${userData.username}
       </a> /   
-      <a href="/projects/${
-        $params.project
-      }" style="color:#2256f2;text-decoration:none;">
-        ${$params.component.split("+")[$params.component.split("+").length - 1]}
+      <a href="${$url("/projects/:project", {
+        project: project.project_id,
+      })}" style="color:#2256f2;text-decoration:none;">
+        ${project.name}
       </a> /
       <span style='font-weight:bold;'>
           ${$params.component.split("+").join(" / ")}
@@ -226,7 +249,6 @@
     </div>
   {/if}
 </div>
-<Footer />
 
 <style type="text/scss">
   @import "../../../styles/partials/variables";
@@ -236,8 +258,5 @@
   .component {
     @include default-padding;
     background-color: #f8f8f8;
-
-    &__section {
-    }
   }
 </style>
