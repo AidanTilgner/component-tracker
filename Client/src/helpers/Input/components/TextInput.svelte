@@ -7,9 +7,7 @@
   <input
     on:change={(e) => {
       onChange(e, e.target.value);
-      console.log("onChange", e, e.target.value);
       if (required && e.target.value === "") {
-        console.log("requiredAlert", requiredAlert);
         requiredAlert = true;
         return;
       }

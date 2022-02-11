@@ -3,15 +3,17 @@
   import Input from "../Input/Input.svelte";
   import Header from "../../helpers/Header/Header.svelte";
   import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
+  import { fix_and_destroy_block } from "svelte/internal";
 
-  console.log("Fields: ", fields);
   let inputs = {};
   $: fields.forEach((field) => {
     inputs[field.name.toLowerCase()] = field.value;
   });
 
+  $: console.log("Inputs changing: ", inputs);
+
   // Make a list of required values and if they are empty, show an error
-  $: requiredFields = fields.filter((field) => field.required);
+  let requiredFields = fields.filter((field) => field.required);
 </script>
 
 <form class="form">
@@ -25,7 +27,9 @@
       type={field.type}
       settings={field.settings}
       onChange={(e, data) => {
+        console.log("Inputs before: ", inputs);
         inputs[field.name.toLowerCase()] = data;
+        fields[fields.indexOf(field)].value = data;
         // Check that all required fields are not "" or falsey
         let allRequiredFieldsFilled = true;
         requiredFields.forEach((requiredField) => {
@@ -37,6 +41,7 @@
           }
         });
         console.log("allRequiredFieldsFilled", allRequiredFieldsFilled);
+        console.log("Inputs at end: ", inputs);
         onChange(e, inputs, allRequiredFieldsFilled);
       }}
     />

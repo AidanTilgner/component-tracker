@@ -120,7 +120,7 @@
       text: "Submit",
       type: "primary",
       action: async () => {
-        if (!metaDataSubmittable) {
+        if (!sectionModalData.submittable) {
           alertBanner.showing = true;
           alertBanner.message = "Please fill out all required fields";
           alertBanner.type = "error";
@@ -150,14 +150,14 @@
     fields={editableComponentMetaDataSchema(component.metaData)}
     onChange={(e, inputs, submittable) => {
       e.preventDefault();
-      metaDataSubmittable = submittable;
+      sectionModalData = submittable;
       component.metaData = inputs;
     }}
   />
 </Modal>
 <Modal
   open={sectionModal}
-  title={sectionModal.title}
+  title={sectionModalData.title}
   buttons={[
     {
       text: "Close",
