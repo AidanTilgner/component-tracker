@@ -183,7 +183,7 @@ export const newComponentFileSchema = [
     required: true,
   },
   {
-    name: "From",
+    name: "Path",
     type: "text",
     value: "",
     required: true,
@@ -214,8 +214,8 @@ export const editableComponentFileSchema = (file) => {
       required: true,
     },
     {
-      name: "From",
-      value: file.from?.length > 0 ? file.from : "",
+      name: "Path",
+      value: file.path?.length > 0 ? file.path : "",
       type: "breadcrumbs",
       required: true,
     },
@@ -233,6 +233,91 @@ export const editableComponentFileSchema = (file) => {
       name: "notes",
       value: file.notes?.length > 0 ? file.notes : "",
       type: "textarea",
+    },
+  ];
+};
+
+export const newComponentFunctionSchema = [
+  {
+    name: "Name",
+    type: "text",
+    value: "",
+    required: true,
+  },
+  {
+    name: "Parameters",
+    type: "text",
+    value: "",
+    required: true,
+  },
+  {
+    name: "Returns",
+    type: "text",
+    value: "",
+    required: true,
+  },
+  {
+    name: "Path",
+    type: "text",
+    value: "",
+  },
+  {
+    name: "Description",
+    type: "text",
+    value: "",
+  },
+  {
+    name: "LifeCycle",
+    type: "text",
+    value: "",
+  },
+  {
+    name: "Notes",
+    type: "text",
+    value: "",
+  },
+];
+
+export const editableComponentFunctionSchema = (functionData) => {
+  return [
+    {
+      name: "Name",
+      value: functionData.name?.length > 0 ? functionData.name : "",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "Parameters",
+      value: functionData.parameters?.length > 0 ? functionData.parameters : "",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "Returns",
+      value: functionData.returns?.length > 0 ? functionData.returns : "",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "Path",
+      value: functionData.path?.length > 0 ? functionData.path : "",
+      type: "breadcrumbs",
+    },
+    {
+      name: "Description",
+      value:
+        functionData.description?.length > 0 ? functionData.description : "",
+      type: "text",
+    },
+    {
+      name: "LifeCycle",
+      value: functionData.lifeCycle?.length > 0 ? functionData.lifeCycle : "",
+      type: "text",
+    },
+    {
+      name: "Notes",
+      value: functionData.notes?.length > 0 ? functionData.notes : "",
+      type: "text",
     },
   ];
 };

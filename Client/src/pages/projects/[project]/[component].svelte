@@ -23,6 +23,8 @@
     newComponentFileSchema,
     componentPillSchema,
     deleteComponentPillSchema,
+    newComponentFunctionSchema,
+    editableComponentFunctionSchema,
   } from "../../../helpers/Functions/formSchemas.js";
 
   let userData = {};
@@ -33,7 +35,7 @@
   let project = {};
 
   let component = {
-    creator: { name: "", id: "" },
+    creator: { name: "", user_id: "" },
     metaData: {
       category: "",
       path: "",
@@ -43,17 +45,17 @@
         {
           name: "",
           description: "",
-          type: "",
+          pill_type: "",
         },
       ],
       state: [
         {
           name: "",
           description: "",
-          type: "",
+          pill_type: "",
         },
       ],
-      tags: [{ name: "", type: "", description: "" }],
+      tags: [{ name: "", pill_type: "", description: "" }],
     },
     imports: [],
     exports: [],
@@ -284,15 +286,6 @@
               title: "Delete Tag",
               fields: deleteComponentPillSchema(component.metaData.tags),
               action: async (inputs) => {
-                console.log("Tags Before: ", component.metaData.tags);
-                // remove the tag that matches the index of the tag that was deleted
-                console.log("Deleting Tag: ", inputs.pill);
-                console.log(
-                  "Tags After: ",
-                  component.metaData.tags.filter(
-                    (tag, index) => index !== Number(inputs.pill)
-                  )
-                );
                 const response = await updateComponent(
                   $params.project,
                   $params.component.split("+").join("/"),
@@ -336,11 +329,145 @@
         },
       ]}
     />
-    <InfoItem
-      title="Tags"
-      type="pills"
-      settings={{ pills: component.metaData.tags }}
+    {#if component.metaData.tags.length > 0}
+      <InfoItem
+        title="Tags"
+        type="pills"
+        settings={{ pills: component.metaData.tags }}
+      />
+    {/if}
+  </div>
+  <div class="component__section">
+    <Header
+      title="Props"
+      type="small-title"
+      margin={[56, 0, 24, 0]}
+      buttons={[
+        {
+          text: "Delete Prop",
+          type: "tertiary",
+          action: () => {
+            sectionModal = true;
+            sectionModalData = {
+              title: "Delete Prop",
+              fields: deleteComponentPillSchema(component.metaData.props),
+              action: async (inputs) => {
+                const response = await updateComponent(
+                  $params.project,
+                  $params.component.split("+").join("/"),
+                  {
+                    metaData: {
+                      ...component.metaData,
+                      props: component.metaData.props.filter(
+                        (prop, index) => index !== Number(inputs.pill)
+                      ),
+                    },
+                  }
+                );
+                return response;
+              },
+            };
+          },
+        },
+        {
+          text: "New Prop",
+          type: "primary",
+          action: () => {
+            sectionModal = true;
+            sectionModalData = {
+              title: "New Prop",
+              fields: componentPillSchema,
+              action: async (inputs) => {
+                const response = await updateComponent(
+                  $params.project,
+                  $params.component.split("+").join("/"),
+                  {
+                    metaData: {
+                      ...component.metaData,
+                      props: [...component.metaData.props, inputs],
+                    },
+                  }
+                );
+                return response;
+              },
+            };
+          },
+        },
+      ]}
     />
+    {#if component.metaData.props.length > 0}
+      <InfoItem
+        title="Props"
+        type="pills"
+        settings={{ pills: component.metaData.props }}
+      />
+    {/if}
+  </div>
+  <div class="component__section">
+    <Header
+      title="State"
+      type="small-title"
+      margin={[56, 0, 24, 0]}
+      buttons={[
+        {
+          text: "Delete State",
+          type: "tertiary",
+          action: () => {
+            sectionModal = true;
+            sectionModalData = {
+              title: "Delete State",
+              fields: deleteComponentPillSchema(component.metaData.state),
+              action: async (inputs) => {
+                const response = await updateComponent(
+                  $params.project,
+                  $params.component.split("+").join("/"),
+                  {
+                    metaData: {
+                      ...component.metaData,
+                      state: component.metaData.state.filter(
+                        (state, index) => index !== Number(inputs.pill)
+                      ),
+                    },
+                  }
+                );
+                return response;
+              },
+            };
+          },
+        },
+        {
+          text: "New State",
+          type: "primary",
+          action: () => {
+            sectionModal = true;
+            sectionModalData = {
+              title: "New State",
+              fields: componentPillSchema,
+              action: async (inputs) => {
+                const response = await updateComponent(
+                  $params.project,
+                  $params.component.split("+").join("/"),
+                  {
+                    metaData: {
+                      ...component.metaData,
+                      state: [...component.metaData.state, inputs],
+                    },
+                  }
+                );
+                return response;
+              },
+            };
+          },
+        },
+      ]}
+    />
+    {#if component.metaData.state.length > 0}
+      <InfoItem
+        title="Tags"
+        type="pills"
+        settings={{ pills: component.metaData.state }}
+      />
+    {/if}
   </div>
   <div class="component__section">
     <Header
@@ -365,7 +492,7 @@
                       ...component.imports,
                       {
                         name: inputs.name,
-                        from: inputs.from,
+                        path: inputs.path,
                         data_type: inputs.data_type,
                         description: inputs.description,
                         notes: inputs.notes,
@@ -416,6 +543,192 @@
                 $params.component.split("+").join("/"),
                 {
                   imports: component.imports.filter((i) => i.name !== imp.name),
+                }
+              );
+              if (response.error) {
+                alertBanner.showing = true;
+                alertBanner.message = response.error;
+                alertBanner.type = "error";
+                return;
+              }
+              alertBanner.showing = true;
+              alertBanner.message = response.message;
+              alertBanner.type = "success";
+              component = response.component;
+            },
+          },
+        ]}
+      />
+    {/each}
+  </div>
+  <div class="component__section">
+    <Header
+      title="Exports"
+      type="small-title"
+      margin={[56, 0, 24, 0]}
+      buttons={[
+        {
+          text: "New Export",
+          type: "primary",
+          action: () => {
+            sectionModal = true;
+            sectionModalData = {
+              title: "New Import",
+              fields: newComponentFileSchema,
+              action: async (inputs) => {
+                const response = await updateComponent(
+                  $params.project,
+                  $params.component.split("+").join("/"),
+                  {
+                    exports: [
+                      ...component.exports,
+                      {
+                        name: inputs.name,
+                        path: inputs.path,
+                        data_type: inputs.data_type,
+                        description: inputs.description,
+                        notes: inputs.notes,
+                      },
+                    ],
+                  }
+                );
+                return response;
+              },
+            };
+          },
+        },
+      ]}
+    />
+    {#each component.exports as exp}
+      <Description
+        title={exp.name}
+        values={editableComponentFileSchema(exp)}
+        onChange={(e, values) => {
+          e.preventDefault();
+          exp = values;
+        }}
+        onSubmit={async (inputs) => {
+          const response = await updateComponent(
+            $params.project,
+            $params.component.split("+").join("/"),
+            {
+              exports: component.exports,
+            }
+          );
+          if (response.error) {
+            alertBanner.showing = true;
+            alertBanner.message = response.error;
+            alertBanner.type = "error";
+          }
+          alertBanner.showing = true;
+          alertBanner.message = response.message;
+          alertBanner.type = "success";
+        }}
+        buttons={[
+          {
+            text: "Delete",
+            type: "tertiary",
+            action: async () => {
+              const response = await updateComponent(
+                $params.project,
+                $params.component.split("+").join("/"),
+                {
+                  exports: component.exports.filter((i) => i.name !== exp.name),
+                }
+              );
+              if (response.error) {
+                alertBanner.showing = true;
+                alertBanner.message = response.error;
+                alertBanner.type = "error";
+                return;
+              }
+              alertBanner.showing = true;
+              alertBanner.message = response.message;
+              alertBanner.type = "success";
+              component = response.component;
+            },
+          },
+        ]}
+      />
+    {/each}
+  </div>
+  <div class="component__section">
+    <Header
+      title="Functions"
+      type="small-title"
+      margin={[56, 0, 24, 0]}
+      buttons={[
+        {
+          text: "New Function",
+          type: "primary",
+          action: () => {
+            sectionModal = true;
+            sectionModalData = {
+              title: "New Import",
+              fields: newComponentFunctionSchema,
+              action: async (inputs) => {
+                const response = await updateComponent(
+                  $params.project,
+                  $params.component.split("+").join("/"),
+                  {
+                    functions: [
+                      ...component.functions,
+                      {
+                        name: inputs.name,
+                        path: inputs.path,
+                        returns: inputs.returns,
+                        parameters: inputs.parameters,
+                        description: inputs.description,
+                        lifecycle: inputs.lifecycle,
+                        notes: inputs.notes,
+                      },
+                    ],
+                  }
+                );
+                return response;
+              },
+            };
+          },
+        },
+      ]}
+    />
+    {#each component.functions as func}
+      <Description
+        title={func.name}
+        values={editableComponentFunctionSchema(func)}
+        onChange={(e, values) => {
+          e.preventDefault();
+          func = values;
+        }}
+        onSubmit={async (inputs) => {
+          const response = await updateComponent(
+            $params.project,
+            $params.component.split("+").join("/"),
+            {
+              functions: component.functions,
+            }
+          );
+          if (response.error) {
+            alertBanner.showing = true;
+            alertBanner.message = response.error;
+            alertBanner.type = "error";
+          }
+          alertBanner.showing = true;
+          alertBanner.message = response.message;
+          alertBanner.type = "success";
+        }}
+        buttons={[
+          {
+            text: "Delete",
+            type: "tertiary",
+            action: async () => {
+              const response = await updateComponent(
+                $params.project,
+                $params.component.split("+").join("/"),
+                {
+                  functions: component.functions.filter(
+                    (i) => i.name !== func.name
+                  ),
                 }
               );
               if (response.error) {

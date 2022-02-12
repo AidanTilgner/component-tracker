@@ -18,7 +18,7 @@ export const ComponentSchema = new Schema({
   imports: [
     {
       name: String,
-      from: String,
+      path: String,
       data_type: String,
       description: String,
       notes: String,
@@ -27,7 +27,7 @@ export const ComponentSchema = new Schema({
   exports: [
     {
       name: String,
-      from: String,
+      path: String,
       data_type: String,
       description: String,
       notes: String,
@@ -36,11 +36,11 @@ export const ComponentSchema = new Schema({
   functions: [
     {
       name: String,
-      description: String,
-      externalLocation: String,
       parameters: String,
-      lifeCycle: String,
       returns: String,
+      path: String,
+      description: String,
+      lifecycle: String,
       notes: String,
     },
   ],

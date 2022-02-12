@@ -14,13 +14,13 @@
 
 <div class="info-item">
   {#if type === "text"}
-    <Text {title} {value} {settings} />
+    <Text {title} {value} />
   {/if}
   {#if type === "link"}
-    <Link {title} {value} {settings} />
+    <Link {title} {value} />
   {/if}
   {#if type === "list"}
-    <List {title} {value} {settings} />
+    <List {title} {value} />
   {/if}
   {#if type === "breadcrumbs"}
     <Breadcrumbs {title} {value} />
@@ -29,10 +29,10 @@
     <Tags {title} {value} {settings} />
   {/if}
   {#if type === "object"}
-    <Object {title} {value} {settings} />
+    <Object {title} {value} />
   {/if}
   {#if type === "object-list"}
-    <ObjectList {title} {value} {settings} />
+    <ObjectList {title} {value} />
   {/if}
 </div>
 
