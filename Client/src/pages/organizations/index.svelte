@@ -117,7 +117,6 @@
         text: "Add",
         type: "primary",
         action: () => {
-          console.log("Add Organization");
           newOrganizationModal = true;
         },
       },

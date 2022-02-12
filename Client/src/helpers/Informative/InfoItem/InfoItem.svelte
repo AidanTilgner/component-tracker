@@ -1,5 +1,5 @@
 <script>
-  export let title, value, type;
+  export let title, value, type, settings;
   import Text from "./components/Text.svelte";
   import Link from "./components/Link.svelte";
   import List from "./components/List.svelte";
@@ -25,8 +25,8 @@
   {#if type === "breadcrumbs"}
     <Breadcrumbs {title} {value} />
   {/if}
-  {#if type === "tags"}
-    <Tags {title} {value} />
+  {#if type === "pills"}
+    <Tags {title} {value} {settings} />
   {/if}
   {#if type === "object"}
     <Object {title} {value} />

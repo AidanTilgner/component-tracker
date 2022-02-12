@@ -96,6 +96,10 @@ export const addComponent = async (project_id, component) => {
     if (filterForMessages(project)) {
       return project;
     }
+    console.log("Returning: ", {
+      project,
+      message: "Component successfully added",
+    });
     return {
       project: project,
       message: "Component successfully added to project",
@@ -110,6 +114,8 @@ export const addComponent = async (project_id, component) => {
 
 export const getComponent = async (project_id, name) => {
   try {
+    console.log("Getting component: ", name);
+    console.log("Project id: ", project_id);
     const component = await getComponentFromProjectInDatabase(project_id, name);
     if (filterForMessages(component)) {
       return filterForMessages(component);

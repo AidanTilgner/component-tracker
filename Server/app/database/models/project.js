@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const { Schema, model, SchemaTypes } = mongoose;
-import ComponentSchema from "./schemas/component.js";
+import { ComponentSchema } from "./schemas/component.js";
 
 export const ProjectSchema = new Schema(
   {

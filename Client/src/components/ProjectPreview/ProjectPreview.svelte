@@ -74,8 +74,8 @@
           },
         ]}
         position={{
-          top: "9px",
-          left: "21px",
+          top: "15px",
+          left: "-56px",
         }}
       />
     </div>

@@ -147,6 +147,9 @@ export const getUser = async (userID) => {
 
 export const getUserProjects = async (userID) => {
   try {
+    if (accessToken === "") {
+      accessToken = sessionStorage.getItem("accessToken");
+    }
     return await fetch(`${baseURL}${EP.users}/projects?userID=${userID}`, {
       method: "GET",
       headers: {
@@ -163,6 +166,9 @@ export const getUserProjects = async (userID) => {
 
 export const getUserOrganizations = async (userID) => {
   try {
+    if (accessToken === "") {
+      accessToken = sessionStorage.getItem("accessToken");
+    }
     return await fetch(`${baseURL}${EP.users}/organizations?userID=${userID}`, {
       method: "GET",
       headers: {
@@ -278,7 +284,7 @@ export const addComponent = async (projectID, component) => {
         },
         body: JSON.stringify(component),
       }
-    ).then((res) => console.log("Response: ", res.json()));
+    ).then((res) => res.json());
   } catch (error) {
     console.error("Error in addComponent: ", error);
     alert("Error in addComponent: ", error);

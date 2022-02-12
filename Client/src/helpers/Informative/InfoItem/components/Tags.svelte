@@ -1,5 +1,5 @@
 <script>
-  export let title, value;
+  export let title, value, settings;
   import Tag from "../../Pills/Tag.svelte";
 </script>
 
@@ -7,8 +7,8 @@
   <p class="tags-item__title">
     {title}:
   </p>
-  {#each value as { name, type }}
-    <Tag {name} {type} />
+  {#each settings.pills as { name, pill_type, description }}
+    <Tag {name} {pill_type} {description} />
   {/each}
 </div>
 

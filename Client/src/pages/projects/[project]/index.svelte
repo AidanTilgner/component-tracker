@@ -20,6 +20,7 @@
     getUserFromLogin,
     addComponent,
     updateProject,
+    deleteProject,
   } from "../../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication.js";
   import { onMount } from "svelte";
@@ -66,18 +67,9 @@
 
   let SideBarOpen = false;
   let Modal1Open = false;
-  let Modal2Open = true;
-  let newComponent = {
-    metaData: {
-      category: "",
-      path: "",
-      example: "",
-      description: "",
-      props: [{ name: "", type: "", description: "" }],
-      state: [{ name: "", type: "", description: "" }],
-      tags: [{ name: "", type: "" }],
-    },
-  };
+  let Modal2Open = false;
+  let Modal3Open = false;
+  let newComponent = {};
   $: editableProject = {
     name: project.name,
     description: project.description,
@@ -115,7 +107,7 @@
           return;
         }
         newComponent.creator = {
-          id: userData.user_id,
+          user_id: userData.user_id,
           username: userData.username,
         };
         Modal1Open = false;
@@ -137,7 +129,8 @@
   <NonDynamic
     fields={newComponentSchema}
     onChange={(e, data, submittable) => {
-      newComponent.metaData = { ...newComponent.metaData, ...data };
+      componentSubmittable = submittable;
+      newComponent.metaData = data;
     }}
   />
 </Modal>
@@ -183,28 +176,64 @@
     fields={editableProjectSchema(project)}
     onChange={(e, data, submittable) => {
       projectSubmittable = submittable;
-      console.log("data: ", data);
       editableProject = data;
     }}
   />
 </Modal>
-<SideBar open={SideBarOpen} close={() => (SideBarOpen = false)}>
+<Modal
+  open={Modal3Open}
+  title="Are you sure?"
+  buttons={[
+    {
+      text: "No, go back",
+      type: "secondary",
+      action: () => (Modal3Open = false),
+    },
+    {
+      text: "Yes, Delete",
+      type: "tertiary",
+      action: async () => {
+        Modal3Open = false;
+        const response = await deleteProject(project.project_id);
+        if (response.error) {
+          alertBanner.showing = true;
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+          return;
+        }
+        alertBanner.showing = true;
+        alertBanner.message = response.message;
+        alertBanner.type = "success";
+        $goto("/projects");
+      },
+    },
+  ]}
+>
+  <p style="font-size:36px;text-align:center;">
+    Are you sure you want to delete "<span style="color: #2256f2;"
+      >{project.name}</span
+    >"?
+  </p>
+</Modal>
+<SideBar
+  open={SideBarOpen}
+  close={() => (SideBarOpen = false)}
+  buttons={[
+    { text: "Delete", type: "tertiary", action: () => (Modal3Open = true) },
+    {
+      text: "Edit",
+      type: "secondary",
+      action: () => (Modal2Open = true),
+    },
+  ]}
+>
   <Header title="Project Information" type="subtitle" />
   <div class="project-info">
-    {#each Object.keys(project).filter((key) => key !== "components") as key}
+    {#each Object.keys(project).filter((key) => key !== "components" && key !== "_id" && key !== "__v") as key}
       <div class="project-info__section">
         <InfoItem title={formatKey(key)} value={project[key]} />
       </div>
     {/each}
-  </div>
-  <div class="project-info__buttons">
-    <button class="project-info__buttons__settings"> Settings </button>
-    <button
-      class="project-info__buttons__edit"
-      on:click={(e) => {
-        Modal2Open = true;
-      }}>Edit</button
-    >
   </div>
 </SideBar>
 
@@ -235,7 +264,6 @@
   {/if}
   <FileTree {project} />
 </div>
-<Footer />
 
 <style lang="scss">
   @import "../../../styles/partials/variables";

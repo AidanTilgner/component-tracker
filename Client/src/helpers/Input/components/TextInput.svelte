@@ -1,15 +1,22 @@
 <script>
-  export let field, onChange;
+  export let field, onChange, required;
+  let requiredAlert = false;
 </script>
 
 <div class="text-input">
   <input
     on:change={(e) => {
       onChange(e, e.target.value);
+      if (required && e.target.value === "") {
+        requiredAlert = true;
+        return;
+      }
+      requiredAlert = false;
     }}
     type="text"
     class="text-input__input"
     value={field.value}
+    style={`border-color: ${requiredAlert && "#a64128"}`}
   />
 </div>
 

@@ -32,7 +32,14 @@ export const getComponentFromProjectInDatabase = async (project_id, name) => {
         error: "Project not found",
       };
     }
-    return project.components.find((component) => component.name === name);
+    console.log("Project components: ", project.components);
+    const component = project.components.find((component) => {
+      console.log("Component name: ", component.name);
+      console.log("Name: ", name);
+      return component.metaData.path === name;
+    });
+    console.log("Component: ", component);
+    return component;
   } catch (error) {
     console.log("Error in getComponentFromProjectInDatabase: ", error);
     return {

@@ -8,6 +8,10 @@ import UserClass from "../../data/user/user.js";
 import ProjectModel from "../models/project.js";
 import ProjectClass from "../../data/project/project.js";
 
+// * Component
+import ComponentModel from "../models/schemas/component.js";
+import ComponentClass from "../../data/project/classes/component.js";
+
 // * Helpers
 import {
   addProjectToOrganizationInDatabase,
@@ -109,20 +113,13 @@ export const deleteProjectFromDatabase = async (project_id) => {
     }
     // For each project contributor, find the project and delete it
     project.contributors.forEach(async (contributor) => {
-      await UserModel.findOneAndUpdate(
-        { user_id: contributor.user_id },
-        {
-          $pull: {
-            projects: {
-              project_id: project_id,
-            },
-          },
-        },
-        { new: true }
-      ).exec();
+      await deleteProjectFromUserInDatabase(
+        contributor.user_id,
+        project.project_id
+      );
     });
     // If there is an organization, find the project and delete it
-    if (project.organization && project.organization !== "") {
+    if (project.organization_id && project.organization_id !== "") {
       const res = await deleteProjectFromOrganizationInDatabase(
         project.organization_id,
         project.project_id
@@ -145,16 +142,17 @@ export const addComponentToProjectInDatabase = async (
   component
 ) => {
   try {
-    const project = await ProjectModel.findOne({
-      project_id: project_id,
-    }).exec();
+    const newComponent = new ComponentClass(component);
+    const project = await ProjectModel.findOneAndUpdate(
+      { project_id: project_id },
+      { $push: { components: newComponent } },
+      { new: true }
+    ).exec();
     if (!project) {
       return {
         error: "Project not found",
       };
     }
-    project.components.push(component);
-    await project.save();
     return project;
   } catch (error) {
     console.log("Error in addComponentToProjectInDatabase: ", error);
@@ -178,8 +176,9 @@ export const updateComponentInProjectInDatabase = async (
         error: "Project not found",
       };
     }
+    console.log("Project: ", project);
     const index = project.components.findIndex(
-      (component) => component.name === name
+      (component) => component.metaData.path === name
     );
     if (index === -1) {
       return {
@@ -190,6 +189,7 @@ export const updateComponentInProjectInDatabase = async (
       project.components[index],
       update
     );
+    console.log("Updated Component: ", project.components[index]);
     await project.save();
     return project.components[index];
   } catch (error) {
@@ -214,7 +214,7 @@ export const deleteComponentFromProjectInDatabase = async (
       };
     }
     const index = project.components.findIndex(
-      (component) => component.name === name
+      (component) => component.metaData.path === name
     );
     if (index === -1) {
       return {

@@ -4,9 +4,13 @@
   import Node from "./Node.js";
   import { extractTree } from "./fileTree.js";
   import { root } from "./TreeContext.js";
+  import { onMount } from "svelte";
 
-  let tree = extractTree(project);
-  root.set(tree);
+  let tree = false;
+  onMount(() => {
+    tree = extractTree(project);
+    root.set(tree);
+  });
 </script>
 
 <div class="file-tree" data-testid="file-tree">
