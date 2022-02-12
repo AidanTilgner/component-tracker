@@ -33,10 +33,7 @@
         // Check that all required fields are not "" or falsey
         let allRequiredFieldsFilled = true;
         requiredFields.forEach((requiredField) => {
-          if (
-            !inputs[requiredField.name.toLowerCase()] ||
-            inputs[requiredField.name.toLowerCase()] === ""
-          ) {
+          if (!(inputs[requiredField.name.toLowerCase()].length > 0)) {
             allRequiredFieldsFilled = false;
           }
         });

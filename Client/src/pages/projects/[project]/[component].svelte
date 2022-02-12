@@ -22,6 +22,7 @@
     editableComponentMetaDataSchema,
     newComponentFileSchema,
     componentPillSchema,
+    deleteComponentPillSchema,
   } from "../../../helpers/Functions/formSchemas.js";
 
   let userData = {};
@@ -77,7 +78,6 @@
         $params.project,
         $params.component.split("+").join("/")
       );
-      console.log("Component: ", response);
       if (response.error) {
         alertBanner.showing = true;
         alertBanner.message = response.error;
@@ -130,7 +130,6 @@
           $params.component.split("+").join("/"),
           { metaData: component.metaData }
         );
-        console.log("response: ", response);
         if (response.error) {
           alertBanner.showing = true;
           alertBanner.message = response.error;
@@ -192,7 +191,6 @@
     onChange={(e, inputs, submittable) => {
       e.preventDefault();
       sectionModalData.submittable = submittable;
-      console.log("Inputs in [component.js]", inputs);
       sectionModalData.inputs = inputs;
     }}
   />
@@ -278,6 +276,41 @@
       margin={[56, 0, 24, 0]}
       buttons={[
         {
+          text: "Delete Tag",
+          type: "tertiary",
+          action: () => {
+            sectionModal = true;
+            sectionModalData = {
+              title: "Delete Tag",
+              fields: deleteComponentPillSchema(component.metaData.tags),
+              action: async (inputs) => {
+                console.log("Tags Before: ", component.metaData.tags);
+                // remove the tag that matches the index of the tag that was deleted
+                console.log("Deleting Tag: ", inputs.pill);
+                console.log(
+                  "Tags After: ",
+                  component.metaData.tags.filter(
+                    (tag, index) => index !== Number(inputs.pill)
+                  )
+                );
+                const response = await updateComponent(
+                  $params.project,
+                  $params.component.split("+").join("/"),
+                  {
+                    metaData: {
+                      ...component.metaData,
+                      tags: component.metaData.tags.filter(
+                        (tag, index) => index !== Number(inputs.pill)
+                      ),
+                    },
+                  }
+                );
+                return response;
+              },
+            };
+          },
+        },
+        {
           text: "New Tag",
           type: "primary",
           action: () => {
@@ -286,14 +319,6 @@
               title: "New Tag",
               fields: componentPillSchema,
               action: async (inputs) => {
-                console.log("New pill: ", inputs);
-                console.log("New component: ", {
-                  ...component,
-                  metaData: {
-                    ...component.metaData,
-                    tags: [...component.metaData.tags, inputs],
-                  },
-                });
                 const response = await updateComponent(
                   $params.project,
                   $params.component.split("+").join("/"),
@@ -304,7 +329,6 @@
                     },
                   }
                 );
-                console.log("response: ", response);
                 return response;
               },
             };
@@ -349,7 +373,6 @@
                     ],
                   }
                 );
-                console.log("response: ", response);
                 return response;
               },
             };
@@ -364,7 +387,6 @@
         onChange={(e, values) => {
           // TODO: Fix bug where the description title is not updated
           e.preventDefault();
-          console.log("New Values: ", values);
           imp = values;
         }}
         onSubmit={async (inputs) => {
@@ -375,7 +397,6 @@
               imports: component.imports,
             }
           );
-          console.log("response: ", response);
           if (response.error) {
             alertBanner.showing = true;
             alertBanner.message = response.error;
@@ -390,10 +411,6 @@
             text: "Delete",
             type: "tertiary",
             action: async () => {
-              console.log("Deleting Import: ", imp);
-              console.log("New Imports: ", {
-                imports: component.imports.filter((i) => i.name !== imp.name),
-              });
               const response = await updateComponent(
                 $params.project,
                 $params.component.split("+").join("/"),
@@ -401,7 +418,6 @@
                   imports: component.imports.filter((i) => i.name !== imp.name),
                 }
               );
-              console.log("response: ", response);
               if (response.error) {
                 alertBanner.showing = true;
                 alertBanner.message = response.error;

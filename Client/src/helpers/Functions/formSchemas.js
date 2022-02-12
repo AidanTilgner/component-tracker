@@ -156,6 +156,25 @@ export const componentPillSchema = [
   },
 ];
 
+export const deleteComponentPillSchema = (pills) => {
+  return [
+    {
+      name: "pill",
+      type: "select",
+      value: "0",
+      settings: {
+        options: pills.map((tag, idx) => {
+          return {
+            value: idx,
+            label: tag.name,
+          };
+        }),
+      },
+      required: true,
+    },
+  ];
+};
+
 export const newComponentFileSchema = [
   {
     name: "Name",

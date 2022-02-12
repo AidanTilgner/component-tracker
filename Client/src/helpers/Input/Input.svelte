@@ -14,9 +14,6 @@
   import { formatKey } from "../../helpers/Functions/formatting.js";
 
   !type && (type = inferInputTypeFromValueType(field.value));
-
-  console.log("type", type);
-  console.log("Field", field);
 </script>
 
 <div class="field">
