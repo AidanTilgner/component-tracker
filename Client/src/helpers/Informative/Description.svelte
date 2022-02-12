@@ -10,7 +10,6 @@
   import ArrayListInput from "../Input/components/ArrayListInput.svelte";
 
   let editing = false;
-  console.log("Values: ", values);
 </script>
 
 <div class="description">

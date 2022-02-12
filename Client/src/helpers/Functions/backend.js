@@ -166,7 +166,6 @@ export const getUserProjects = async (userID) => {
 
 export const getUserOrganizations = async (userID) => {
   try {
-    console.log("Getting user organizations: ", userID);
     if (accessToken === "") {
       accessToken = sessionStorage.getItem("accessToken");
     }

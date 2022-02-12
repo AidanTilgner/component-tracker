@@ -8,7 +8,6 @@
   let inputs = [...settings.inputs];
   let adding = false;
   let newInput = settings.inputs[0];
-  console.log("Array List Field Value: ", field.value);
 </script>
 
 <div class="input">

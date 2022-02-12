@@ -74,7 +74,6 @@ export const editableProjectSchema = (currentProject) => {
 };
 
 export const editableComponentMetaDataSchema = (currentComponentMetaData) => {
-  console.log("currentComponentMetaData", currentComponentMetaData);
   return [
     {
       name: "Path",
