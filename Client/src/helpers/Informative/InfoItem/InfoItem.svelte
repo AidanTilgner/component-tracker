@@ -1,5 +1,5 @@
 <script>
-  export let title, value, type;
+  export let title, value, type, settings;
   import Text from "./components/Text.svelte";
   import Link from "./components/Link.svelte";
   import List from "./components/List.svelte";
@@ -14,25 +14,25 @@
 
 <div class="info-item">
   {#if type === "text"}
-    <Text {title} {value} />
+    <Text {title} {value} {settings} />
   {/if}
   {#if type === "link"}
-    <Link {title} {value} />
+    <Link {title} {value} {settings} />
   {/if}
   {#if type === "list"}
-    <List {title} {value} />
+    <List {title} {value} {settings} />
   {/if}
   {#if type === "breadcrumbs"}
     <Breadcrumbs {title} {value} />
   {/if}
-  {#if type === "tags"}
-    <Tags {title} {value} />
+  {#if type === "pills"}
+    <Tags {title} {value} {settings} />
   {/if}
   {#if type === "object"}
-    <Object {title} {value} />
+    <Object {title} {value} {settings} />
   {/if}
   {#if type === "object-list"}
-    <ObjectList {title} {value} />
+    <ObjectList {title} {value} {settings} />
   {/if}
 </div>
 

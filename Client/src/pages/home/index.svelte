@@ -32,15 +32,36 @@
     userData = user;
   });
 
+  let alertBanner = {
+    showing: false,
+    message: "",
+    type: "",
+    timeout: 3000,
+  };
+
   onMount(async () => {
     try {
       const isLoggedIn = await verifyLoginStatus();
       if (!isLoggedIn) {
         $goto("/users/login");
       }
-      projects = (await getUserProjects(userData.user_id)).projects.slice(0, 3);
-      organizations = (await getUserOrganizations(userData.user_id))
-        .organizations;
+      const projectsRes = await getUserProjects(userData.user_id);
+      if (projectsRes.error) {
+        console.log(projectsRes.error);
+        alertBanner.showing = true;
+        alertBanner.message = projectsRes.error;
+        alertBanner.type = "error";
+      }
+      const organizationsRes = await getUserOrganizations(userData.user_id);
+      if (organizationsRes.error) {
+        console.log(organizationsRes.error);
+        alertBanner.showing = true;
+        alertBanner.message = organizationsRes.error;
+        alertBanner.type = "error";
+      }
+      projects = projectsRes.projects.slice(0, 3);
+      organizations = organizationsRes.organizations.slice(0, 3);
+
       user.update((user) => {
         user.projects = projects.map((project) => {
           return {
@@ -62,13 +83,6 @@
       console.log("Error in onMount: ", err);
     }
   });
-
-  let alertBanner = {
-    showing: false,
-    message: "",
-    type: "",
-    timeout: 3000,
-  };
 </script>
 
 <Navbar />

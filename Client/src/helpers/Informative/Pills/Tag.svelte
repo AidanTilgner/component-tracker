@@ -1,5 +1,5 @@
 <script>
-  export let name, type;
+  export let name, pill_type, description;
   let colors = {
     primary: "#2256f2",
     secondary: "#f2b822",
@@ -14,10 +14,11 @@
 
 <div
   class="tag"
+  title={description}
   style={`
-    background-color: ${colors[type]}15;
-    color: ${colors[type]};
-    border-color: ${colors[type]};`}
+    background-color: ${colors[pill_type]}15;
+    color: ${colors[pill_type]};
+    border-color: ${colors[pill_type]};`}
 >
   {name}
 </div>

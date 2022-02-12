@@ -7,13 +7,10 @@
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import Description from "../../../helpers/Informative/Description.svelte";
   import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
-  import { url, params, meta, goto } from "@roxi/routify";
-  import { inferInfoItemTypeFromValueType } from "../../../helpers/Functions/inference.js";
-  import { formatKey } from "../../../helpers/Functions/formatting.js";
+  import { url, params, goto } from "@roxi/routify";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
   import {
-    getUserFromLogin,
     getProject,
     getComponent,
     updateComponent,
@@ -24,6 +21,7 @@
     editableComponentFileSchema,
     editableComponentMetaDataSchema,
     newComponentFileSchema,
+    componentPillSchema,
   } from "../../../helpers/Functions/formSchemas.js";
 
   let userData = {};
@@ -79,6 +77,7 @@
         $params.project,
         $params.component.split("+").join("/")
       );
+      console.log("Component: ", response);
       if (response.error) {
         alertBanner.showing = true;
         alertBanner.message = response.error;
@@ -149,7 +148,7 @@
     fields={editableComponentMetaDataSchema(component.metaData)}
     onChange={(e, inputs, submittable) => {
       e.preventDefault();
-      sectionModalData = submittable;
+      metaDataSubmittable = submittable;
       component.metaData = inputs;
     }}
   />
@@ -241,7 +240,7 @@
       },
     ]}
   />
-  <div class="component__meta-info">
+  <div class="component__section">
     <Header title="Meta Data" type="small-title" margin={[56, 0, 24, 0]} />
     {#if component.metaData.category && component.metaData.category !== ""}
       <InfoItem
@@ -274,29 +273,66 @@
   </div>
   <div class="component__section">
     <Header
+      title="Tags"
+      type="small-title"
+      margin={[56, 0, 24, 0]}
+      buttons={[
+        {
+          text: "New Tag",
+          type: "primary",
+          action: () => {
+            sectionModal = true;
+            sectionModalData = {
+              title: "New Tag",
+              fields: componentPillSchema,
+              action: async (inputs) => {
+                console.log("New pill: ", inputs);
+                console.log("New component: ", {
+                  ...component,
+                  metaData: {
+                    ...component.metaData,
+                    tags: [...component.metaData.tags, inputs],
+                  },
+                });
+                const response = await updateComponent(
+                  $params.project,
+                  $params.component.split("+").join("/"),
+                  {
+                    metaData: {
+                      ...component.metaData,
+                      tags: [...component.metaData.tags, inputs],
+                    },
+                  }
+                );
+                console.log("response: ", response);
+                return response;
+              },
+            };
+          },
+        },
+      ]}
+    />
+    <InfoItem
+      title="Tags"
+      type="pills"
+      settings={{ pills: component.metaData.tags }}
+    />
+  </div>
+  <div class="component__section">
+    <Header
       title="Imports"
       type="small-title"
+      margin={[56, 0, 24, 0]}
       buttons={[
         {
           text: "New Import",
-          type: "secondary",
+          type: "primary",
           action: () => {
             sectionModal = true;
             sectionModalData = {
               title: "New Import",
               fields: newComponentFileSchema,
               action: async (inputs) => {
-                console.log("New Imports: ", {
-                  imports: [
-                    ...component.imports,
-                    {
-                      name: inputs.name,
-                      from: inputs.from,
-                      description: inputs.description,
-                      notes: inputs.notes,
-                    },
-                  ],
-                });
                 const response = await updateComponent(
                   $params.project,
                   $params.component.split("+").join("/"),
@@ -306,6 +342,7 @@
                       {
                         name: inputs.name,
                         from: inputs.from,
+                        data_type: inputs.data_type,
                         description: inputs.description,
                         notes: inputs.notes,
                       },
@@ -327,76 +364,60 @@
         onChange={(e, values) => {
           // TODO: Fix bug where the description title is not updated
           e.preventDefault();
+          console.log("New Values: ", values);
           imp = values;
         }}
+        onSubmit={async (inputs) => {
+          const response = await updateComponent(
+            $params.project,
+            $params.component.split("+").join("/"),
+            {
+              imports: component.imports,
+            }
+          );
+          console.log("response: ", response);
+          if (response.error) {
+            alertBanner.showing = true;
+            alertBanner.message = response.error;
+            alertBanner.type = "error";
+          }
+          alertBanner.showing = true;
+          alertBanner.message = response.message;
+          alertBanner.type = "success";
+        }}
+        buttons={[
+          {
+            text: "Delete",
+            type: "tertiary",
+            action: async () => {
+              console.log("Deleting Import: ", imp);
+              console.log("New Imports: ", {
+                imports: component.imports.filter((i) => i.name !== imp.name),
+              });
+              const response = await updateComponent(
+                $params.project,
+                $params.component.split("+").join("/"),
+                {
+                  imports: component.imports.filter((i) => i.name !== imp.name),
+                }
+              );
+              console.log("response: ", response);
+              if (response.error) {
+                alertBanner.showing = true;
+                alertBanner.message = response.error;
+                alertBanner.type = "error";
+                return;
+              }
+              alertBanner.showing = true;
+              alertBanner.message = response.message;
+              alertBanner.type = "success";
+              component = response.component;
+            },
+          },
+        ]}
       />
     {/each}
   </div>
-  {#if component.exports[0]}
-    <div class="component__section">
-      <Header title="Exports" type="subtitle" />
-      {#each component.exports as exp}
-        <Description
-          title={exp.name}
-          values={component.imports.map((imp) => {
-            return (
-              {
-                name: "Name",
-                text: imp.name,
-                type: "text",
-              },
-              {
-                name: "From",
-                text: imp.from,
-                type: "breadcrumbs",
-              },
-              {
-                name: "data_type",
-                text: imp.description,
-                type: "text",
-              },
-              {
-                name: "description",
-                text: imp.description,
-                type: "text",
-              },
-              {
-                name: "notes",
-                value: imp.notes,
-                type: "textarea",
-              }
-            );
-          })}
-          onChange={(e, values) => {
-            // TODO: Fix bug where the description title is not updated
-            e.preventDefault();
-            exp = values;
-          }}
-        />
-      {/each}
-    </div>{/if}
-  {#if component.functions[0]}
-    <div class="component__section">
-      <Header title="Functions" type="subtitle" />
-      {#each component.functions as func}
-        <Description
-          title={func.name}
-          values={Object.keys(func).map((key) => {
-            return {
-              title: formatKey(key),
-              text: func[key],
-              type: inferInfoItemTypeFromValueType(func[key]),
-            };
-          })}
-          onChange={(e, values) => {
-            // TODO: Fix bug where the description title is not updated
-            e.preventDefault();
-            func = values;
-          }}
-        />
-      {/each}
-    </div>
-  {/if}
 </div>
 
 <style type="text/scss">
@@ -407,5 +428,9 @@
   .component {
     @include default-padding;
     background-color: #f8f8f8;
+
+    &__section {
+      border-bottom: 1px solid rgba($color: $color-black, $alpha: 0.1);
+    }
   }
 </style>

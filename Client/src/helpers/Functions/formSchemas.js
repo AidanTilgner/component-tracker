@@ -20,84 +20,6 @@ export const newComponentSchema = [
     type: "text",
     value: "",
   },
-  {
-    name: "Props",
-    type: "array-list",
-    value: [{ name: "", pill_type: "", description: "" }],
-    settings: {
-      inputs: [
-        {
-          name: "Name",
-          type: "text",
-          value: "",
-        },
-        {
-          name: "pill_type",
-          type: "text",
-          value: "",
-        },
-        {
-          name: "Description",
-          type: "text",
-          value: "",
-        },
-      ],
-    },
-  },
-  {
-    name: "State",
-    value: [
-      {
-        name: "",
-        type: "",
-        description: "",
-      },
-    ],
-    type: "array-list",
-    settings: {
-      inputs: [
-        {
-          name: "Name",
-          type: "text",
-          value: "",
-        },
-        {
-          name: "pill_type",
-          type: "text",
-          value: "",
-        },
-        {
-          name: "Description",
-          type: "text",
-          value: "",
-        },
-      ],
-    },
-  },
-  {
-    name: "Tags",
-    type: "array-list",
-    value: [{ name: "", pill_type: "", description: "" }],
-    settings: {
-      inputs: [
-        {
-          name: "Name",
-          type: "text",
-          value: "",
-        },
-        {
-          name: "pill_type",
-          type: "text",
-          value: "",
-        },
-        {
-          name: "Description",
-          type: "text",
-          value: "",
-        },
-      ],
-    },
-  },
 ];
 
 export const editableProjectSchema = (currentProject) => {
@@ -177,6 +99,62 @@ export const editableComponentMetaDataSchema = (currentComponentMetaData) => {
     },
   ];
 };
+
+export const componentPillSchema = [
+  {
+    name: "Name",
+    type: "text",
+    value: "",
+    required: true,
+  },
+  {
+    name: "pill_type",
+    type: "select",
+    value: "",
+    required: true,
+    settings: {
+      options: [
+        {
+          label: "Primary",
+          value: "primary",
+        },
+        {
+          label: "Secondary",
+          value: "secondary",
+        },
+        {
+          label: "Success",
+          value: "success",
+        },
+        {
+          label: "Danger",
+          value: "danger",
+        },
+        {
+          label: "Warning",
+          value: "warning",
+        },
+        {
+          label: "Info",
+          value: "info",
+        },
+        {
+          label: "Light",
+          value: "light",
+        },
+        {
+          label: "Dark",
+          value: "dark",
+        },
+      ],
+    },
+  },
+  {
+    name: "Description",
+    type: "text",
+    value: "",
+  },
+];
 
 export const newComponentFileSchema = [
   {
