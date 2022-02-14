@@ -34,7 +34,7 @@ Router.get(
   "/",
   confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
-    res.send(await getOrganization(req.query.organizationID)).status(200);
+    res.send(await getOrganization(req.query.organization_id)).status(200);
   })
 );
 
@@ -42,6 +42,7 @@ Router.put(
   "/",
   confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
+    console.log("Updating organization: ", req.body);
     res
       .send(await updateOrganization(req.query.organization_id, req.body))
       .status(200);

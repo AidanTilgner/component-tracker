@@ -5,12 +5,21 @@
   import Modal from "../../../helpers/Modal/Modal.svelte";
   import NonDynamic from "../../../helpers/Form/NonDynamic.svelte";
   import MiniCard from "../../../helpers/Informative/Cards/MiniCard.svelte";
+  import Footer from "../../../components/Footer/Footer.svelte";
+  import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
   import { goto, params } from "@roxi/routify";
-  import { getOrganization } from "../../../helpers/Functions/backend.js";
+  import {
+    getOrganization,
+    addProject,
+    updateOrganization,
+  } from "../../../helpers/Functions/backend.js";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
   import { verifyLoginStatus } from "../../../helpers/Functions/authentication";
-  import Footer from "../../../components/Footer/Footer.svelte";
+  import {
+    editableOrganizationSchema,
+    newOrganizationProjectSchema,
+  } from "../../../helpers/Functions/formSchemas.js";
 
   let userData = {};
   let organization = { projects: [], users: [] };
@@ -18,16 +27,48 @@
     userData = data;
   });
 
+  let alertBanner = {
+    showing: false,
+    message: "",
+    type: "error",
+  };
+
   onMount(async () => {
     const loggedIn = await verifyLoginStatus();
     if (!loggedIn) {
       $goto("/users/login");
     }
-    organization = (await getOrganization($params.organization)).organization;
+    const response = await getOrganization($params.organization);
+    if (response.error) {
+      alertBanner.showing = true;
+      alertBanner.message = response.error;
+      alertBanner.type = "error";
+      return;
+    }
+    organization = response.organization;
   });
+
+  let modal = false;
+  let modalData = {};
+  $: newProject = {
+    organization_id: organization.organization_id,
+    owner: {
+      user_id: userData.user_id,
+      username: userData.username,
+    },
+    contributors: organization.users,
+  };
 </script>
 
 <Navbar />
+<AlertBanner
+  showing={alertBanner.showing}
+  message={alertBanner.message}
+  type={alertBanner.type}
+/>
+<Modal title={modalData.title} open={modal} buttons={modalData.buttons}>
+  <NonDynamic fields={modalData.fields} onChange={modalData.action} />
+</Modal>
 <div class="organization">
   <Header
     title={organization.name}
@@ -36,7 +77,53 @@
       {
         text: "Edit",
         type: "secondary",
-        action: "",
+        action: () => {
+          modal = true;
+          modalData = {
+            title: "Edit Organization",
+            fields: editableOrganizationSchema(organization),
+            buttons: [
+              {
+                text: "Cancel",
+                type: "secondary",
+                action: () => {
+                  modal = false;
+                },
+              },
+              {
+                text: "Submit",
+                type: "primary",
+                action: async () => {
+                  if (!modalData.submittable) {
+                    alertBanner.showing = true;
+                    alertBanner.message = "Please fill out all required fields";
+                    alertBanner.type = "error";
+                    return;
+                  }
+                  const response = await updateOrganization(
+                    organization.organization_id,
+                    organization
+                  );
+                  if (response.error) {
+                    alertBanner.showing = true;
+                    alertBanner.message = response.error;
+                    alertBanner.type = "error";
+                    return;
+                  }
+                  alertBanner.showing = true;
+                  alertBanner.message = response.message;
+                  alertBanner.type = "success";
+                  organization = response.organization;
+                  modal = false;
+                },
+              },
+            ],
+            action: (e, inputs, submittable) => {
+              modalData.submittable = submittable;
+              organization.name = inputs.name;
+            },
+          };
+        },
       },
       {
         text: "Delete",
@@ -52,7 +139,58 @@
       {
         text: "New Project",
         type: "primary",
-        action: "",
+        action: () => {
+          modal = true;
+          modalData = {
+            title: "New Project",
+            fields: newOrganizationProjectSchema,
+            buttons: [
+              {
+                text: "Cancel",
+                type: "secondary",
+                action: () => {
+                  modal = false;
+                },
+              },
+              {
+                text: "Create",
+                type: "primary",
+                action: async () => {
+                  console.log("Submitting project", newProject);
+                  if (!modalData.submittable) {
+                    alertBanner.showing = true;
+                    alertBanner.message = "Please fill out all required fields";
+                    alertBanner.type = "error";
+                    return;
+                  }
+                  const response = await addProject(newProject);
+                  if (response.error) {
+                    alertBanner.showing = true;
+                    alertBanner.message = response.error;
+                    alertBanner.type = "error";
+                    return;
+                  }
+                  alertBanner.showing = true;
+                  alertBanner.message = response.message;
+                  alertBanner.type = "success";
+                  organization = {
+                    ...organization,
+                    projects: [...organization.projects, response.project],
+                  };
+                  modal = false;
+                },
+              },
+            ],
+            action: (e, inputs, submittable) => {
+              console.log(inputs);
+              modalData.submittable = submittable;
+              newProject = {
+                ...newProject,
+                ...inputs,
+              };
+            },
+          };
+        },
       },
     ]}
   />

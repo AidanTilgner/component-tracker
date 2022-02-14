@@ -44,7 +44,7 @@ export const getUsersInOrganizationFromDatabase = async (organization_id) => {
 export const getOrganizationFromDatabase = async (organization_id) => {
   try {
     const organizationModel = await OrganizationModel.findOne({
-      organization_id,
+      organization_id: organization_id,
     }).exec();
     if (!organizationModel) {
       return {
