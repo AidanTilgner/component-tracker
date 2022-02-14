@@ -80,3 +80,22 @@ export const getUserOrganizationsFromDatabase = async (user_id) => {
     };
   }
 };
+
+export const getUsersFromDatabaseBySearch = async (search) => {
+  try {
+    const users = await UserModel.find({
+      username: { $regex: search, $options: "i" },
+    }).exec();
+    if (users.length === 0) {
+      return {
+        error: "No users found",
+      };
+    }
+    return users;
+  } catch (err) {
+    console.log("Error getting users from database by search: " + err);
+    return {
+      error: "Internal error getting users from database by search",
+    };
+  }
+};

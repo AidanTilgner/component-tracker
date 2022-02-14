@@ -7,11 +7,13 @@
   import MiniCard from "../../../helpers/Informative/Cards/MiniCard.svelte";
   import Footer from "../../../components/Footer/Footer.svelte";
   import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
+  import UserSearch from "../../../components/UserSearch/UserSearch.svelte";
   import { goto, params } from "@roxi/routify";
   import {
     getOrganization,
     addProject,
     updateOrganization,
+    deleteOrganization,
   } from "../../../helpers/Functions/backend.js";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
@@ -58,6 +60,9 @@
     },
     contributors: organization.users,
   };
+
+  let deleteModal = false;
+  let userModal = true;
 </script>
 
 <Navbar />
@@ -68,6 +73,41 @@
 />
 <Modal title={modalData.title} open={modal} buttons={modalData.buttons}>
   <NonDynamic fields={modalData.fields} onChange={modalData.action} />
+</Modal>
+<Modal
+  open={deleteModal}
+  title="Are you sure?"
+  buttons={[
+    {
+      text: "No, go back",
+      type: "secondary",
+      action: () => {
+        deleteModal = false;
+      },
+    },
+    {
+      text: "Yes, delete",
+      type: "tertiary",
+      action: async () => {
+        const response = await deleteOrganization(organization.organization_id);
+        if (response.error) {
+          alertBanner.showing = true;
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+          return;
+        }
+        deleteModal = false;
+        $goto("/");
+      },
+    },
+  ]}
+>
+  <p style="font-size:36px;">
+    Are you sure you want to delete the organization "{organization.name}"
+  </p>
+</Modal>
+<Modal open={userModal} buttons={[]} title="Add User">
+  <UserSearch />
 </Modal>
 <div class="organization">
   <Header
@@ -128,7 +168,9 @@
       {
         text: "Delete",
         type: "tertiary",
-        action: "",
+        action: () => {
+          deleteModal = true;
+        },
       },
     ]}
   />
@@ -215,7 +257,7 @@
       {
         text: "New User",
         type: "primary",
-        action: "",
+        action: () => {},
       },
     ]}
   />

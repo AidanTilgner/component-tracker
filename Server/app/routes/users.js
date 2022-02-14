@@ -16,6 +16,7 @@ import {
   deleteUser,
   getProjects,
   getOrganizations,
+  getUsersFromSearch,
 } from "../controllers/UsersController.js";
 
 Router.use(BP.json());
@@ -57,6 +58,14 @@ Router.get(
   authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await getOrganizations(req.query.userID)).status(200);
+  })
+);
+
+Router.get(
+  "/search",
+  authenticateUser,
+  wrapAsync(async (req, res) => {
+    res.send(await getUsersFromSearch(req.query.searchTerm)).status(200);
   })
 );
 

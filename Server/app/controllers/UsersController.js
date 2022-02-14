@@ -7,6 +7,7 @@ import {
   getUserFromDatabase,
   getUserProjectsFromDatabase,
   getUserOrganizationsFromDatabase,
+  getUsersFromDatabaseBySearch,
 } from "../database/queries/users.js";
 import { filterForMessages } from "../helpers/routing.js";
 
@@ -96,6 +97,24 @@ export const getOrganizations = async (user_id) => {
     console.log("Error in getOrganizations: ", error);
     return {
       error: "Internal error getting organizations",
+    };
+  }
+};
+
+export const getUsersFromSearch = async (search) => {
+  try {
+    const users = await getUsersFromDatabaseBySearch(search);
+    if (filterForMessages(users)) {
+      return filterForMessages(users);
+    }
+    return {
+      users,
+      message: "Users successfully retrieved",
+    };
+  } catch (error) {
+    console.log("Error in getUsersFromSearch: ", error);
+    return {
+      error: "Internal error getting users",
     };
   }
 };

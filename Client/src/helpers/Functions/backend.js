@@ -210,6 +210,20 @@ export const deleteUser = async (userID) => {
   }
 };
 
+export const searchUsers = (searchTerm) => {
+  try {
+    return fetch(`${baseURL}${EP.users}/search?searchTerm=${searchTerm}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in searchUsers: ", error);
+  }
+};
+
 // * Project Functions
 export const addProject = async (project) => {
   try {
