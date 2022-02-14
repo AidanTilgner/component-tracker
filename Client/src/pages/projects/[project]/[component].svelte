@@ -185,6 +185,9 @@
           alertBanner.message = response.error;
           alertBanner.type = "error";
         }
+        console.log("Setting sectionModalData");
+        sectionModalData.fields = [];
+        sectionModalData = {};
         alertBanner.showing = true;
         alertBanner.message = response.message;
         alertBanner.type = "success";
@@ -314,9 +317,10 @@
           type: "primary",
           action: () => {
             sectionModal = true;
+            console.log("ComponentPillSchema", componentPillSchema());
             sectionModalData = {
               title: "New Tag",
-              fields: componentPillSchema,
+              fields: componentPillSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,
@@ -380,9 +384,10 @@
           type: "primary",
           action: () => {
             sectionModal = true;
+            console.log("Modal Data: ", sectionModalData);
             sectionModalData = {
               title: "New Prop",
-              fields: componentPillSchema,
+              fields: componentPillSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,
@@ -448,7 +453,7 @@
             sectionModal = true;
             sectionModalData = {
               title: "New State",
-              fields: componentPillSchema,
+              fields: componentPillSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,
