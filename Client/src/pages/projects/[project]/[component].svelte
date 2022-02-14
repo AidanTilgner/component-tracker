@@ -7,7 +7,7 @@
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import Description from "../../../helpers/Informative/Description.svelte";
   import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
-  import { url, params, goto } from "@roxi/routify";
+  import { url, params, goto, redirect } from "@roxi/routify";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
   import {
@@ -120,7 +120,7 @@
       text: "Submit",
       type: "primary",
       action: async () => {
-        if (!sectionModalData.submittable) {
+        if (!metaDataSubmittable) {
           alertBanner.showing = true;
           alertBanner.message = "Please fill out all required fields";
           alertBanner.type = "error";
@@ -141,6 +141,12 @@
         alertBanner.message = response.message;
         alertBanner.type = "success";
         component = response.component;
+        $redirect(
+          "/projects/" +
+            $params.project +
+            "/" +
+            component.metaData.path.split("/").join("+")
+        );
       },
     },
   ]}
@@ -329,7 +335,7 @@
         },
       ]}
     />
-    {#if component.metaData.tags.length > 0}
+    {#if component.metaData.tags?.length > 0}
       <InfoItem
         title="Tags"
         type="pills"
@@ -395,7 +401,7 @@
         },
       ]}
     />
-    {#if component.metaData.props.length > 0}
+    {#if component.metaData.props?.length > 0}
       <InfoItem
         title="Props"
         type="pills"
@@ -461,7 +467,7 @@
         },
       ]}
     />
-    {#if component.metaData.state.length > 0}
+    {#if component.metaData.state?.length > 0}
       <InfoItem
         title="Tags"
         type="pills"

@@ -207,14 +207,20 @@ export const deleteComponentPillSchema = (pills) => {
     {
       name: "pill",
       type: "select",
-      value: "0",
+      value: "",
       settings: {
-        options: pills.map((tag, idx) => {
-          return {
-            value: idx,
-            label: tag.name,
-          };
-        }),
+        options: [
+          {
+            value: "",
+            label: "Select a pill",
+          },
+          ...pills.map((tag, idx) => {
+            return {
+              value: idx,
+              label: tag.name,
+            };
+          }),
+        ],
       },
       required: true,
     },

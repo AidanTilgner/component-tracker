@@ -62,7 +62,7 @@
   };
 
   let deleteModal = false;
-  let userModal = true;
+  let userModal = false;
 </script>
 
 <Navbar />
@@ -106,7 +106,19 @@
     Are you sure you want to delete the organization "{organization.name}"
   </p>
 </Modal>
-<Modal open={userModal} buttons={[]} title="Add User">
+<Modal
+  open={userModal}
+  buttons={[
+    {
+      text: "Cancel",
+      type: "secondary",
+      action: () => {
+        userModal = false;
+      },
+    },
+  ]}
+  title="Add User"
+>
   <UserSearch />
 </Modal>
 <div class="organization">
@@ -257,7 +269,9 @@
       {
         text: "New User",
         type: "primary",
-        action: () => {},
+        action: () => {
+          userModal = true;
+        },
       },
     ]}
   />

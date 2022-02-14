@@ -10,11 +10,12 @@
     inputs[field.name.toLowerCase()] = field.value;
   });
 
-  console.log("Fields: ", fields);
-  console.log("inputs", inputs);
+  $: console.log("Fields: ", fields);
+  $: console.log("inputs", inputs);
 
   // Make a list of required values and if they are empty, show an error
-  let requiredFields = fields.filter((field) => field.required);
+  $: requiredFields = fields.filter((field) => field.required);
+  $: console.log("Required fields: ", requiredFields);
 </script>
 
 <form class="form">
@@ -33,10 +34,11 @@
         // Check that all required fields are not "" or falsey
         let allRequiredFieldsFilled = true;
         requiredFields.forEach((requiredField) => {
-          if (!(inputs[requiredField.name.toLowerCase()].length > 0)) {
+          if (!requiredField.value.length > 0) {
             allRequiredFieldsFilled = false;
           }
         });
+        console.log("Submittable: ", allRequiredFieldsFilled);
         onChange(e, inputs, allRequiredFieldsFilled);
       }}
     />
