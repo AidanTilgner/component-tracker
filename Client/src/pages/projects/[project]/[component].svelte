@@ -317,7 +317,6 @@
           type: "primary",
           action: () => {
             sectionModal = true;
-            console.log("ComponentPillSchema", componentPillSchema());
             sectionModalData = {
               title: "New Tag",
               fields: componentPillSchema(),
@@ -493,7 +492,7 @@
             sectionModal = true;
             sectionModalData = {
               title: "New Import",
-              fields: newComponentFileSchema,
+              fields: newComponentFileSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,
@@ -585,7 +584,7 @@
             sectionModal = true;
             sectionModalData = {
               title: "New Import",
-              fields: newComponentFileSchema,
+              fields: newComponentFileSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,
@@ -676,7 +675,7 @@
             sectionModal = true;
             sectionModalData = {
               title: "New Import",
-              fields: newComponentFunctionSchema,
+              fields: newComponentFunctionSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,

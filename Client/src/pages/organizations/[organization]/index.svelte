@@ -197,7 +197,7 @@
           modal = true;
           modalData = {
             title: "New Project",
-            fields: newOrganizationProjectSchema,
+            fields: newOrganizationProjectSchema(),
             buttons: [
               {
                 text: "Cancel",
