@@ -210,6 +210,20 @@ export const deleteUser = async (userID) => {
   }
 };
 
+export const searchUsers = (searchTerm) => {
+  try {
+    return fetch(`${baseURL}${EP.users}/search?searchTerm=${searchTerm}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in searchUsers: ", error);
+  }
+};
+
 // * Project Functions
 export const addProject = async (project) => {
   try {
@@ -359,10 +373,10 @@ export const addOrganization = async (organization) => {
   }
 };
 
-export const getOrganization = async (organizationID) => {
+export const getOrganization = async (organization_id) => {
   try {
     return await fetch(
-      `${baseURL}${EP.organizations}/?organizationID=${organizationID}&userID=${userData.user_id}`,
+      `${baseURL}${EP.organizations}/?organization_id=${organization_id}&userID=${userData.user_id}`,
       {
         method: "GET",
         headers: {
@@ -376,10 +390,10 @@ export const getOrganization = async (organizationID) => {
   }
 };
 
-export const updateOrganization = async (organizationID, update) => {
+export const updateOrganization = async (organization_id, update) => {
   try {
     return await fetch(
-      `${baseURL}${EP.organizations}/?organizationID=${organizationID}`,
+      `${baseURL}${EP.organizations}/?organization_id=${organization_id}`,
       {
         method: "PUT",
         headers: {
@@ -394,10 +408,10 @@ export const updateOrganization = async (organizationID, update) => {
   }
 };
 
-export const deleteOrganization = async (organizationID) => {
+export const deleteOrganization = async (organization_id) => {
   try {
     return await fetch(
-      `${baseURL}${EP.organizations}/?organizationID=${organizationID}`,
+      `${baseURL}${EP.organizations}/?organization_id=${organization_id}`,
       {
         method: "DELETE",
         headers: {
@@ -411,10 +425,10 @@ export const deleteOrganization = async (organizationID) => {
   }
 };
 
-export const addUserToOrganization = async (organizationID, userID) => {
+export const addUserToOrganization = async (organization_id, userID) => {
   try {
     return await fetch(
-      `${baseURL}${EP.organizations}/user?organizationID=${organizationID}&userID=${userID}`,
+      `${baseURL}${EP.organizations}/user?organization_id=${organization_id}&userID=${userID}`,
       {
         method: "PUT",
         headers: {
@@ -428,10 +442,10 @@ export const addUserToOrganization = async (organizationID, userID) => {
   }
 };
 
-export const removeUserFromOrganization = async (organizationID, userID) => {
+export const removeUserFromOrganization = async (organization_id, userID) => {
   try {
     return await fetch(
-      `${baseURL}${EP.organizations}/user?organizationID=${organizationID}&userID=${userID}`,
+      `${baseURL}${EP.organizations}/user?organization_id=${organization_id}&userID=${userID}`,
       {
         method: "DELETE",
         headers: {
@@ -445,10 +459,10 @@ export const removeUserFromOrganization = async (organizationID, userID) => {
   }
 };
 
-export const addProjectToOrganization = async (organizationID, projectID) => {
+export const addProjectToOrganization = async (organization_id, projectID) => {
   try {
     return await fetch(
-      `${baseURL}${EP.organizations}/project?organizationID=${organizationID}&projectID=${projectID}`,
+      `${baseURL}${EP.organizations}/project?organization_id=${organization_id}&projectID=${projectID}`,
       {
         method: "PUT",
         headers: {
@@ -463,12 +477,12 @@ export const addProjectToOrganization = async (organizationID, projectID) => {
 };
 
 export const removeProjectFromOrganization = async (
-  organizationID,
+  organization_id,
   projectID
 ) => {
   try {
     return await fetch(
-      `${baseURL}${EP.organizations}/project?organizationID=${organizationID}&projectID=${projectID}`,
+      `${baseURL}${EP.organizations}/project?organization_id=${organization_id}&projectID=${projectID}`,
       {
         method: "DELETE",
         headers: {

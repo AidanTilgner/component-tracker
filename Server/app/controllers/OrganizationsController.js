@@ -57,6 +57,7 @@ export const getOrganization = async (organization_id) => {
 
 export const updateOrganization = async (organization_id, organization) => {
   try {
+    console.log("Organization: ", organization_id);
     const updatedOrganization = await updateOrganizationInDatabase(
       organization_id,
       organization

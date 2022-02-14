@@ -7,6 +7,8 @@ import {
   getUserFromDatabase,
   getUserProjectsFromDatabase,
   getUserOrganizationsFromDatabase,
+  getUsersFromDatabaseBySearch,
+  addFriendRequestInDatabase,
 } from "../database/queries/users.js";
 import { filterForMessages } from "../helpers/routing.js";
 
@@ -96,6 +98,41 @@ export const getOrganizations = async (user_id) => {
     console.log("Error in getOrganizations: ", error);
     return {
       error: "Internal error getting organizations",
+    };
+  }
+};
+
+export const getUsersFromSearch = async (search) => {
+  try {
+    const users = await getUsersFromDatabaseBySearch(search);
+    if (filterForMessages(users)) {
+      return filterForMessages(users);
+    }
+    return {
+      users,
+      message: "Users successfully retrieved",
+    };
+  } catch (error) {
+    console.log("Error in getUsersFromSearch: ", error);
+    return {
+      error: "Internal error getting users",
+    };
+  }
+};
+
+export const sendFriendRequest = async (user_id, friend_id) => {
+  try {
+    const friendRequest = await addFriendRequestInDatabase(user_id, friend_id);
+    if (filterForMessages(friendRequest)) {
+      return filterForMessages(friendRequest);
+    }
+    return {
+      friendRequest,
+    };
+  } catch (error) {
+    console.log("Error in sendFriendRequest: ", error);
+    return {
+      error: "Internal error sending friend request",
     };
   }
 };

@@ -1,5 +1,6 @@
 import JWT from "jsonwebtoken";
 import { getProjectFromDatabase } from "../database/queries/projects.js";
+import { getOrganizationFromDatabase } from "../database/queries/organizations.js";
 import { wrapAsync } from "../helpers/routing.js";
 
 export const getUserRoleFromToken = (token) => {
@@ -7,28 +8,32 @@ export const getUserRoleFromToken = (token) => {
   return user.role;
 };
 
-export const confirmUserOrganizationRights = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  const user = JWT.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  if (user.role === "admin") return next();
-  if (user.role === "user") {
-    if (
-      user.organizations.some(
-        (or) => or.organization_id === req.query.organizationID
-      )
-    ) {
-      return next();
+export const confirmUserOrganizationRights = wrapAsync(
+  async (req, res, next) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    const user = JWT.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    if (user.role === "admin") return next();
+    if (user.role === "user") {
+      const organization = await getOrganizationFromDatabase(
+        req.query.organization_id
+      );
+      if (organization.error) {
+        return res.send({ error: organization.error });
+      }
+      if (organization.users.some((u) => u.user_id === user.user_id)) {
+        return next();
+      }
+      return res
+        .send({
+          error: "Error 403, User does not have rights to this organization",
+        })
+        .status(403);
     }
-    return res
-      .send({
-        error: "Error 403, User does not have rights to this organization",
-      })
-      .status(403);
+    return res.send({
+      error: "Error 403, User does not have rights to this organization",
+    });
   }
-  return res.send({
-    error: "Error 403, User does not have rights to this organization",
-  });
-};
+);
 
 export const confirmUserProjectRights = wrapAsync(async (req, res, next) => {
   // Deserialize the token, if the token is valid, and the user projects include the project_id, then the user has rights to the project

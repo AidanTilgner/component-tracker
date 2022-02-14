@@ -41,7 +41,7 @@ export const saveOrganizationToDatabase = async (organization) => {
 export const updateOrganizationInDatabase = async (organization_id, update) => {
   try {
     const organizationModel = await OrganizationModel.findOneAndUpdate(
-      { organization_id },
+      { organization_id: organization_id },
       update,
       { new: true }
     ).exec();

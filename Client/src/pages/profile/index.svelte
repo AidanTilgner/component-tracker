@@ -3,6 +3,8 @@
   import NonDynamic from "../../helpers/Form/NonDynamic.svelte";
   import Header from "../../helpers/Header/Header.svelte";
   import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
+  import UserSearch from "../../components/UserSearch/UserSearch.svelte";
+  import Sections from "../../helpers/Sections/Sections.svelte";
   import { user } from "../../data/user";
   import {
     logout,
@@ -55,6 +57,12 @@
     writeToLocalStorage("user", JSON.stringify(userData));
     showAlertBanner(newUserResponse.message, "success");
   };
+
+  let friendsSections = [
+    { name: "Your Friends", open: true },
+    { name: "Pending", open: false },
+    { name: "Requests", open: false },
+  ];
 </script>
 
 <Navbar />
@@ -65,54 +73,106 @@
   timeout={alertBanner.timeout}
 />
 <div class="profile">
-  <Header
-    title="Profile"
-    type="subtitle"
-    buttons={[
-      {
-        text: "Logout",
-        type: "secondary",
-        action: async (e) => {
-          const logoutData = await logout();
-          console.log("Logout:", logoutData);
-          $goto("/users/login");
+  <div class="profile__user">
+    <Header
+      title="Profile"
+      type="subtitle"
+      buttons={[
+        {
+          text: "Logout",
+          type: "secondary",
+          action: async (e) => {
+            const logoutData = await logout();
+            console.log("Logout:", logoutData);
+            $goto("/users/login");
+          },
         },
-      },
-      {
-        text: "Delete User",
-        type: "tertiary",
-        action: (e) => {
-          deleteUser(userData.id);
-          logout();
-          $goto("/users/login");
+        {
+          text: "Delete User",
+          type: "tertiary",
+          action: (e) => {
+            deleteUser(userData.id);
+            logout();
+            $goto("/users/login");
+          },
         },
-      },
-    ]}
-  />
-  <NonDynamic
-    fields={[
-      {
-        name: "Username",
-        value: userData.username,
-        required: true,
-        type: "text",
-      },
-      {
-        name: "Email",
-        value: userData.email,
-        required: true,
-        type: "text",
-      },
-    ]}
-    onChange={(e, inputs) => {
-      userUpdate = inputs;
-    }}
-  />
-  {#if (userUpdate.username && userUpdate.username !== userData.username) || (userUpdate.email && userUpdate.email !== userData.email)}
-    <button class="profile__submit" on:click={(e) => submitUserUpdate()}
-      >Submit Changes</button
-    >
-  {/if}
+      ]}
+    />
+    <NonDynamic
+      fields={[
+        {
+          name: "Username",
+          value: userData.username,
+          required: true,
+          type: "text",
+        },
+        {
+          name: "Email",
+          value: userData.email,
+          required: true,
+          type: "text",
+        },
+      ]}
+      onChange={(e, inputs) => {
+        userUpdate = inputs;
+      }}
+    />
+    {#if (userUpdate.username && userUpdate.username !== userData.username) || (userUpdate.email && userUpdate.email !== userData.email)}
+      <button class="profile__submit" on:click={(e) => submitUserUpdate()}
+        >Submit Changes</button
+      >
+    {/if}
+  </div>
+
+  <div class="profile__friends" id="friends">
+    <Header
+      title="Friends"
+      type="subtitle"
+      buttons={[
+        {
+          text: "Add Friend",
+          type: "secondary",
+          action: (e) => {},
+        },
+      ]}
+    />
+    <Sections
+      sections={[
+        {
+          name: "Your Friends",
+        },
+        {
+          name: "Pending",
+        },
+        {
+          name: "Requests",
+        },
+      ]}
+      action={(e, selected) => {
+        console.log("selected:", selected);
+        friendsSections = friendsSections.map((s) => {
+          s.open = false;
+          return s;
+        });
+        friendsSections.find((s) => s.name === selected.name).open = true;
+        console.log("Friends Sections:", friendsSections);
+      }}
+    />
+    {#if friendsSections[0].open}
+      <UserSearch
+        users={userData.friends}
+        action={(e, user) => {
+          console.log("User:", user);
+        }}
+      />
+    {/if}
+    {#if friendsSections[1].open}
+      pending
+    {/if}
+    {#if friendsSections[2].open}
+      requests
+    {/if}
+  </div>
 </div>
 <Footer />
 
@@ -128,6 +188,13 @@
     &__submit {
       @include button-text;
       margin-top: 36px;
+    }
+
+    &__user {
+    }
+
+    &__friends {
+      margin-bottom: 150px;
     }
   }
 </style>

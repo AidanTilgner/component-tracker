@@ -1,24 +1,48 @@
-export const newComponentSchema = [
+export const newOrganizationProjectSchema = [
   {
-    name: "Path",
+    name: "name",
     type: "text",
     value: "",
     required: true,
   },
   {
-    name: "Category",
+    name: "description",
     type: "text",
     value: "",
+    required: true,
   },
   {
-    name: "Example",
-    type: "text",
+    name: "framework",
+    type: "select",
     value: "",
-  },
-  {
-    name: "Description",
-    type: "text",
-    value: "",
+    settings: {
+      options: [
+        {
+          label: "Svelte",
+          value: "svelte",
+        },
+        {
+          label: "React",
+          value: "react",
+        },
+        {
+          label: "Vue",
+          value: "vue",
+        },
+        {
+          label: "Angular",
+          value: "angular",
+        },
+        {
+          label: "Ember",
+          value: "ember",
+        },
+        {
+          label: "Other",
+          value: "",
+        },
+      ],
+    },
   },
 ];
 
@@ -40,7 +64,6 @@ export const editableProjectSchema = (currentProject) => {
       name: "framework",
       type: "select",
       value: currentProject.framework,
-      required: true,
       settings: {
         options: [
           {
@@ -65,13 +88,37 @@ export const editableProjectSchema = (currentProject) => {
           },
           {
             label: "Other",
-            value: "other",
+            value: "",
           },
         ],
       },
     },
   ];
 };
+
+export const newComponentSchema = [
+  {
+    name: "Path",
+    type: "text",
+    value: "",
+    required: true,
+  },
+  {
+    name: "Category",
+    type: "text",
+    value: "",
+  },
+  {
+    name: "Example",
+    type: "text",
+    value: "",
+  },
+  {
+    name: "Description",
+    type: "text",
+    value: "",
+  },
+];
 
 export const editableComponentMetaDataSchema = (currentComponentMetaData) => {
   return [
@@ -317,6 +364,17 @@ export const editableComponentFunctionSchema = (functionData) => {
       name: "Notes",
       value: functionData.notes?.length > 0 ? functionData.notes : "",
       type: "text",
+    },
+  ];
+};
+
+export const editableOrganizationSchema = (organization) => {
+  return [
+    {
+      name: "Name",
+      value: organization.name?.length > 0 ? organization.name : "",
+      type: "text",
+      required: true,
     },
   ];
 };
