@@ -28,6 +28,22 @@ export const UserSchema = new Schema(
         edited: String,
       },
     ],
+    friend_requests: {
+      sent: [
+        {
+          id: SchemaTypes.ObjectId,
+          user_id: String,
+          username: String,
+        },
+      ],
+      received: [
+        {
+          id: SchemaTypes.ObjectId,
+          user_id: String,
+          username: String,
+        },
+      ],
+    },
   },
   {
     timestamps: { createdAt: "created", updatedAt: "edited" },

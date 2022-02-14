@@ -99,3 +99,37 @@ export const getUsersFromDatabaseBySearch = async (search) => {
     };
   }
 };
+
+export const addFriendRequestInDatabase = async (user_id, friend_id) => {
+  try {
+    let user = await UserModel.findOne({ user_id: user_id }).exec();
+    let friend = await UserModel.findOne({ user_id: friend_id }).exec();
+    if (!user) {
+      return {
+        error: "User not found",
+      };
+    }
+    if (!friend) {
+      return {
+        error: "Friend not found",
+      };
+    }
+    friend.friend_requests.recieved.push({
+      user_id: user_id,
+      username: user.username,
+    });
+    user.friend_requests.sent.push({
+      user_id: friend_id,
+      username: friend.username,
+    });
+    (await friend.save()) && (await user.save());
+    return {
+      message: "Friend request successfully sent",
+    };
+  } catch (err) {
+    console.log("Error adding friend request to user in database: " + err);
+    return {
+      error: "Internal error adding friend request to user in database",
+    };
+  }
+};

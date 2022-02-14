@@ -4,6 +4,7 @@
   import Header from "../../helpers/Header/Header.svelte";
   import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
   import UserSearch from "../../components/UserSearch/UserSearch.svelte";
+  import Sections from "../../helpers/Sections/Sections.svelte";
   import { user } from "../../data/user";
   import {
     logout,
@@ -56,6 +57,12 @@
     writeToLocalStorage("user", JSON.stringify(userData));
     showAlertBanner(newUserResponse.message, "success");
   };
+
+  let friendsSections = [
+    { name: "Your Friends", open: true },
+    { name: "Pending", open: false },
+    { name: "Requests", open: false },
+  ];
 </script>
 
 <Navbar />
@@ -129,7 +136,42 @@
         },
       ]}
     />
-    <UserSearch />
+    <Sections
+      sections={[
+        {
+          name: "Your Friends",
+        },
+        {
+          name: "Pending",
+        },
+        {
+          name: "Requests",
+        },
+      ]}
+      action={(e, selected) => {
+        console.log("selected:", selected);
+        friendsSections = friendsSections.map((s) => {
+          s.open = false;
+          return s;
+        });
+        friendsSections.find((s) => s.name === selected.name).open = true;
+        console.log("Friends Sections:", friendsSections);
+      }}
+    />
+    {#if friendsSections[0].open}
+      <UserSearch
+        users={userData.friends}
+        action={(e, user) => {
+          console.log("User:", user);
+        }}
+      />
+    {/if}
+    {#if friendsSections[1].open}
+      pending
+    {/if}
+    {#if friendsSections[2].open}
+      requests
+    {/if}
   </div>
 </div>
 <Footer />
