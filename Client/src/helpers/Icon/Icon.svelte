@@ -18,8 +18,8 @@
       name: "close",
       box: [28, 28],
       svg: `
-          <rect y="13" x="8" width="3" height="23" rx="2" transform="rotate(-45 0 14)" fill="${color}"/>
-          <rect y="10" x="27.5" width="3" height="23" rx="2" transform="rotate(45 30 0)" fill="${color}"/>
+          <rect y="13" x="8" width="2.5" height="23" rx="2" transform="rotate(-45 0 14)" fill="${color}"/>
+          <rect y="10" x="27.5" width="2.5" height="23" rx="2" transform="rotate(45 30 0)" fill="${color}"/>
         `,
     },
     {
@@ -96,6 +96,13 @@
       `,
     },
     {
+      name: "check",
+      box: [30, 30],
+      svg: `
+      <path fill="${color}" d="M 26.980469 5.9902344 A 1.0001 1.0001 0 0 0 26.292969 6.2929688 L 11 21.585938 L 4.7070312 15.292969 A 1.0001 1.0001 0 1 0 3.2929688 16.707031 L 10.292969 23.707031 A 1.0001 1.0001 0 0 0 11.707031 23.707031 L 27.707031 7.7070312 A 1.0001 1.0001 0 0 0 26.980469 5.9902344 z"/>
+      `,
+    },
+    {
       name: "react-icon",
       box: [48, 48],
       svg: `
@@ -128,6 +135,6 @@
 
 <style>
   /* svg {
-      border: 1px solid blue;
-    } */
+    border: 1px solid blue;
+  } */
 </style>

@@ -302,7 +302,7 @@ export const rejectFriendRequestInDatabase = async (user_id, friend_id) => {
         error: "User not found",
       };
     }
-    user.friend_requests.recieved = user.friend_requests.recieved.filter(
+    user.friend_requests.received = user.friend_requests.received.filter(
       (friend_request) => {
         return friend_request.user_id !== friend_id;
       }
