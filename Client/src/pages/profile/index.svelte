@@ -5,6 +5,7 @@
   import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
   import UserSearch from "../../components/UserSearch/UserSearch.svelte";
   import Sections from "../../helpers/Sections/Sections.svelte";
+  import MiniCard from "../../helpers/Informative/Cards/MiniCard.svelte";
   import { user } from "../../data/user";
   import {
     logout,
