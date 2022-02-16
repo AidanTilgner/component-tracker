@@ -17,6 +17,10 @@ import {
   getProjects,
   getOrganizations,
   getUsersFromSearch,
+  sendFriendRequest,
+  acceptFriendRequest,
+  rejectFriendRequest,
+  removeFriend,
 } from "../controllers/UsersController.js";
 
 Router.use(BP.json());
@@ -66,6 +70,46 @@ Router.get(
   authenticateUser,
   wrapAsync(async (req, res) => {
     res.send(await getUsersFromSearch(req.query.searchTerm)).status(200);
+  })
+);
+
+Router.post(
+  "/friend-request",
+  authenticateUser,
+  wrapAsync(async (req, res) => {
+    res
+      .send(await sendFriendRequest(req.body.user_id, req.body.friend_id))
+      .status(200);
+  })
+);
+
+Router.put(
+  "/friend-request/accept",
+  authenticateUser,
+  wrapAsync(async (req, res) => {
+    res
+      .send(await acceptFriendRequest(req.body.user_id, req.body.friend_id))
+      .status(200);
+  })
+);
+
+Router.put(
+  "/friend-request/reject",
+  authenticateUser,
+  wrapAsync(async (req, res) => {
+    res
+      .send(await rejectFriendRequest(req.body.user_id, req.body.friend_id))
+      .status(200);
+  })
+);
+
+Router.delete(
+  "/friend",
+  authenticateUser,
+  wrapAsync(async (req, res) => {
+    res
+      .send(await removeFriend(req.body.user_id, req.body.friend_id))
+      .status(200);
   })
 );
 

@@ -28,6 +28,7 @@ export const UserSchema = new Schema(
         edited: String,
       },
     ],
+    friends: [{ user_id: String, username: String }],
     friend_requests: {
       sent: [
         {

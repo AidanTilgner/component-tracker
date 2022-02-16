@@ -10,6 +10,8 @@
     logout,
     deleteUser,
     updateUser,
+    getUser,
+    sendFriendRequest,
   } from "../../helpers/Functions/backend";
   import { writeToLocalStorage } from "../../helpers/Functions/local";
   import { verifyLoginStatus } from "../../helpers/Functions/authentication";
@@ -21,25 +23,33 @@
     userData = data;
   });
 
-  onMount(async () => {
-    try {
-      const loggedIn = await verifyLoginStatus();
-      if (!loggedIn) {
-        $goto("/users/login");
-      }
-    } catch (error) {
-      console.log("Error in onMount:", error);
-    }
-  });
-
-  let userUpdate = {};
-
   let alertBanner = {
     message: "",
     type: "",
     showing: false,
     timeout: 5000,
   };
+
+  onMount(async () => {
+    try {
+      const loggedIn = await verifyLoginStatus();
+      if (!loggedIn) {
+        $goto("/users/login");
+      }
+      const response = await getUser(userData.user_id);
+      if (response.error) {
+        alertBanner.showing = true;
+        alertBanner.message = response.error;
+        alertBanner.type = "error";
+      }
+      user.set(response.user);
+      console.log("user", response.user);
+    } catch (error) {
+      console.log("Error in onMount:", error);
+    }
+  });
+
+  let userUpdate = {};
 
   const showAlertBanner = (message, type) => {
     alertBanner.message = message;
@@ -125,17 +135,7 @@
   </div>
 
   <div class="profile__friends" id="friends">
-    <Header
-      title="Friends"
-      type="subtitle"
-      buttons={[
-        {
-          text: "Add Friend",
-          type: "secondary",
-          action: (e) => {},
-        },
-      ]}
-    />
+    <Header title="Friends" type="subtitle" buttons={[]} />
     <Sections
       sections={[
         {
@@ -159,18 +159,41 @@
       }}
     />
     {#if friendsSections[0].open}
-      <UserSearch
-        users={userData.friends}
-        action={(e, user) => {
-          console.log("User:", user);
-        }}
-      />
+      friends
     {/if}
     {#if friendsSections[1].open}
-      pending
+      <UserSearch
+        promptText="Add Friend"
+        users={userData.friends}
+        action={async (user) => {
+          console.log("User:", user);
+          const response = await sendFriendRequest(
+            userData.user_id,
+            user.user_id
+          );
+          if (response.error) {
+            alertBanner.showing = true;
+            alertBanner.message = response.error;
+            alertBanner.type = "error";
+          }
+          console.log("Response:", response);
+          alertBanner.showing = true;
+          alertBanner.message = response.message;
+          alertBanner.type = "success";
+        }}
+      />
+      {#each userData.friend_requests.sent as pending}
+        <div style="border: 1px solid red;">
+          {pending.username}
+        </div>
+      {/each}
     {/if}
     {#if friendsSections[2].open}
-      requests
+      {#each userData.friend_requests.received as received}
+        <div style="border: 1px solid red;">
+          {received.username}
+        </div>
+      {/each}
     {/if}
   </div>
 </div>

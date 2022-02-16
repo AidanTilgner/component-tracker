@@ -210,7 +210,7 @@ export const deleteUser = async (userID) => {
   }
 };
 
-export const searchUsers = (searchTerm) => {
+export const searchUsers = async (searchTerm) => {
   try {
     return fetch(`${baseURL}${EP.users}/search?searchTerm=${searchTerm}`, {
       method: "GET",
@@ -221,6 +221,66 @@ export const searchUsers = (searchTerm) => {
     }).then((res) => res.json());
   } catch (error) {
     console.error("Error in searchUsers: ", error);
+  }
+};
+
+export const sendFriendRequest = async (user_id, friend_id) => {
+  try {
+    return await fetch(`${baseURL}${EP.users}/friend-request`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ user_id, friend_id }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in sendFriendRequest: ", error);
+  }
+};
+
+export const acceptFriendRequest = async (user_id, friend_id) => {
+  try {
+    return await fetch(`${baseURL}${EP.users}/friend-request/accept`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ user_id, friend_id }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in acceptFriendRequest: ", error);
+  }
+};
+
+export const rejectFriendRequest = async (user_id, friend_id) => {
+  try {
+    return await fetch(`${baseURL}${EP.users}/friend-request/reject`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ user_id, friend_id }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in rejectFriendRequest: ", error);
+  }
+};
+
+export const removeFriend = async (user_id, friend_id) => {
+  try {
+    return await fetch(`${baseURL}${EP.users}/friend`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ user_id, friend_id }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in removeFriend: ", error);
   }
 };
 

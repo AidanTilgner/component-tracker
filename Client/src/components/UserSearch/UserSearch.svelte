@@ -1,5 +1,5 @@
 <script>
-  export let action;
+  export let action, promptText;
   import { user } from "../../data/user.js";
   import { searchUsers } from "../../helpers/Functions/backend.js";
   import Icon from "../../helpers/Icon/Icon.svelte";
@@ -16,19 +16,20 @@
 </script>
 
 <div class="user-search">
-  <label for="username-input" class="user-search__label"
-    >Type Their Username:</label
-  >
+  <label for="username-input" class="user-search__label">{promptText}</label>
   <input
     type="text"
     id="username-input"
+    placeholder="Type a username"
     value={username}
     on:input={(e) => {
       console.log("input", e.target.value);
       username = e.target.value;
       (async () => {
         const response = await searchUsers(username);
-        searchResults = response.users;
+        searchResults = response.users.filter((user) => {
+          return user.username !== userData.username;
+        });
         console.log("searchResults", searchResults);
       })();
     }}
@@ -44,6 +45,7 @@
               user_id: result.user_id,
               username: result.username,
             };
+            action(selected);
           }}
           tabindex={idx}
         >
@@ -68,7 +70,7 @@
 
     &__label {
       margin-bottom: 4px;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 500;
       width: 208px;
     }
