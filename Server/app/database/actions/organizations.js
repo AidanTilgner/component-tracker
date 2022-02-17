@@ -114,8 +114,8 @@ export const addUserToOrganizationInDatabase = async (
   user_id
 ) => {
   try {
-    const { username } = await UserModel.findOne({ user_id }).exec();
-    if (!username) {
+    const user = await UserModel.findOne({ user_id }).exec();
+    if (!user) {
       return {
         error: "User not found",
       };
@@ -126,7 +126,7 @@ export const addUserToOrganizationInDatabase = async (
         $push: {
           users: {
             user_id,
-            username,
+            username: user.username,
           },
         },
       },
@@ -345,18 +345,18 @@ export const deleteProjectFromOrganizationInDatabase = async (
   }
 };
 
-export const createJoinLinkInDatabase = async (organization_id, join_code) => {
+export const createJoinCodeInDatabase = async (organization_id) => {
   try {
-    const joinLink = generateJoinToken(
-      { organization_id, join_code },
+    const joinCode = generateJoinToken(
+      { organization_id },
       { expiresIn: "1d" }
     );
-    if (!joinLink) {
+    if (!joinCode) {
       return {
         error: "Join token could not be created",
       };
     }
-    return `${process.env.CLIENT_URL}/organizations/join/?token=${joinLink}`;
+    return joinCode;
   } catch (err) {
     console.log("Error in createJoinLinkInDatabase: ", err);
     return {

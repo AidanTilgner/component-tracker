@@ -8,7 +8,7 @@ import { wrapAsync } from "../helpers/routing.js";
 import { authenticateUser } from "../helpers/tokens.js";
 import {
   confirmUserOrganizationRights,
-  confirmUserJoinLinkValidity,
+  confirmOrganizationJoinCodeValidity,
 } from "../helpers/authorization.js";
 
 // Controller
@@ -21,7 +21,7 @@ import {
   removeUserFromOrganization,
   addProjectToOrganization,
   deleteProjectFromOrganization,
-  createJoinLink,
+  createJoinCode,
 } from "../controllers/OrganizationsController.js";
 
 Router.use(BP.json());
@@ -63,7 +63,6 @@ Router.delete(
 
 Router.put(
   "/users",
-  confirmUserJoinLinkValidity,
   wrapAsync(async (req, res) => {
     res
       .send(
@@ -105,7 +104,6 @@ Router.put(
 
 Router.delete(
   "/projects",
-
   wrapAsync(async (req, res) => {
     res.send(
       await removeProjectFromOrganization(
@@ -117,11 +115,20 @@ Router.delete(
 );
 
 Router.get(
-  "/join-link",
+  "/join",
   wrapAsync(async (req, res) => {
+    res.send(await createJoinCode(req.query.organization_id)).status(200);
+  })
+);
+
+Router.post(
+  "/join",
+  confirmOrganizationJoinCodeValidity,
+  wrapAsync(async (req, res) => {
+    console.log("Joining organization ");
     res
       .send(
-        await createJoinLink(req.query.organization_id, req.query.join_code)
+        await joinOrganization(req.query.organization_id, req.query.user_id)
       )
       .status(200);
   })
