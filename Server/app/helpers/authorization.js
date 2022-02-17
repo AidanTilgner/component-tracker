@@ -54,3 +54,28 @@ export const confirmUserProjectRights = wrapAsync(async (req, res, next) => {
       .status(403);
   }
 });
+
+export const confirmUserJoinLinkValidity = wrapAsync(async (req, res, next) => {
+  try {
+    const token = req.query.token;
+    const verified = JWT.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET,
+      (err, decoded) => {
+        if (err) {
+          return res
+            .send({
+              error: "Error 403, Invalid join token, please request a new link",
+            })
+            .status(403);
+        }
+        return decoded;
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    return res.send({
+      error: "Error 403, User does not have rights to join this organization",
+    });
+  }
+});

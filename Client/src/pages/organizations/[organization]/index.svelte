@@ -306,7 +306,7 @@
         style="color: #2256f2;text-decoration: underline;cursor: pointer;font-weight: 600;"
         on:click={() => {
           console.log("New User");
-        }}>create a new one</span
+        }}>add a new one</span
       >?
     </p>
   {/if}

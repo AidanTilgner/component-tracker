@@ -42,3 +42,16 @@ export const deleteRefreshTokenFromDatabase = async (refreshToken) => {
     };
   }
 };
+
+export const saveJoinTokenToDatabase = async (joinToken) => {
+  try {
+    const joinTokenModel = new Token({ token: joinToken });
+    await joinTokenModel.save();
+    return joinTokenModel;
+  } catch (error) {
+    console.log("Error in saveJoinTokenToDatabase: ", error);
+    return {
+      error: "Internal error saving join token to database",
+    };
+  }
+};

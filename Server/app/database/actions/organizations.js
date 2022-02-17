@@ -3,6 +3,11 @@ import OrganizationClass from "../../data/organization/organization.js";
 import OrganizationModel from "../models/organization.js";
 import UserModel from "../models/user.js";
 import ProjectModel from "../models/project.js";
+import {
+  generateJoinToken,
+  authenticateJoinToken,
+} from "../../helpers/tokens.js";
+import { saveJoinTokenToDatabase } from "./tokens.js";
 
 // * Organization
 export const saveOrganizationToDatabase = async (organization) => {
@@ -336,6 +341,26 @@ export const deleteProjectFromOrganizationInDatabase = async (
     console.log("Error in deleteProjectFromOrganizationInDatabase: ", error);
     return {
       error: "Internal error deleting project from organization in database",
+    };
+  }
+};
+
+export const createJoinLinkInDatabase = async (organization_id, join_code) => {
+  try {
+    const joinLink = generateJoinToken(
+      { organization_id, join_code },
+      { expiresIn: "1d" }
+    );
+    if (!joinLink) {
+      return {
+        error: "Join token could not be created",
+      };
+    }
+    return `${process.env.CLIENT_URL}/organizations/join/?token=${joinLink}`;
+  } catch (err) {
+    console.log("Error in createJoinLinkInDatabase: ", err);
+    return {
+      error: "Internal error creating join link in database",
     };
   }
 };

@@ -8,6 +8,7 @@ import {
   addProjectToOrganizationInDatabase,
   updateProjectInOrganizationInDatabase,
   deleteProjectFromOrganizationInDatabase,
+  createJoinLinkInDatabase,
 } from "../database/actions/organizations.js";
 
 import {
@@ -259,6 +260,25 @@ export const deleteProjectFromOrganization = async (
     console.log("Error in deleteProjectFromOrganization: ", error);
     return {
       error: "Internal error deleting project from organization",
+    };
+  }
+};
+
+// * Links
+export const createJoinLink = async (organization_id, join_code) => {
+  try {
+    const link = await createJoinLinkInDatabase(organization_id, join_code);
+    if (filterForMessages(link)) {
+      return filterForMessages(link);
+    }
+    return {
+      link,
+      message: "Join link successfully created",
+    };
+  } catch (error) {
+    console.log("Error in createJoinLink: ", error);
+    return {
+      error: "Internal error creating join link",
     };
   }
 };

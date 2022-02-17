@@ -6,7 +6,10 @@ const Router = Express.Router();
 // Helpers
 import { wrapAsync } from "../helpers/routing.js";
 import { authenticateUser } from "../helpers/tokens.js";
-import { confirmUserOrganizationRights } from "../helpers/authorization.js";
+import {
+  confirmUserOrganizationRights,
+  confirmUserJoinLinkValidity,
+} from "../helpers/authorization.js";
 
 // Controller
 import {
@@ -18,10 +21,12 @@ import {
   removeUserFromOrganization,
   addProjectToOrganization,
   deleteProjectFromOrganization,
+  createJoinLink,
 } from "../controllers/OrganizationsController.js";
 
 Router.use(BP.json());
 Router.use(authenticateUser);
+Router.use(confirmUserOrganizationRights);
 
 Router.post(
   "/",
@@ -32,7 +37,6 @@ Router.post(
 
 Router.get(
   "/",
-  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res.send(await getOrganization(req.query.organization_id)).status(200);
   })
@@ -40,7 +44,7 @@ Router.get(
 
 Router.put(
   "/",
-  confirmUserOrganizationRights,
+
   wrapAsync(async (req, res) => {
     console.log("Updating organization: ", req.body);
     res
@@ -51,7 +55,7 @@ Router.put(
 
 Router.delete(
   "/",
-  confirmUserOrganizationRights,
+
   wrapAsync(async (req, res) => {
     res.send(await deleteOrganization(req.query.organization_id)).status(204);
   })
@@ -59,7 +63,7 @@ Router.delete(
 
 Router.put(
   "/users",
-  confirmUserOrganizationRights,
+  confirmUserJoinLinkValidity,
   wrapAsync(async (req, res) => {
     res
       .send(
@@ -74,7 +78,7 @@ Router.put(
 
 Router.delete(
   "/users",
-  confirmUserOrganizationRights,
+
   wrapAsync(async (req, res) => {
     res
       .send(
@@ -89,7 +93,6 @@ Router.delete(
 
 Router.put(
   "/projects",
-  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res.send(
       await addProjectToOrganization(
@@ -102,7 +105,7 @@ Router.put(
 
 Router.delete(
   "/projects",
-  confirmUserOrganizationRights,
+
   wrapAsync(async (req, res) => {
     res.send(
       await removeProjectFromOrganization(
@@ -110,6 +113,17 @@ Router.delete(
         req.query.project_id
       )
     );
+  })
+);
+
+Router.get(
+  "/join-link",
+  wrapAsync(async (req, res) => {
+    res
+      .send(
+        await createJoinLink(req.query.organization_id, req.query.join_code)
+      )
+      .status(200);
   })
 );
 

@@ -279,9 +279,6 @@
       margin-top: 36px;
     }
 
-    &__user {
-    }
-
     &__friends {
       margin-bottom: 150px;
     }
