@@ -26,7 +26,6 @@ import {
 
 Router.use(BP.json());
 Router.use(authenticateUser);
-Router.use(confirmUserOrganizationRights);
 
 Router.post(
   "/",
@@ -34,6 +33,24 @@ Router.post(
     res.send(await createOrganization(req.body)).status(200);
   })
 );
+
+Router.post(
+  "/join",
+  confirmOrganizationJoinCodeValidity,
+  wrapAsync(async (req, res) => {
+    console.log("Joining organization ");
+    res
+      .send(
+        await addUserToOrganization(
+          req.query.organization_id,
+          req.query.user_id
+        )
+      )
+      .status(200);
+  })
+);
+
+Router.use(confirmUserOrganizationRights);
 
 Router.get(
   "/",
@@ -44,7 +61,6 @@ Router.get(
 
 Router.put(
   "/",
-
   wrapAsync(async (req, res) => {
     console.log("Updating organization: ", req.body);
     res
@@ -118,19 +134,6 @@ Router.get(
   "/join",
   wrapAsync(async (req, res) => {
     res.send(await createJoinCode(req.query.organization_id)).status(200);
-  })
-);
-
-Router.post(
-  "/join",
-  confirmOrganizationJoinCodeValidity,
-  wrapAsync(async (req, res) => {
-    console.log("Joining organization ");
-    res
-      .send(
-        await joinOrganization(req.query.organization_id, req.query.user_id)
-      )
-      .status(200);
   })
 );
 

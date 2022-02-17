@@ -137,6 +137,13 @@ export const addUserToOrganizationInDatabase = async (
         error: "Organization not found",
       };
     }
+    user.organizations.push({
+      organization_id,
+      name: organizationModel.name,
+      created: organizationModel.created,
+      edited: organizationModel.edited,
+    });
+    await user.save();
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
