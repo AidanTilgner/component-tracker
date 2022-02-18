@@ -260,8 +260,7 @@ export const addProjectToOrganizationInDatabase = async (
     ).projects;
 
     const duplicate = organizationProjects.some(
-      (project) =>
-        project.project_id === project_id || project_id === project.name
+      (project) => project.name === project.name
     );
     if (duplicate) {
       return {
@@ -309,27 +308,30 @@ export const updateProjectInOrganizationInDatabase = async (
   project_id
 ) => {
   try {
-    console.log("Updating project in organization");
     // Find a project in the organization with the smae project_id and update it
     const project = await ProjectModel.findOne({
       project_id: project_id,
     }).exec();
-    const organizationModel = await OrganizationModel.findOneAndUpdate(
-      {
-        organization_id: organization_id,
-        "projects.project_id": project.project_id,
-      },
-      {
-        $set: {
-          "projects.$.project_id": project.project_id,
-          "projects.$.name": project.name,
-          "projects.$.framework": project.framework,
-          "projects.$.created": project.created,
-          "projects.$.edited": project.edited,
-        },
-      },
-      { new: true }
-    ).exec();
+    if (!project) {
+      return {
+        error: "Project not found with id: " + project_id,
+      };
+    }
+    const organizationModel = await OrganizationModel.findOne({
+      organization_id: organization_id,
+    }).exec();
+    if (!organizationModel) {
+      return {
+        error: "Organization not found",
+      };
+    }
+    let updatedProject = organizationModel.projects.find(
+      (project) => project.project_id === project_id
+    );
+    updatedProject.name = project.name;
+    updatedProject.framework = project.framework;
+    updatedProject.created = project.created;
+    updatedProject.edited = project.edited;
 
     await organizationModel.save();
     if (!organizationModel) {

@@ -93,6 +93,7 @@
           .organizations;
         user.update((data) => {
           data.organizations = organizations;
+          return data;
         });
       },
     },

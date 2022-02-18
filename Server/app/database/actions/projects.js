@@ -46,14 +46,17 @@ export const saveProjectToDatabase = async (project) => {
         };
       }
       const projectModel = await ProjectModel.create(newProject);
-      await projectModel.save();
       const res = await addProjectToOrganizationInDatabase(
         organization.organization_id,
         newProject.project_id
       );
       if (res.error) {
+        await ProjectModel.findOneAndDelete({
+          project_id: newProject.project_id,
+        });
         return res;
       }
+      await projectModel.save();
       return {
         project_id: newProject.project_id,
         name: newProject.name,
@@ -98,6 +101,16 @@ export const updateProjectInDatabase = async (project_id, update) => {
       };
     }
     // For each project contributor, update the project in the project list
+    if (project.organization && project.organization.organization_id !== "") {
+      const res = await updateProjectInOrganizationInDatabase(
+        project.organization.organization_id,
+        project_id
+      );
+      if (res.error) {
+        return res;
+      }
+      return project;
+    }
     project.contributors.forEach(async (contributor) => {
       const res = await updateProjectInUserInDatabase(
         contributor.user_id,
@@ -108,15 +121,7 @@ export const updateProjectInDatabase = async (project_id, update) => {
       }
     });
     // If there is an organization, update the project in the organization's project list
-    if (project.organization_id && project.organization_id !== "") {
-      const res = await updateProjectInOrganizationInDatabase(
-        project.organization_id,
-        project_id
-      );
-      if (res.error) {
-        return res;
-      }
-    }
+
     return project;
   } catch (error) {
     console.log("Error in updateProjectInDatabase: ", error);
@@ -128,12 +133,31 @@ export const updateProjectInDatabase = async (project_id, update) => {
 
 export const deleteProjectFromDatabase = async (project_id) => {
   try {
+    console.log("Deleting project from database: ", project_id);
     const project = await ProjectModel.findOneAndDelete({
       project_id: project_id,
     }).exec();
+    console.log("Deleted project from database: ", project_id);
     if (!project) {
       return {
         error: "Project not found",
+      };
+    }
+    if (project.organization && project.organization.organization_id !== "") {
+      console.log("Updating project in organization: ", project_id);
+      const res = await deleteProjectFromOrganizationInDatabase(
+        project.organization_id,
+        project.project_id
+      );
+      if (res.error) {
+        return res;
+      }
+      return {
+        project_id: project.project_id,
+        name: project.name,
+        framework: project.framework,
+        created: project.created,
+        edited: project.edited,
       };
     }
     // For each project contributor, find the project and delete it
@@ -144,15 +168,7 @@ export const deleteProjectFromDatabase = async (project_id) => {
       );
     });
     // If there is an organization, find the project and delete it
-    if (project.organization_id && project.organization_id !== "") {
-      const res = await deleteProjectFromOrganizationInDatabase(
-        project.organization_id,
-        project.project_id
-      );
-      if (res.error) {
-        return res;
-      }
-    }
+
     return project;
   } catch (eror) {
     console.log("Error in deleteProjectFromDatabase: ", error);

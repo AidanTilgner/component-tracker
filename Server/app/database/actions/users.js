@@ -160,7 +160,6 @@ export const addProjectToUserInDatabase = async (user_id, project_id) => {
 
 export const updateProjectInUserInDatabase = async (user_id, project_id) => {
   try {
-    console.log("Updating project in user in database");
     const project = await ProjectModel.findOne({
       project_id: project_id,
     }).exec();
@@ -168,6 +167,7 @@ export const updateProjectInUserInDatabase = async (user_id, project_id) => {
       { user_id: user_id, "projects.project_id": project_id },
       {
         $set: {
+          "projects.$.project_id": project_id,
           "projects.$.name": project.name,
           "projects.$.framework": project.framework,
           "projects.$.created": project.created,

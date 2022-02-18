@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import UserModel from "../models/user.js";
+import OrganizationModel from "../models/organization.js";
 import { comparePassword } from "../../helpers/crypto.js";
 
 export const getUserByLogin = async (username, password) => {
@@ -54,7 +55,14 @@ export const getUserProjectsFromDatabase = async (user_id) => {
         error: "User not found",
       };
     }
-    return user.projects;
+    let projects = [...user.projects];
+    for (let i = 0; i < user.organizations.length; i++) {
+      let organization = await OrganizationModel.findOne({
+        organization_id: user.organizations[i].organization_id,
+      }).exec();
+      projects = [...projects, ...organization.projects];
+    }
+    return projects;
   } catch (err) {
     console.log("Error getting user projects from database: " + err);
     return {
