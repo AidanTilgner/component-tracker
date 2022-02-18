@@ -47,9 +47,9 @@
 
   .modal {
     background-color: white;
-    width: 60vw;
+    width: 50vw;
     height: 75%;
-    border-radius: 15px;
+    border-radius: 5px;
     box-shadow: 0.2px 0.2px 10px 0 rgba(0, 0, 0, 0.25);
     font-family: $font-primary;
     display: flex;
@@ -62,7 +62,7 @@
       font-size: 36px;
       font-weight: 500;
       margin: 0;
-      padding: 36px 36px 24px 36px;
+      padding: 24px 24px;
     }
 
     &__body {
@@ -79,7 +79,7 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
-      padding: 24px 36px 36px 36px;
+      padding: 24px 24px;
     }
 
     &__button {

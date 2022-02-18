@@ -91,8 +91,8 @@
     height: 250px;
     width: 250px;
     position: relative;
-    border-radius: 15px;
-    box-shadow: 0.2px 0.2px 10px 0 rgba($color: #000000, $alpha: 0.25);
+    border-radius: 5px;
+    box-shadow: 5px 5px 15px 0 rgba($color: #000000, $alpha: 0.25);
     font-family: $font-primary;
     cursor: pointer;
 
@@ -126,8 +126,8 @@
       height: 85px;
       width: 100%;
       bottom: 0;
-      box-shadow: 0.2px 0.2px 10px 0 rgba($color: #000000, $alpha: 0.25);
-      border-radius: 0 0 15px 15px;
+      box-shadow: -0 -2px 5px 0 rgba($color: #000000, $alpha: 0.25);
+      border-radius: 0 0 5px 5px;
       //pointer should be default
       cursor: initial;
     }
