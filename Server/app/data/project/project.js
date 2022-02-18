@@ -7,19 +7,21 @@ class Project {
     name,
     framework,
     description,
-    externalLink,
-    organization_id,
+    externalLinks,
+    organization,
   }) {
+    console.log("Organization: ", organization);
     this.project_id = `${this.randomString(5)}-${this.randomString(
       5
     )}-${this.randomString(5)}-${this.randomString(5)}`;
     this.owner = owner;
+    this.organization = organization;
+    console.log("This Organization: ", this.organization);
     this.contributors = contributors;
-    this.organization_id = organization_id;
     this.name = name;
     this.framework = framework.toLowerCase();
     this.description = description;
-    this.externalLink = externalLink;
+    this.externalLinks = externalLinks || [];
     this.components = [];
   }
 

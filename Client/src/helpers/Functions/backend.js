@@ -299,9 +299,9 @@ export const addProject = async (project) => {
   }
 };
 
-export const getProject = async (projectID) => {
+export const getProject = async (project_id) => {
   try {
-    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
+    return await fetch(`${baseURL}${EP.projects}/?project_id=${project_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -315,9 +315,9 @@ export const getProject = async (projectID) => {
   }
 };
 
-export const updateProject = async (projectID, update) => {
+export const updateProject = async (project_id, update) => {
   try {
-    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
+    return await fetch(`${baseURL}${EP.projects}/?project_id=${project_id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -330,9 +330,9 @@ export const updateProject = async (projectID, update) => {
   }
 };
 
-export const deleteProject = async (projectID) => {
+export const deleteProject = async (project_id) => {
   try {
-    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
+    return await fetch(`${baseURL}${EP.projects}/?project_id=${project_id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -345,10 +345,10 @@ export const deleteProject = async (projectID) => {
 };
 
 // * Component Functions
-export const addComponent = async (projectID, component) => {
+export const addComponent = async (project_id, component) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/component?projectID=${projectID}`,
+      `${baseURL}${EP.projects}/component?project_id=${project_id}`,
       {
         method: "PUT",
         headers: {
@@ -364,10 +364,10 @@ export const addComponent = async (projectID, component) => {
   }
 };
 
-export const getComponent = async (projectID, name) => {
+export const getComponent = async (project_id, name) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
+      `${baseURL}${EP.projects}/component?project_id=${project_id}&name=${name}`,
       {
         method: "GET",
         headers: {
@@ -381,10 +381,10 @@ export const getComponent = async (projectID, name) => {
   }
 };
 
-export const updateComponent = async (projectID, name, update) => {
+export const updateComponent = async (project_id, name, update) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
+      `${baseURL}${EP.projects}/component?project_id=${project_id}&name=${name}`,
       {
         method: "PATCH",
         headers: {
@@ -399,10 +399,10 @@ export const updateComponent = async (projectID, name, update) => {
   }
 };
 
-export const deleteComponent = async (projectID, name) => {
+export const deleteComponent = async (project_id, name) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
+      `${baseURL}${EP.projects}/component?project_id=${project_id}&name=${name}`,
       {
         method: "DELETE",
         headers: {

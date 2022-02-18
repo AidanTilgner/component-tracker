@@ -129,7 +129,15 @@
             contributors: [
               { user_id: userData.user_id, username: userData.username },
             ],
-            organization_id: projectData.organization,
+            organization: {
+              organization_id: projectData.organization,
+              name:
+                projectData.organization.length > 0
+                  ? userOrganizations.find(
+                      (org) => org.organization_id === projectData.organization
+                    ).name
+                  : "",
+            },
             name: projectData.name,
             description: projectData.description,
             framework: projectData.framework,

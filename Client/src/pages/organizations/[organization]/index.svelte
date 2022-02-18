@@ -54,12 +54,10 @@
   let modal = false;
   let modalData = {};
   $: newProject = {
-    organization_id: organization.organization_id,
-    owner: {
-      user_id: userData.user_id,
-      username: userData.username,
+    organization: {
+      organization_id: organization.organization_id,
+      name: organization.name,
     },
-    contributors: organization.users,
   };
 
   let deleteModal = false;

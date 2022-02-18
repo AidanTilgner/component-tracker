@@ -26,6 +26,7 @@ export const saveOrganizationToDatabase = async (organization) => {
     }
     const organizationModel = await OrganizationModel.create(newOrganization);
     await organizationModel.save();
+    console.log("Organization Users: ", organization.users);
     newOrganization.users.forEach(async (user) => {
       UserModel.findOneAndUpdate(
         { user_id: user.user_id },
