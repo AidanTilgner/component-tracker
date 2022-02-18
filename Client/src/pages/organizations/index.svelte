@@ -4,11 +4,13 @@
   import MiniCard from "../../helpers/Informative/Cards/MiniCard.svelte";
   import Modal from "../../helpers/Modal/Modal.svelte";
   import NonDynamic from "../../helpers/Form/NonDynamic.svelte";
+  import Input from "../../helpers/Input/Input.svelte";
   import { user } from "../../data/user.js";
   import { onMount } from "svelte";
   import {
     getUserOrganizations,
     addOrganization,
+    joinOrganization,
   } from "../../helpers/Functions/backend.js";
   import { verifyLoginStatus } from "../../helpers/Functions/authentication.js";
   import { goto } from "@roxi/routify";
@@ -36,6 +38,7 @@
       .organizations;
     user.update((data) => {
       data.organizations = organizations;
+      return data;
     });
   });
 
@@ -44,6 +47,8 @@
     owner: { user_id: userData.user_id, username: userData.username },
     users: [{ user_id: userData.user_id, username: userData.username }],
   };
+  let joinModal = false;
+  let joinLink = "";
 </script>
 
 <Navbar />
@@ -107,12 +112,61 @@
     }}
   />
 </Modal>
+<Modal
+  open={joinModal}
+  title="Join Organization"
+  buttons={[
+    {
+      text: "Cancel",
+      type: "secondary",
+      action: () => {
+        joinModal = false;
+      },
+    },
+    {
+      text: "Join",
+      type: "primary",
+      action: async () => {
+        console.log("Joining organization");
+        const response = await joinOrganization(userData.user_id, joinLink);
+        if (response.error) {
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+          alertBanner.showing = true;
+          return;
+        }
+        alertBanner.message = "Joined organization successfully";
+        alertBanner.type = "success";
+        alertBanner.showing = true;
+        joinModal = false;
+      },
+    },
+  ]}
+>
+  <Input
+    type="text"
+    field={{
+      name: "Join Link",
+      value: joinLink,
+    }}
+    onChange={(e, input) => {
+      joinLink = input;
+    }}
+  />
+</Modal>
 
 <div class="organizations">
   <Header
     title="Organizations"
     type="subtitle"
     buttons={[
+      {
+        text: "Join",
+        type: "secondary",
+        action: () => {
+          joinModal = true;
+        },
+      },
       {
         text: "Add",
         type: "primary",

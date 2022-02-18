@@ -14,6 +14,7 @@
     addProject,
     updateOrganization,
     deleteOrganization,
+    getOrganizationJoinLink,
   } from "../../../helpers/Functions/backend.js";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
@@ -116,10 +117,30 @@
         userModal = false;
       },
     },
+    {
+      text: "Copy Link",
+      type: "primary",
+      action: async () => {
+        const response = await getOrganizationJoinLink(
+          organization.organization_id
+        );
+        if (response.error) {
+          alertBanner.showing = true;
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+          return;
+        }
+        userModal = false;
+        alertBanner.showing = true;
+        alertBanner.message = "Link copied to clipboard";
+        alertBanner.type = "success";
+        navigator.clipboard.writeText(response.code);
+      },
+    },
   ]}
   title="Add User"
 >
-  <UserSearch />
+  <p style="font-size: 24px;">Get a join code by clicking the button below</p>
 </Modal>
 <div class="organization">
   <Header

@@ -1,8 +1,7 @@
 /** @purpose This file contains functions that fetch data from the server */
 
-import { tokens, user } from "../../data/user";
-import { deleteFromLocalStorage, deleteFromSessionStorage } from "./local";
-import { goto } from "@roxi/routify";
+import { tokens, user } from "../../data/user.js";
+import { deleteFromLocalStorage, deleteFromSessionStorage } from "./local.js";
 let accessToken, refreshToken;
 let userData = {};
 tokens.subscribe((tokens) => {
@@ -553,5 +552,43 @@ export const removeProjectFromOrganization = async (
     ).then((res) => res.json());
   } catch (error) {
     console.error("Error in removeProjectFromOrganization: ", error);
+  }
+};
+
+export const getOrganizationJoinLink = async (organization_id, join_code) => {
+  try {
+    return await fetch(
+      `${baseURL}${EP.organizations}/join?organization_id=${organization_id}&join_code=${join_code}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => res.json());
+  } catch (err) {
+    console.log("Error in getOrganizationJoinLink: ", err);
+  }
+};
+
+export const joinOrganization = async (user_id, join_code) => {
+  try {
+    console.log(
+      "Going to endpoint: ",
+      `${baseURL}${EP.organizations}/join?user_id=${user_id}&join_code=${join_code}`
+    );
+    return await fetch(
+      `${baseURL}${EP.organizations}/join?user_id=${user_id}&join_code=${join_code}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => res.json());
+  } catch (err) {
+    console.log("Error in joinOrganization: ", err);
   }
 };
