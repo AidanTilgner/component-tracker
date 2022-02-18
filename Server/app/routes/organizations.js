@@ -6,7 +6,10 @@ const Router = Express.Router();
 // Helpers
 import { wrapAsync } from "../helpers/routing.js";
 import { authenticateUser } from "../helpers/tokens.js";
-import { confirmUserOrganizationRights } from "../helpers/authorization.js";
+import {
+  confirmUserOrganizationRights,
+  confirmOrganizationJoinCodeValidity,
+} from "../helpers/authorization.js";
 
 // Controller
 import {
@@ -18,6 +21,7 @@ import {
   removeUserFromOrganization,
   addProjectToOrganization,
   deleteProjectFromOrganization,
+  createJoinCode,
 } from "../controllers/OrganizationsController.js";
 
 Router.use(BP.json());
@@ -30,9 +34,26 @@ Router.post(
   })
 );
 
+Router.post(
+  "/join",
+  confirmOrganizationJoinCodeValidity,
+  wrapAsync(async (req, res) => {
+    console.log("Joining organization ");
+    res
+      .send(
+        await addUserToOrganization(
+          req.query.organization_id,
+          req.query.user_id
+        )
+      )
+      .status(200);
+  })
+);
+
+Router.use(confirmUserOrganizationRights);
+
 Router.get(
   "/",
-  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res.send(await getOrganization(req.query.organization_id)).status(200);
   })
@@ -40,7 +61,6 @@ Router.get(
 
 Router.put(
   "/",
-  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     console.log("Updating organization: ", req.body);
     res
@@ -51,7 +71,7 @@ Router.put(
 
 Router.delete(
   "/",
-  confirmUserOrganizationRights,
+
   wrapAsync(async (req, res) => {
     res.send(await deleteOrganization(req.query.organization_id)).status(204);
   })
@@ -59,7 +79,6 @@ Router.delete(
 
 Router.put(
   "/users",
-  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res
       .send(
@@ -74,7 +93,7 @@ Router.put(
 
 Router.delete(
   "/users",
-  confirmUserOrganizationRights,
+
   wrapAsync(async (req, res) => {
     res
       .send(
@@ -89,7 +108,6 @@ Router.delete(
 
 Router.put(
   "/projects",
-  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res.send(
       await addProjectToOrganization(
@@ -102,7 +120,6 @@ Router.put(
 
 Router.delete(
   "/projects",
-  confirmUserOrganizationRights,
   wrapAsync(async (req, res) => {
     res.send(
       await removeProjectFromOrganization(
@@ -110,6 +127,13 @@ Router.delete(
         req.query.project_id
       )
     );
+  })
+);
+
+Router.get(
+  "/join",
+  wrapAsync(async (req, res) => {
+    res.send(await createJoinCode(req.query.organization_id)).status(200);
   })
 );
 

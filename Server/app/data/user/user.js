@@ -1,4 +1,5 @@
 import { hashPassword } from "../../helpers/crypto.js";
+import { randomBytes } from "crypto";
 
 class User {
   constructor({ username, email, password, role }) {
@@ -13,7 +14,7 @@ class User {
   }
 
   randomString(length) {
-    return Math.random().toString(36).substr(2, length);
+    return randomBytes(length).toString("hex");
   }
 
   validate() {

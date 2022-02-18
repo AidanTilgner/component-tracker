@@ -2,19 +2,15 @@
   export let title, fields, onChange;
   import Input from "../Input/Input.svelte";
   import Header from "../../helpers/Header/Header.svelte";
-  import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
-  import { fix_and_destroy_block } from "svelte/internal";
 
   let inputs = {};
-  $: fields.forEach((field) => {
+  let editableFields = [...fields];
+  $: editableFields.forEach((field) => {
     inputs[field.name.toLowerCase()] = field.value;
   });
 
-  console.log("Fields: ", fields);
-  console.log("inputs", inputs);
-
   // Make a list of required values and if they are empty, show an error
-  let requiredFields = fields.filter((field) => field.required);
+  $: requiredFields = editableFields.filter((field) => field.required);
 </script>
 
 <form class="form">
@@ -28,15 +24,17 @@
       type={field.type !== "breadcrumbs" ? field.type : "text"}
       settings={field.settings}
       onChange={(e, data) => {
+        console.log("Data: ", data);
+        console.log("Input:", field.name.toLowerCase());
         inputs[field.name.toLowerCase()] = data;
-        fields[fields.indexOf(field)].value = data;
-        // Check that all required fields are not "" or falsey
+        editableFields[editableFields.indexOf(field)].value = data;
         let allRequiredFieldsFilled = true;
         requiredFields.forEach((requiredField) => {
-          if (!(inputs[requiredField.name.toLowerCase()].length > 0)) {
+          if (!requiredField.value > 0) {
             allRequiredFieldsFilled = false;
           }
         });
+        console.log("Submittable: ", allRequiredFieldsFilled);
         onChange(e, inputs, allRequiredFieldsFilled);
       }}
     />

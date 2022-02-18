@@ -1,4 +1,4 @@
-export const newOrganizationProjectSchema = [
+export const newOrganizationProjectSchema = () => [
   {
     name: "name",
     type: "text",
@@ -96,7 +96,7 @@ export const editableProjectSchema = (currentProject) => {
   ];
 };
 
-export const newComponentSchema = [
+export const newComponentSchema = () => [
   {
     name: "Path",
     type: "text",
@@ -146,7 +146,7 @@ export const editableComponentMetaDataSchema = (currentComponentMetaData) => {
   ];
 };
 
-export const componentPillSchema = [
+export const componentPillSchema = () => [
   {
     name: "Name",
     type: "text",
@@ -156,7 +156,7 @@ export const componentPillSchema = [
   {
     name: "pill_type",
     type: "select",
-    value: "",
+    value: "primary",
     required: true,
     settings: {
       options: [
@@ -207,21 +207,27 @@ export const deleteComponentPillSchema = (pills) => {
     {
       name: "pill",
       type: "select",
-      value: "0",
+      value: "",
       settings: {
-        options: pills.map((tag, idx) => {
-          return {
-            value: idx,
-            label: tag.name,
-          };
-        }),
+        options: [
+          {
+            value: "",
+            label: "Select a pill",
+          },
+          ...pills.map((tag, idx) => {
+            return {
+              value: idx,
+              label: tag.name,
+            };
+          }),
+        ],
       },
       required: true,
     },
   ];
 };
 
-export const newComponentFileSchema = [
+export const newComponentFileSchema = () => [
   {
     name: "Name",
     type: "text",
@@ -283,7 +289,7 @@ export const editableComponentFileSchema = (file) => {
   ];
 };
 
-export const newComponentFunctionSchema = [
+export const newComponentFunctionSchema = () => [
   {
     name: "Name",
     type: "text",

@@ -2,13 +2,16 @@
 import {
   updateUserInDatabase,
   deleteUserFromDatabase,
+  acceptFriendRequestInDatabase,
+  rejectFriendRequestInDatabase,
+  removeFriendInDatabase,
+  addFriendRequestInDatabase,
 } from "../database/actions/users.js";
 import {
   getUserFromDatabase,
   getUserProjectsFromDatabase,
   getUserOrganizationsFromDatabase,
   getUsersFromDatabaseBySearch,
-  addFriendRequestInDatabase,
 } from "../database/queries/users.js";
 import { filterForMessages } from "../helpers/routing.js";
 
@@ -128,11 +131,72 @@ export const sendFriendRequest = async (user_id, friend_id) => {
     }
     return {
       friendRequest,
+      message: "Friend request successfully sent",
     };
   } catch (error) {
     console.log("Error in sendFriendRequest: ", error);
     return {
       error: "Internal error sending friend request",
+    };
+  }
+};
+
+export const acceptFriendRequest = async (user_id, friend_id) => {
+  try {
+    const friendRequest = await acceptFriendRequestInDatabase(
+      user_id,
+      friend_id
+    );
+    if (filterForMessages(friendRequest)) {
+      return filterForMessages(friendRequest);
+    }
+    return {
+      friendRequest,
+      message: "Friend request accepted",
+    };
+  } catch (error) {
+    console.log("Error in acceptFriendRequest: ", error);
+    return {
+      error: "Internal error accepting friend request",
+    };
+  }
+};
+
+export const rejectFriendRequest = async (user_id, friend_id) => {
+  try {
+    const friendRequest = await rejectFriendRequestInDatabase(
+      user_id,
+      friend_id
+    );
+    if (filterForMessages(friendRequest)) {
+      return filterForMessages(friendRequest);
+    }
+    return {
+      friendRequest,
+      message: "Friend request rejected",
+    };
+  } catch (error) {
+    console.log("Error in rejectFriendRequest: ", error);
+    return {
+      error: "Internal error rejecting friend request",
+    };
+  }
+};
+
+export const removeFriend = async (user_id, friend_id) => {
+  try {
+    const friend = await removeFriendInDatabase(user_id, friend_id);
+    if (filterForMessages(friend)) {
+      return filterForMessages(friend);
+    }
+    return {
+      friend,
+      message: "Friend successfully removed",
+    };
+  } catch (error) {
+    console.log("Error in removeFriend: ", error);
+    return {
+      error: "Internal error removing friend",
     };
   }
 };

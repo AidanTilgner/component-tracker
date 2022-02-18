@@ -8,6 +8,7 @@ import {
   addProjectToOrganizationInDatabase,
   updateProjectInOrganizationInDatabase,
   deleteProjectFromOrganizationInDatabase,
+  createJoinCodeInDatabase,
 } from "../database/actions/organizations.js";
 
 import {
@@ -98,11 +99,12 @@ export const deleteOrganization = async (organization_id) => {
 };
 
 // * User
-export const addUserToOrganization = async (organization_id, user) => {
+export const addUserToOrganization = async (organization_id, user_id) => {
   try {
+    console.log("Adding user to organization: ", organization_id, user_id);
     const addedUser = await addUserToOrganizationInDatabase(
       organization_id,
-      user
+      user_id
     );
     if (filterForMessages(addedUser)) {
       return filterForMessages(addedUser);
@@ -259,6 +261,25 @@ export const deleteProjectFromOrganization = async (
     console.log("Error in deleteProjectFromOrganization: ", error);
     return {
       error: "Internal error deleting project from organization",
+    };
+  }
+};
+
+// * Links
+export const createJoinCode = async (organization_id, join_code) => {
+  try {
+    const code = await createJoinCodeInDatabase(organization_id);
+    if (filterForMessages(code)) {
+      return filterForMessages(code);
+    }
+    return {
+      code,
+      message: "Join code successfully created",
+    };
+  } catch (error) {
+    console.log("Error in createJoinLink: ", error);
+    return {
+      error: "Internal error creating join code",
     };
   }
 };

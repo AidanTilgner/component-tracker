@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 import {
   readFromLocalStorage,
   readFromSessionStorage,
-} from "../helpers/Functions/local";
+} from "../helpers/Functions/local.js";
 
 export const tokens = writable({
   access: readFromSessionStorage("accessToken") || "",

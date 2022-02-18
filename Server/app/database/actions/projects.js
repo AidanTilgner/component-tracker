@@ -4,6 +4,9 @@ import mongoose from "mongoose";
 import UserModel from "../models/user.js";
 import UserClass from "../../data/user/user.js";
 
+// * Organization
+import OrganizationModel from "../models/organization.js";
+
 // * Project
 import ProjectModel from "../models/project.js";
 import ProjectClass from "../../data/project/project.js";
@@ -30,23 +33,46 @@ export const saveProjectToDatabase = async (project) => {
     if (!newProject.validate) {
       return newProject.validate();
     }
-    const projectModel = await ProjectModel.create(newProject);
-    //await projectModel.save();
-    if (project.organization_id && project.organization_id !== "") {
+    if (
+      newProject.organization &&
+      newProject.organization.organization_id !== ""
+    ) {
+      const organization = await OrganizationModel.findOne({
+        organization_id: newProject.organization.organization_id,
+      });
+      if (!organization) {
+        return {
+          error: "Organization not found",
+        };
+      }
+      const projectModel = await ProjectModel.create(newProject);
+      await projectModel.save();
       const res = await addProjectToOrganizationInDatabase(
-        project.organization_id,
+        organization.organization_id,
         newProject.project_id
       );
       if (res.error) {
         return res;
       }
+      return {
+        project_id: newProject.project_id,
+        name: newProject.name,
+        framework: newProject.framework,
+        created: projectModel.created,
+        edited: projectModel.edited,
+      };
     }
+    const projectModel = await ProjectModel.create(newProject);
     newProject.contributors.forEach(async (contributor) => {
-      await addProjectToUserInDatabase(
+      const res = await addProjectToUserInDatabase(
         contributor.user_id,
         newProject.project_id
       );
+      if (res.error) {
+        return res;
+      }
     });
+    await projectModel.save();
     return {
       project_id: newProject.project_id,
       name: newProject.name,
@@ -71,7 +97,6 @@ export const updateProjectInDatabase = async (project_id, update) => {
         error: "Project not found",
       };
     }
-    console.log("Updated Project: ", project);
     // For each project contributor, update the project in the project list
     project.contributors.forEach(async (contributor) => {
       const res = await updateProjectInUserInDatabase(
@@ -137,6 +162,86 @@ export const deleteProjectFromDatabase = async (project_id) => {
   }
 };
 
+export const addContributorToProjectInDatabase = async (
+  project_id,
+  user_id
+) => {
+  try {
+    const project = await ProjectModel.findOne({
+      project_id: project_id,
+    }).exec();
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
+    const duplicate = project.contributors.some(
+      (con) => con.user_id === user_id
+    );
+    if (duplicate) {
+      return {
+        error: "User is already a contributor to this project",
+      };
+    }
+    const user = await UserModel.findOne({
+      user_id: user_id,
+    }).exec();
+    if (!user) {
+      return {
+        error: "User not found",
+      };
+    }
+    const contributor = {
+      user_id: user_id,
+      username: user.username,
+    };
+    project.contributors.push(contributor);
+    await project.save();
+    await addProjectToUserInDatabase(user_id, project_id);
+    return project;
+  } catch (error) {
+    console.log("Error in addContributorToProjectInDatabase: ", error);
+    return {
+      error: "Internal error adding contributor to project in database",
+    };
+  }
+};
+
+export const removeContributorFromProjectInDatabase = async (
+  project_id,
+  user_id
+) => {
+  try {
+    const project = await ProjectModel.findOne({
+      project_id: project_id,
+    }).exec();
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
+    const contributor = project.contributors.find(
+      (con) => con.user_id === user_id
+    );
+    if (!contributor) {
+      return {
+        error: "User is not a contributor to this project",
+      };
+    }
+    project.contributors = project.contributors.filter(
+      (con) => con.user_id !== user_id
+    );
+    await project.save();
+    await deleteProjectFromUserInDatabase(user_id, project_id);
+    return project;
+  } catch (error) {
+    console.log("Error in removeContributorFromProjectInDatabase: ", error);
+    return {
+      error: "Internal error removing contributor from project in database",
+    };
+  }
+};
+
 export const addComponentToProjectInDatabase = async (
   project_id,
   component
@@ -176,7 +281,6 @@ export const updateComponentInProjectInDatabase = async (
         error: "Project not found",
       };
     }
-    console.log("Project: ", project);
     const index = project.components.findIndex(
       (component) => component.metaData.path === name
     );
@@ -189,7 +293,6 @@ export const updateComponentInProjectInDatabase = async (
       project.components[index],
       update
     );
-    console.log("Updated Component: ", project.components[index]);
     await project.save();
     return project.components[index];
   } catch (error) {

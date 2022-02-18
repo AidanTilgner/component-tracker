@@ -127,7 +127,7 @@
   ]}
 >
   <NonDynamic
-    fields={newComponentSchema}
+    fields={newComponentSchema()}
     onChange={(e, data, submittable) => {
       componentSubmittable = submittable;
       newComponent.metaData = data;

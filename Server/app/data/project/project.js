@@ -1,3 +1,5 @@
+import { randomBytes } from "crypto";
+
 class Project {
   constructor({
     owner,
@@ -5,24 +7,26 @@ class Project {
     name,
     framework,
     description,
-    externalLink,
-    organization_id,
+    externalLinks,
+    organization,
   }) {
+    console.log("Organization: ", organization);
     this.project_id = `${this.randomString(5)}-${this.randomString(
       5
     )}-${this.randomString(5)}-${this.randomString(5)}`;
     this.owner = owner;
+    this.organization = organization;
+    console.log("This Organization: ", this.organization);
     this.contributors = contributors;
-    this.organization_id = organization_id;
     this.name = name;
     this.framework = framework.toLowerCase();
     this.description = description;
-    this.externalLink = externalLink;
+    this.externalLinks = externalLinks || [];
     this.components = [];
   }
 
   randomString(length) {
-    return Math.random().toString(36).substr(2, length);
+    return randomBytes(length).toString("hex");
   }
 
   validate() {

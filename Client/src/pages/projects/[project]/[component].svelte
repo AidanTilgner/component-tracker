@@ -7,7 +7,7 @@
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import Description from "../../../helpers/Informative/Description.svelte";
   import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
-  import { url, params, goto } from "@roxi/routify";
+  import { url, params, goto, redirect } from "@roxi/routify";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
   import {
@@ -120,7 +120,7 @@
       text: "Submit",
       type: "primary",
       action: async () => {
-        if (!sectionModalData.submittable) {
+        if (!metaDataSubmittable) {
           alertBanner.showing = true;
           alertBanner.message = "Please fill out all required fields";
           alertBanner.type = "error";
@@ -141,6 +141,12 @@
         alertBanner.message = response.message;
         alertBanner.type = "success";
         component = response.component;
+        $redirect(
+          "/projects/" +
+            $params.project +
+            "/" +
+            component.metaData.path.split("/").join("+")
+        );
       },
     },
   ]}
@@ -179,6 +185,9 @@
           alertBanner.message = response.error;
           alertBanner.type = "error";
         }
+        console.log("Setting sectionModalData");
+        sectionModalData.fields = [];
+        sectionModalData = {};
         alertBanner.showing = true;
         alertBanner.message = response.message;
         alertBanner.type = "success";
@@ -310,7 +319,7 @@
             sectionModal = true;
             sectionModalData = {
               title: "New Tag",
-              fields: componentPillSchema,
+              fields: componentPillSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,
@@ -329,7 +338,7 @@
         },
       ]}
     />
-    {#if component.metaData.tags.length > 0}
+    {#if component.metaData.tags?.length > 0}
       <InfoItem
         title="Tags"
         type="pills"
@@ -374,9 +383,10 @@
           type: "primary",
           action: () => {
             sectionModal = true;
+            console.log("Modal Data: ", sectionModalData);
             sectionModalData = {
               title: "New Prop",
-              fields: componentPillSchema,
+              fields: componentPillSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,
@@ -395,7 +405,7 @@
         },
       ]}
     />
-    {#if component.metaData.props.length > 0}
+    {#if component.metaData.props?.length > 0}
       <InfoItem
         title="Props"
         type="pills"
@@ -442,7 +452,7 @@
             sectionModal = true;
             sectionModalData = {
               title: "New State",
-              fields: componentPillSchema,
+              fields: componentPillSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,
@@ -461,7 +471,7 @@
         },
       ]}
     />
-    {#if component.metaData.state.length > 0}
+    {#if component.metaData.state?.length > 0}
       <InfoItem
         title="Tags"
         type="pills"
@@ -482,7 +492,7 @@
             sectionModal = true;
             sectionModalData = {
               title: "New Import",
-              fields: newComponentFileSchema,
+              fields: newComponentFileSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,
@@ -574,7 +584,7 @@
             sectionModal = true;
             sectionModalData = {
               title: "New Import",
-              fields: newComponentFileSchema,
+              fields: newComponentFileSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,
@@ -665,7 +675,7 @@
             sectionModal = true;
             sectionModalData = {
               title: "New Import",
-              fields: newComponentFunctionSchema,
+              fields: newComponentFunctionSchema(),
               action: async (inputs) => {
                 const response = await updateComponent(
                   $params.project,

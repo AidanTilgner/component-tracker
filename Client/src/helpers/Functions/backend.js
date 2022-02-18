@@ -1,8 +1,7 @@
 /** @purpose This file contains functions that fetch data from the server */
 
-import { tokens, user } from "../../data/user";
-import { deleteFromLocalStorage, deleteFromSessionStorage } from "./local";
-import { goto } from "@roxi/routify";
+import { tokens, user } from "../../data/user.js";
+import { deleteFromLocalStorage, deleteFromSessionStorage } from "./local.js";
 let accessToken, refreshToken;
 let userData = {};
 tokens.subscribe((tokens) => {
@@ -210,7 +209,7 @@ export const deleteUser = async (userID) => {
   }
 };
 
-export const searchUsers = (searchTerm) => {
+export const searchUsers = async (searchTerm) => {
   try {
     return fetch(`${baseURL}${EP.users}/search?searchTerm=${searchTerm}`, {
       method: "GET",
@@ -221,6 +220,66 @@ export const searchUsers = (searchTerm) => {
     }).then((res) => res.json());
   } catch (error) {
     console.error("Error in searchUsers: ", error);
+  }
+};
+
+export const sendFriendRequest = async (user_id, friend_id) => {
+  try {
+    return await fetch(`${baseURL}${EP.users}/friend-request`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ user_id, friend_id }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in sendFriendRequest: ", error);
+  }
+};
+
+export const acceptFriendRequest = async (user_id, friend_id) => {
+  try {
+    return await fetch(`${baseURL}${EP.users}/friend-request/accept`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ user_id, friend_id }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in acceptFriendRequest: ", error);
+  }
+};
+
+export const rejectFriendRequest = async (user_id, friend_id) => {
+  try {
+    return await fetch(`${baseURL}${EP.users}/friend-request/reject`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ user_id, friend_id }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in rejectFriendRequest: ", error);
+  }
+};
+
+export const removeFriend = async (user_id, friend_id) => {
+  try {
+    return await fetch(`${baseURL}${EP.users}/friend`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ user_id, friend_id }),
+    }).then((res) => res.json());
+  } catch (error) {
+    console.error("Error in removeFriend: ", error);
   }
 };
 
@@ -240,9 +299,9 @@ export const addProject = async (project) => {
   }
 };
 
-export const getProject = async (projectID) => {
+export const getProject = async (project_id) => {
   try {
-    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
+    return await fetch(`${baseURL}${EP.projects}/?project_id=${project_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -256,9 +315,9 @@ export const getProject = async (projectID) => {
   }
 };
 
-export const updateProject = async (projectID, update) => {
+export const updateProject = async (project_id, update) => {
   try {
-    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
+    return await fetch(`${baseURL}${EP.projects}/?project_id=${project_id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -271,9 +330,9 @@ export const updateProject = async (projectID, update) => {
   }
 };
 
-export const deleteProject = async (projectID) => {
+export const deleteProject = async (project_id) => {
   try {
-    return await fetch(`${baseURL}${EP.projects}/?projectID=${projectID}`, {
+    return await fetch(`${baseURL}${EP.projects}/?project_id=${project_id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -286,10 +345,10 @@ export const deleteProject = async (projectID) => {
 };
 
 // * Component Functions
-export const addComponent = async (projectID, component) => {
+export const addComponent = async (project_id, component) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/component?projectID=${projectID}`,
+      `${baseURL}${EP.projects}/component?project_id=${project_id}`,
       {
         method: "PUT",
         headers: {
@@ -305,10 +364,10 @@ export const addComponent = async (projectID, component) => {
   }
 };
 
-export const getComponent = async (projectID, name) => {
+export const getComponent = async (project_id, name) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
+      `${baseURL}${EP.projects}/component?project_id=${project_id}&name=${name}`,
       {
         method: "GET",
         headers: {
@@ -322,10 +381,10 @@ export const getComponent = async (projectID, name) => {
   }
 };
 
-export const updateComponent = async (projectID, name, update) => {
+export const updateComponent = async (project_id, name, update) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
+      `${baseURL}${EP.projects}/component?project_id=${project_id}&name=${name}`,
       {
         method: "PATCH",
         headers: {
@@ -340,10 +399,10 @@ export const updateComponent = async (projectID, name, update) => {
   }
 };
 
-export const deleteComponent = async (projectID, name) => {
+export const deleteComponent = async (project_id, name) => {
   try {
     return await fetch(
-      `${baseURL}${EP.projects}/component?projectID=${projectID}&name=${name}`,
+      `${baseURL}${EP.projects}/component?project_id=${project_id}&name=${name}`,
       {
         method: "DELETE",
         headers: {
@@ -493,5 +552,43 @@ export const removeProjectFromOrganization = async (
     ).then((res) => res.json());
   } catch (error) {
     console.error("Error in removeProjectFromOrganization: ", error);
+  }
+};
+
+export const getOrganizationJoinLink = async (organization_id, join_code) => {
+  try {
+    return await fetch(
+      `${baseURL}${EP.organizations}/join?organization_id=${organization_id}&join_code=${join_code}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => res.json());
+  } catch (err) {
+    console.log("Error in getOrganizationJoinLink: ", err);
+  }
+};
+
+export const joinOrganization = async (user_id, join_code) => {
+  try {
+    console.log(
+      "Going to endpoint: ",
+      `${baseURL}${EP.organizations}/join?user_id=${user_id}&join_code=${join_code}`
+    );
+    return await fetch(
+      `${baseURL}${EP.organizations}/join?user_id=${user_id}&join_code=${join_code}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => res.json());
+  } catch (err) {
+    console.log("Error in joinOrganization: ", err);
   }
 };

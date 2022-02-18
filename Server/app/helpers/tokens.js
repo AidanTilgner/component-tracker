@@ -16,19 +16,9 @@ export const generateRefreshToken = (payload, opts) => {
   return JWT.sign(payload, process.env.REFRESH_TOKEN_SECRET, opts);
 };
 
-// Adds a refresh token to refresh token list
-export const addRefreshTokenToDatabase = async (tkn) => {
-  try {
-    let data = await getDataByFilepath("../data/tokens/refreshTokens.json");
-    data.push(tkn);
-    writeFileByFilepath(
-      "../data/tokens/refreshTokens.json",
-      JSON.stringify(data)
-    );
-    return tkn;
-  } catch (err) {
-    console.log(err);
-  }
+// Generates a join token based on the secret in dotenv
+export const generateJoinToken = (payload, opts) => {
+  return JWT.sign(payload, process.env.ORGANIZATION_JOIN_SECRET, opts);
 };
 
 // Verifies a refresh token and then sends back a new one
@@ -67,21 +57,6 @@ export const refreshUserToken = async (tkn) => {
   }
 };
 
-// Deletes a refresh token from the database
-export const deleteRefreshTokenFromDatabase = async (tkn) => {
-  try {
-    let data = await getDataByFilepath("../data/tokens/refreshTokens.json");
-    data = data.filter((e) => e !== tkn);
-    writeFileByFilepath(
-      "../data/tokens/refreshTokens.json",
-      JSON.stringify(data)
-    );
-    return { message: "Refresh token deleted" };
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 // * Helper functions
 export const authenticateUser = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -91,6 +66,16 @@ export const authenticateUser = (req, res, next) => {
   JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
+    next();
+  });
+};
+
+export const authenticateJoinToken = (req, res, next) => {
+  const token = req.query.token;
+  if (token == null) return res.sendStatus(401);
+  JWT.verify(token, process.env.ORGANIZATION_JOIN_SECRET, (err, verfied) => {
+    if (err) return res.sendStatus(403);
+    req.decoded = verfied;
     next();
   });
 };

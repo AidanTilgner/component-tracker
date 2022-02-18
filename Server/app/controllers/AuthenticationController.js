@@ -2,7 +2,6 @@
 import {
   generateAccessToken,
   generateRefreshToken,
-  addRefreshTokenToDatabase,
   refreshUserToken,
 } from "../helpers/tokens.js";
 import { saveUserToDatabase } from "../database/actions/users.js";
@@ -49,7 +48,7 @@ export const registerUser = async (user) => {
     }
     const accessToken = generateAccessToken(user, { expiresIn: "1h" });
     const refreshToken = generateRefreshToken(user, { expiresIn: "1d" });
-    addRefreshTokenToDatabase(refreshToken);
+    saveRefreshTokenToDatabase(refreshToken);
     return {
       tokens: {
         access: accessToken,

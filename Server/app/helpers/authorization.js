@@ -1,6 +1,6 @@
 import JWT from "jsonwebtoken";
-import { getProjectFromDatabase } from "../database/queries/projects.js";
 import { getOrganizationFromDatabase } from "../database/queries/organizations.js";
+import { getProjectFromDatabase } from "../database/queries/projects.js";
 import { wrapAsync } from "../helpers/routing.js";
 
 export const getUserRoleFromToken = (token) => {
@@ -41,8 +41,27 @@ export const confirmUserProjectRights = wrapAsync(async (req, res, next) => {
   const user = JWT.decode(token);
   if (user.role === "admin") return next();
   if (user.role === "user") {
-    //const project = await getProjectFromDatabase(req.params.projectID);
-    if (user.projects.some((pr) => pr.project_id === req.query.projectID)) {
+    const project = await getProjectFromDatabase(req.query.project_id);
+    if (project.error) {
+      return res.send({ error: project.error });
+    }
+    if (project.owner?.user_id === user.user_id) {
+      return next();
+    }
+    if (
+      project.contributors?.length > 0 &&
+      project.contributors.some((con) => con.user_id === user.user_id)
+    ) {
+      console.log("User has rights to this project");
+      return next();
+    }
+    const projOrg = await getOrganizationFromDatabase(
+      project.organization.organization_id
+    );
+    if (projOrg.error) {
+      return res.send({ error: projOrg.error });
+    }
+    if (projOrg.users.some((u) => u.user_id === user.user_id)) {
       console.log("User has rights to this project");
       return next();
     }
@@ -54,3 +73,31 @@ export const confirmUserProjectRights = wrapAsync(async (req, res, next) => {
       .status(403);
   }
 });
+
+export const confirmOrganizationJoinCodeValidity = wrapAsync(
+  async (req, res, next) => {
+    try {
+      console.log("Checking join code validity");
+      JWT.verify(
+        req.query.join_code,
+        process.env.ORGANIZATION_JOIN_SECRET,
+        wrapAsync(async (err, decoded) => {
+          if (err) {
+            return res
+              .send({ error: "Error 403, Invalid join code" })
+              .status(403);
+          }
+          req.query.organization_id = decoded.organization_id;
+          console.log("Organization join code is valid");
+          next();
+        })
+      );
+    } catch (err) {
+      console.log("Error in confirmOrganizationJoinCodeValidity: ", err);
+      return {
+        error: "Error in confirmOrganizationJoinCodeValidity: ",
+        err,
+      };
+    }
+  }
+);

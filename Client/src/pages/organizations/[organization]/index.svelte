@@ -14,6 +14,7 @@
     addProject,
     updateOrganization,
     deleteOrganization,
+    getOrganizationJoinLink,
   } from "../../../helpers/Functions/backend.js";
   import { user } from "../../../data/user.js";
   import { onMount } from "svelte";
@@ -53,16 +54,14 @@
   let modal = false;
   let modalData = {};
   $: newProject = {
-    organization_id: organization.organization_id,
-    owner: {
-      user_id: userData.user_id,
-      username: userData.username,
+    organization: {
+      organization_id: organization.organization_id,
+      name: organization.name,
     },
-    contributors: organization.users,
   };
 
   let deleteModal = false;
-  let userModal = true;
+  let userModal = false;
 </script>
 
 <Navbar />
@@ -106,8 +105,40 @@
     Are you sure you want to delete the organization "{organization.name}"
   </p>
 </Modal>
-<Modal open={userModal} buttons={[]} title="Add User">
-  <UserSearch />
+<Modal
+  open={userModal}
+  buttons={[
+    {
+      text: "Cancel",
+      type: "secondary",
+      action: () => {
+        userModal = false;
+      },
+    },
+    {
+      text: "Copy Link",
+      type: "primary",
+      action: async () => {
+        const response = await getOrganizationJoinLink(
+          organization.organization_id
+        );
+        if (response.error) {
+          alertBanner.showing = true;
+          alertBanner.message = response.error;
+          alertBanner.type = "error";
+          return;
+        }
+        userModal = false;
+        alertBanner.showing = true;
+        alertBanner.message = "Link copied to clipboard";
+        alertBanner.type = "success";
+        navigator.clipboard.writeText(response.code);
+      },
+    },
+  ]}
+  title="Add User"
+>
+  <p style="font-size: 24px;">Get a join code by clicking the button below</p>
 </Modal>
 <div class="organization">
   <Header
@@ -185,7 +216,7 @@
           modal = true;
           modalData = {
             title: "New Project",
-            fields: newOrganizationProjectSchema,
+            fields: newOrganizationProjectSchema(),
             buttons: [
               {
                 text: "Cancel",
@@ -257,7 +288,9 @@
       {
         text: "New User",
         type: "primary",
-        action: () => {},
+        action: () => {
+          userModal = true;
+        },
       },
     ]}
   />
@@ -292,7 +325,7 @@
         style="color: #2256f2;text-decoration: underline;cursor: pointer;font-weight: 600;"
         on:click={() => {
           console.log("New User");
-        }}>create a new one</span
+        }}>add a new one</span
       >?
     </p>
   {/if}

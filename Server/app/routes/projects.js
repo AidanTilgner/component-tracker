@@ -36,7 +36,7 @@ Router.get(
   "/",
   confirmUserProjectRights,
   wrapAsync(async (req, res) => {
-    res.send(await getProject(req.query.projectID)).status(200);
+    res.send(await getProject(req.query.project_id)).status(200);
   })
 );
 
@@ -44,7 +44,7 @@ Router.put(
   "/",
   confirmUserProjectRights,
   wrapAsync(async (req, res) => {
-    res.send(await updateProject(req.query.projectID, req.body)).status(200);
+    res.send(await updateProject(req.query.project_id, req.body)).status(200);
   })
 );
 
@@ -52,7 +52,7 @@ Router.delete(
   "/",
   confirmUserProjectRights,
   wrapAsync(async (req, res) => {
-    res.send(await deleteProject(req.query.projectID)).status(200);
+    res.send(await deleteProject(req.query.project_id)).status(200);
   })
 );
 
@@ -60,7 +60,7 @@ Router.put(
   "/component",
   confirmUserProjectRights,
   wrapAsync(async (req, res) => {
-    res.send(await addComponent(req.query.projectID, req.body)).status(200);
+    res.send(await addComponent(req.query.project_id, req.body)).status(200);
   })
 );
 
@@ -69,7 +69,7 @@ Router.get(
   confirmUserProjectRights,
   wrapAsync(async (req, res) => {
     res
-      .send(await getComponent(req.query.projectID, req.query.name))
+      .send(await getComponent(req.query.project_id, req.query.name))
       .status(200);
   })
 );
@@ -80,7 +80,7 @@ Router.patch(
   wrapAsync(async (req, res) => {
     res
       .send(
-        await updateComponent(req.query.projectID, req.query.name, req.body)
+        await updateComponent(req.query.project_id, req.query.name, req.body)
       )
       .status(200);
   })
@@ -91,7 +91,7 @@ Router.delete(
   confirmUserProjectRights,
   wrapAsync(async (req, res) => {
     res
-      .send(await deleteComponent(req.query.projectID, req.query.name))
+      .send(await deleteComponent(req.query.project_id, req.query.name))
       .status(200);
   })
 );

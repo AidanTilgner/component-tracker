@@ -3,6 +3,11 @@ import OrganizationClass from "../../data/organization/organization.js";
 import OrganizationModel from "../models/organization.js";
 import UserModel from "../models/user.js";
 import ProjectModel from "../models/project.js";
+import {
+  generateJoinToken,
+  authenticateJoinToken,
+} from "../../helpers/tokens.js";
+import { saveJoinTokenToDatabase } from "./tokens.js";
 
 // * Organization
 export const saveOrganizationToDatabase = async (organization) => {
@@ -11,8 +16,17 @@ export const saveOrganizationToDatabase = async (organization) => {
     if (!newOrganization.validate) {
       return newOrganization.validate();
     }
+    const duplicate = await OrganizationModel.findOne({
+      name: organization.name,
+    });
+    if (duplicate) {
+      return {
+        error: "Organization with that name already exists",
+      };
+    }
     const organizationModel = await OrganizationModel.create(newOrganization);
     await organizationModel.save();
+    console.log("Organization Users: ", organization.users);
     newOrganization.users.forEach(async (user) => {
       UserModel.findOneAndUpdate(
         { user_id: user.user_id },
@@ -109,10 +123,18 @@ export const addUserToOrganizationInDatabase = async (
   user_id
 ) => {
   try {
-    const { username } = await UserModel.findOne({ user_id }).exec();
-    if (!username) {
+    const user = await UserModel.findOne({ user_id }).exec();
+    if (!user) {
       return {
         error: "User not found",
+      };
+    }
+    const duplicate = user.organizations.find(
+      (organization) => organization.organization_id === organization_id
+    );
+    if (duplicate) {
+      return {
+        error: "User is already a member of this organization",
       };
     }
     const organizationModel = await OrganizationModel.findOneAndUpdate(
@@ -121,7 +143,7 @@ export const addUserToOrganizationInDatabase = async (
         $push: {
           users: {
             user_id,
-            username,
+            username: user.username,
           },
         },
       },
@@ -132,6 +154,13 @@ export const addUserToOrganizationInDatabase = async (
         error: "Organization not found",
       };
     }
+    user.organizations.push({
+      organization_id,
+      name: organizationModel.name,
+      created: organizationModel.created,
+      edited: organizationModel.edited,
+    });
+    await user.save();
     return {
       organization_id: organizationModel.organization_id,
       name: organizationModel.name,
@@ -222,6 +251,21 @@ export const addProjectToOrganizationInDatabase = async (
     if (!project) {
       return {
         error: "Project not found with id: " + project_id,
+      };
+    }
+    const organizationProjects = (
+      await OrganizationModel.findOne({
+        organization_id,
+      }).exec()
+    ).projects;
+
+    const duplicate = organizationProjects.some(
+      (project) =>
+        project.project_id === project_id || project_id === project.name
+    );
+    if (duplicate) {
+      return {
+        error: "Project already exists in this organization",
       };
     }
     const organizationModel = await OrganizationModel.findOneAndUpdate(
@@ -336,6 +380,26 @@ export const deleteProjectFromOrganizationInDatabase = async (
     console.log("Error in deleteProjectFromOrganizationInDatabase: ", error);
     return {
       error: "Internal error deleting project from organization in database",
+    };
+  }
+};
+
+export const createJoinCodeInDatabase = async (organization_id) => {
+  try {
+    const joinCode = generateJoinToken(
+      { organization_id },
+      { expiresIn: "1d" }
+    );
+    if (!joinCode) {
+      return {
+        error: "Join token could not be created",
+      };
+    }
+    return joinCode;
+  } catch (err) {
+    console.log("Error in createJoinLinkInDatabase: ", err);
+    return {
+      error: "Internal error creating join link in database",
     };
   }
 };
