@@ -7,7 +7,7 @@
 <div class="search">
   <input type="text" class="search__input" placeholder="search everything..." />
   <div class="search__icon">
-    <Icon name="search" height="20" width="20" />
+    <Icon name="search" height="20" width="20" color={"#2256f2"} />
   </div>
 </div>
 

@@ -23,7 +23,7 @@
     Component Tracker
   </p>
   <div class="navbar__items">
-    <!-- <SearchBar /> -->
+    <SearchBar />
     <Profile {initials} />
   </div>
 </div>
