@@ -26,5 +26,6 @@
 
   .file-tree {
     font-family: $font-primary;
+    margin-bottom: 150px;
   }
 </style>

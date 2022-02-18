@@ -5,15 +5,12 @@
   import FileTree from "../../../components/FileTree/FileTree.svelte";
   import SideBar from "../../../components/SideBar/SideBar.svelte";
   import Modal from "../../../helpers/Modal/Modal.svelte";
-  import Form from "../../../helpers/Form/Form.svelte";
   import InfoItem from "../../../helpers/Informative/InfoItem/InfoItem.svelte";
   import AlertBanner from "../../../helpers/Informative/AlertBanner/AlertBanner.svelte";
   import NonDynamic from "../../../helpers/Form/NonDynamic.svelte";
-  import Footer from "../../../components/Footer/Footer.svelte";
 
   // * Helpers
-  import { goto, params } from "@roxi/routify";
-  import { inferInfoItemTypeFromValueType } from "../../../helpers/functions/inference.js";
+  import { goto, params, url } from "@roxi/routify";
   import { formatKey } from "../../../helpers/functions/formatting.js";
   import {
     getProject,
@@ -168,6 +165,9 @@
         alertBanner.message = response.message;
         alertBanner.type = "success";
         project = response.project;
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       },
     },
   ]}
@@ -241,7 +241,7 @@
 <div class="project" data-testid="project">
   <Header
     title={`
-      <a href="/projects" style="color:#2256f2;text-decoration:none;">
+      <a href="${$url("/")}" style="color:#2256f2;text-decoration:none;">
         ${userData.username}
       </a>/
       <span style='font-weight:bold;'>
