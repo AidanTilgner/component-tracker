@@ -16,6 +16,14 @@ export const saveOrganizationToDatabase = async (organization) => {
     if (!newOrganization.validate) {
       return newOrganization.validate();
     }
+    const duplicate = await OrganizationModel.findOne({
+      name: organization.name,
+    });
+    if (duplicate) {
+      return {
+        error: "Organization with that name already exists",
+      };
+    }
     const organizationModel = await OrganizationModel.create(newOrganization);
     await organizationModel.save();
     newOrganization.users.forEach(async (user) => {
@@ -118,6 +126,14 @@ export const addUserToOrganizationInDatabase = async (
     if (!user) {
       return {
         error: "User not found",
+      };
+    }
+    const duplicate = user.organizations.find(
+      (organization) => organization.organization_id === organization_id
+    );
+    if (duplicate) {
+      return {
+        error: "User is already a member of this organization",
       };
     }
     const organizationModel = await OrganizationModel.findOneAndUpdate(
@@ -234,6 +250,21 @@ export const addProjectToOrganizationInDatabase = async (
     if (!project) {
       return {
         error: "Project not found with id: " + project_id,
+      };
+    }
+    const organizationProjects = (
+      await OrganizationModel.findOne({
+        organization_id,
+      }).exec()
+    ).projects;
+
+    const duplicate = organizationProjects.some(
+      (project) =>
+        project.project_id === project_id || project_id === project.name
+    );
+    if (duplicate) {
+      return {
+        error: "Project already exists in this organization",
       };
     }
     const organizationModel = await OrganizationModel.findOneAndUpdate(

@@ -22,6 +22,14 @@ export const saveUserToDatabase = async (user) => {
     if (!newUser.validate) {
       return newUser.validate();
     }
+    const duplicate = await UserModel.findOne({
+      username: newUser.username,
+    });
+    if (duplicate) {
+      return {
+        error: "User with that username already exists",
+      };
+    }
     const userModel = await UserModel.create(newUser);
     await userModel.save();
     if (!userModel) {
@@ -115,33 +123,32 @@ export const deleteUserFromDatabase = async (user_id) => {
 
 export const addProjectToUserInDatabase = async (user_id, project_id) => {
   try {
-    console.log("User_id: ", user_id);
-    console.log("Project_id: ", project_id);
     const project = await ProjectModel.findOne({
       project_id: project_id,
     }).exec();
-    const user = await UserModel.findOneAndUpdate(
-      { user_id: user_id },
-      {
-        $push: {
-          projects: {
-            project_id: project_id,
-            name: project.name,
-            framework: project.framework,
-            created: project.created,
-            edited: project.edited,
-          },
-        },
-      },
-      {
-        new: true,
-      }
-    ).exec();
+    const user = await UserModel.findOne({ user_id: user_id }).exec();
+    const duplicate = user.projects.some(
+      (project) =>
+        project.project_id === project_id || project.name === project.name
+    );
+    if (duplicate) {
+      return {
+        error: "Project already exists in user",
+      };
+    }
     if (!user) {
       return {
         error: "User not found",
       };
     }
+    user.projects.push({
+      project_id: project_id,
+      name: project.name,
+      framework: project.framework,
+      created: project.created,
+      edited: project.edited,
+    });
+    await user.save();
     return user;
   } catch (error) {
     console.log("Error in addProjectToUserInDatabase: ", error);
@@ -228,10 +235,26 @@ export const addFriendRequestInDatabase = async (user_id, friend_id) => {
         error: "Friend not found",
       };
     }
+    let duplicate = user.friend_requests.sent.some(
+      (friend) => friend.user_id === friend_id
+    );
+    if (duplicate) {
+      return {
+        error: "Friend request already sent",
+      };
+    }
     user.friend_requests.sent.push({
       user_id: friend_id,
       username: friend.username,
     });
+    duplicate = friend.friend_requests.received.some(
+      (friend) => friend.user_id === user_id
+    );
+    if (duplicate) {
+      return {
+        error: "Friend request already received",
+      };
+    }
     friend.friend_requests.received.push({
       user_id: user_id,
       username: user.username,
@@ -263,6 +286,12 @@ export const acceptFriendRequestInDatabase = async (user_id, friend_id) => {
         error: "User not found",
       };
     }
+    let duplicate = user.friends.some((friend) => friend.user_id === friend_id);
+    if (duplicate) {
+      return {
+        error: "User already a friend",
+      };
+    }
     friend.friends.push({
       user_id: user_id,
       username: user.username,
@@ -270,6 +299,12 @@ export const acceptFriendRequestInDatabase = async (user_id, friend_id) => {
     friend.friend_requests.sent = friend.friend_requests.sent.filter(
       (friend_request) => friend_request.user_id !== user_id
     );
+    duplicate = friend.friends.some((friend) => friend.user_id === user_id);
+    if (duplicate) {
+      return {
+        error: "User already a friend",
+      };
+    }
     user.friends.push({
       user_id: friend_id,
       username: friend.username,

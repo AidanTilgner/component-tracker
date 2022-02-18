@@ -40,8 +40,8 @@ export const confirmUserProjectRights = wrapAsync(async (req, res, next) => {
   const user = JWT.decode(token);
   if (user.role === "admin") return next();
   if (user.role === "user") {
-    //const project = await getProjectFromDatabase(req.params.projectID);
-    if (user.projects.some((pr) => pr.project_id === req.query.projectID)) {
+    const project = await getProjectFromDatabase(req.params.projectID);
+    if (project.contributors.some((con) => con.user_id === user.user_id)) {
       console.log("User has rights to this project");
       return next();
     }

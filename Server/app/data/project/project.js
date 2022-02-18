@@ -1,3 +1,5 @@
+import { randomBytes } from "crypto";
+
 class Project {
   constructor({
     owner,
@@ -22,7 +24,7 @@ class Project {
   }
 
   randomString(length) {
-    return Math.random().toString(36).substr(2, length);
+    return randomBytes(length).toString("hex");
   }
 
   validate() {

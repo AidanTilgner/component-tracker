@@ -30,6 +30,11 @@ export const saveProjectToDatabase = async (project) => {
     if (!newProject.validate) {
       return newProject.validate();
     }
+    if (duplicate) {
+      return {
+        error: "Project already exists",
+      };
+    }
     const projectModel = await ProjectModel.create(newProject);
     //await projectModel.save();
     if (project.organization_id && project.organization_id !== "") {
@@ -133,6 +138,86 @@ export const deleteProjectFromDatabase = async (project_id) => {
     console.log("Error in deleteProjectFromDatabase: ", error);
     return {
       error: "Internal error deleting project from database",
+    };
+  }
+};
+
+export const addContributorToProjectInDatabase = async (
+  project_id,
+  user_id
+) => {
+  try {
+    const project = await ProjectModel.findOne({
+      project_id: project_id,
+    }).exec();
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
+    const duplicate = project.contributors.some(
+      (con) => con.user_id === user_id
+    );
+    if (duplicate) {
+      return {
+        error: "User is already a contributor to this project",
+      };
+    }
+    const user = await UserModel.findOne({
+      user_id: user_id,
+    }).exec();
+    if (!user) {
+      return {
+        error: "User not found",
+      };
+    }
+    const contributor = {
+      user_id: user_id,
+      username: user.username,
+    };
+    project.contributors.push(contributor);
+    await project.save();
+    await addProjectToUserInDatabase(user_id, project_id);
+    return project;
+  } catch (error) {
+    console.log("Error in addContributorToProjectInDatabase: ", error);
+    return {
+      error: "Internal error adding contributor to project in database",
+    };
+  }
+};
+
+export const removeContributorFromProjectInDatabase = async (
+  project_id,
+  user_id
+) => {
+  try {
+    const project = await ProjectModel.findOne({
+      project_id: project_id,
+    }).exec();
+    if (!project) {
+      return {
+        error: "Project not found",
+      };
+    }
+    const contributor = project.contributors.find(
+      (con) => con.user_id === user_id
+    );
+    if (!contributor) {
+      return {
+        error: "User is not a contributor to this project",
+      };
+    }
+    project.contributors = project.contributors.filter(
+      (con) => con.user_id !== user_id
+    );
+    await project.save();
+    await deleteProjectFromUserInDatabase(user_id, project_id);
+    return project;
+  } catch (error) {
+    console.log("Error in removeContributorFromProjectInDatabase: ", error);
+    return {
+      error: "Internal error removing contributor from project in database",
     };
   }
 };
