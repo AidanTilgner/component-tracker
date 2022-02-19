@@ -4,16 +4,18 @@
   // TODO: Make this get the data dynamically from the server
 </script>
 
-<div class="grid" data-testid="preview-grid">
-  {#each projects as project}
-    <ProjectPreview
-      title={project.name}
-      edited={project.edited}
-      framework={project.framework}
-      endpoint={project.project_id}
-    />
-  {/each}
-</div>
+{#if projects.length > 0}
+  <div class="grid" data-testid="preview-grid">
+    {#each projects as project}
+      <ProjectPreview
+        title={project.name}
+        edited={project.edited}
+        framework={project.framework}
+        endpoint={project.project_id}
+      />
+    {/each}
+  </div>
+{/if}
 
 <style type="text/scss">
   @import "../../styles/partials/variables";

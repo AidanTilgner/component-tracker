@@ -48,12 +48,16 @@
     </div>
   {/if}
   <div class="preview__banner">
-    <p class="preview__title">
-      {title.length < 12 ? title : title.slice(0, 12) + "..."}
-    </p>
-    <p class="preview__edited">
-      edited <span style="font-weight: 600;">{formatDate(edited)}</span>
-    </p>
+    {#if title?.length > 0}
+      <p class="preview__title">
+        {title.length < 12 ? title : title.slice(0, 12) + "..."}
+      </p>
+    {/if}
+    {#if edited?.length > 0}
+      <p class="preview__edited">
+        edited <span style="font-weight: 600;">{formatDate(edited)}</span>
+      </p>
+    {/if}
     <div
       class="preview__options"
       on:click={(e) => {
