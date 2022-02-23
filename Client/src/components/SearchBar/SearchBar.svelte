@@ -1,7 +1,7 @@
 <script>
   import Icon from "../../helpers/Icon/Icon.svelte";
   import AlertBanner from "../../helpers/Informative/AlertBanner/AlertBanner.svelte";
-  import { url } from "@roxi/routify";
+  import { goto } from "@roxi/routify";
   import { user } from "../../data/user.js";
   import { onMount } from "svelte";
   import {
@@ -14,7 +14,6 @@
   });
   let projects = [];
   let organizations = [];
-  let components = [];
 
   let alertBanner = {
     message: "",
@@ -118,9 +117,14 @@
   </div>
   <div class="search__results">
     {#each searchResults as result}
-      <a href={$url(result.endpoint)} class="search__result">
+      <button
+        on:click={(e) => {
+          $goto(result.endpoint);
+        }}
+        class="search__result"
+      >
         <div class="search__result__name">{result.name}</div>
-      </a>
+      </button>
     {/each}
   </div>
 </div>
@@ -175,13 +179,13 @@
       top: 40px;
       left: 0;
       right: 0;
-      z-index: 2000;
+      box-shadow: 0.2px 0.2px 4px 0 rgba($color: #000000, $alpha: 0.25);
     }
 
     &__result {
-      border-bottom: 1px solid lightgrey;
       background-color: #ffffff;
       padding: 8px 24px;
+      margin: 0;
       cursor: pointer;
 
       &:hover {
